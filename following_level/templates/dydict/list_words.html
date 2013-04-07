@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Word list</title>
+        <style>
+        #left{
+            float: left;
+        }
+
+        #right{
+            float: right;
+        }
+        </style>
+    </head>
+    <body>
+
+        <div id="left">
+    <!-- ################################################### -->
+    <!-- ############## Profile ############################ -->
+    <!-- ################################################### -->
+        <div id="profil" style="background-color: green;">
+        <h3>Hi {{ user_name }}</h2>
+        </div>
+
+    <!-- ################################################### -->
+    <!-- ############# Enter word ########################## -->
+    <!-- ################################################### -->
+        <div id="research_word" style="background-color: yellow;">
+        <form method="POST" action="../show_words/">{% csrf_token %}
+          <p>
+            <table>
+            {{  word_form.as_table }}
+            </table>
+            <input type="submit" value="save" />
+          </p>
+        </form>
+        </div>
+        </div>
+
+        <div id="right">
+    <!-- ################################################### -->
+    <!-- ############# Recommended words ################### -->
+    <!-- ################################################### -->
+        <div style="background-color: blue;" id="recommanded">
+        </div>
+
+    <!-- ################################################### -->
+    <!-- ############# Known words ######################### -->
+    <!-- ################################################### -->
+        <div style="text-align: left;" id="knowledge">
+        {% for word in words %}
+        <p><strong>{{ word.word }}:</strong> {{ word.definition }}</p>
+        {% endfor %}
+        </div>
+        </div>
+
+    </body>
+</html>
