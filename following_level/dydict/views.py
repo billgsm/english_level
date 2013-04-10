@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.http import HttpResponse, HttpResponseRedirect
+from django import http
 from django.shortcuts import render
 from dydict.models import *
 from dydict.forms import *
@@ -8,7 +9,6 @@ import hashlib
 
 def listWords(request):
     try:
-        
         user = Internaute.objects.filter(id=request.session['reference'])[0]
         user_name = user.login
         words = user.dictionary.all()
@@ -24,8 +24,6 @@ def listWords(request):
             new_word = Dict(word=word,
                             definition=definition,
                             hash_definition=hash_def)
-            word_form.cleaned_data['word'] = 'hhh'
-            word_form.cleaned_data['definition'] = 'hhh'
             new_word.save()
             user.dictionary.add(new_word)
     else:
@@ -52,7 +50,7 @@ def createUser(request):
             return HttpResponseRedirect('/dictionary/show_words/')
     else:
         register = RegisterForm()
-    
+
     return render(request, 'dydict/register.html', {'register': register})
 
 def login(request):
@@ -65,5 +63,5 @@ def login(request):
             return HttpResponseRedirect('/dictionary/show_words/')
     else:
         loginform = LoginForm()
-    
+
     return render(request, 'dydict/login.html', {'loginform': loginform})

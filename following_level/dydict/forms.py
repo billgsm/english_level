@@ -16,14 +16,10 @@ class WordForm(forms.Form):
         exists = Dict.objects.filter(word=cleaned_data['word'])
         if not cleaned_data['word'] or ' ' in cleaned_data['word'] or exists or not cleaned_data['definition']:
             msg_word = u'You should enter a word with no white space'
-            self._errors['login'] = self.error_class([msg_word])
+            self._errors['word'] = self.error_class([msg_word])
             del cleaned_data['word']
             del cleaned_data['definition']
         return cleaned_data
-    #def clean_word(self):
-    #    word = self.cleaned_data['word']
-    #    if not word:
-    #    return word
 
 class RegisterForm(forms.Form):
     ###########################################
