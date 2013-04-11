@@ -65,3 +65,9 @@ def login(request):
         loginform = LoginForm()
 
     return render(request, 'dydict/login.html', {'loginform': loginform})
+
+def logout(request):
+    if request.method == 'POST':
+        del request.session['reference']
+        return HttpResponseRedirect('/dictionary/login/')
+    return HttpResponseRedirect('/dictionary/show_words/')

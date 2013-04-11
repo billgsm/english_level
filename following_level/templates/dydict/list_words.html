@@ -19,14 +19,14 @@
     <!-- ################################################### -->
     <!-- ############## Profile ############################ -->
     <!-- ################################################### -->
-        <div id="profil" style="background-color: green;">
-        <h3>Hi {{ user_name }}</h2>
+        <div id="profil">
+        <h3>Hi {{ user_name }}</h3>
         </div>
 
     <!-- ################################################### -->
     <!-- ############# Enter word ########################## -->
     <!-- ################################################### -->
-        <div id="research_word" style="background-color: yellow;">
+        <div id="research_word">
         <form method="POST" action="../show_words/">{% csrf_token %}
           <p>
             <table>
@@ -42,7 +42,12 @@
     <!-- ################################################### -->
     <!-- ############# Recommended words ################### -->
     <!-- ################################################### -->
-        <div style="background-color: blue;" id="recommanded">
+        <div id="recommanded" style="text-align: right">
+        <form method="POST" action="../logout/">{% csrf_token %}
+            <p>
+                <input type="submit" value="logout" />
+            </p>
+        </form>
         </div>
 
     <!-- ################################################### -->
@@ -50,7 +55,7 @@
     <!-- ################################################### -->
         <div style="text-align: left;" id="knowledge">
         {% for word in words %}
-        <p><strong>{{ word.word }}:</strong> {{ word.definition }}</p>
+        <p><strong>{{ word.word }}:</strong> {{ word.definition|truncatechars:60 }}</p>
         {% endfor %}
         </div>
         </div>

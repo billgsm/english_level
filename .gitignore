@@ -3,6 +3,8 @@
 settings.py
 *.swp
 *.un~
+*.swo
+nohup.out
 
 # C extensions
 *.so
