@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <title>Word translation</title>
         {% load static %}
-        <rel src="{% static 'style.css' %}" type="text/stylesheet" />
+        <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <form method="POST" action="../login/">{% csrf_token %}
