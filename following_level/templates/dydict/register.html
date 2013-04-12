@@ -3,15 +3,29 @@
     <head>
         <meta charset="utf-8" />
         <title>Word translation</title>
+        {% load static %}
+        <rel src="{% static 'style.css' %}" type="text/stylesheet" />
     </head>
     <body>
+    <form method="POST" action="../login/">{% csrf_token %}
+      <p>
+        <table>
+        {{ loginform.as_table }}
+        </table>
+        <br />
+        <input type="submit" value="login" />
+      </p>
+    </form>
+    <hr />
+    <hr />
+    <hr />
     <form method="POST" action="../createuser/">{% csrf_token %}
       <p>
         <table>
         {{ register.as_table }}
         </table>
         <br />
-        <input type="submit" value="Envoyer" />
+        <input type="submit" value="Create" />
       </p>
     </form>
     </body>

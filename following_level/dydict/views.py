@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
+import hashlib
+
 from django.http import HttpResponse, HttpResponseRedirect
-from django import http
 from django.shortcuts import render
+
 from dydict.models import *
 from dydict.forms import *
-import hashlib
 
 
 def listWords(request):
@@ -32,9 +33,9 @@ def listWords(request):
     return render(request, 'dydict/list_words.html', locals())
 
 def createUser(request):
+    loginform = LoginForm()
     if request.method == 'POST':
         register = RegisterForm(request.POST)
-
         if register.is_valid():
             login = register.cleaned_data['login']
             email = register.cleaned_data['email']
@@ -44,27 +45,24 @@ def createUser(request):
                 password=hash_password,
                 email=email,
             )
-
             student.save()
             request.session['reference'] = student.id
             return HttpResponseRedirect('/dictionary/show_words/')
     else:
         register = RegisterForm()
-
-    return render(request, 'dydict/register.html', {'register': register})
+    return render(request, 'dydict/register.html', locals())
 
 def login(request):
+    register = RegisterForm()
     if request.method == 'POST':
         loginform = LoginForm(request.POST)
-
         if loginform.is_valid():
             login = loginform.cleaned_data['name']
             request.session['reference'] = Internaute.objects.filter(login=login)[0].id
             return HttpResponseRedirect('/dictionary/show_words/')
     else:
         loginform = LoginForm()
-
-    return render(request, 'dydict/login.html', {'loginform': loginform})
+    return render(request, 'dydict/register.html', locals())
 
 def logout(request):
     if request.method == 'POST':
