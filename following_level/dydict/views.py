@@ -66,6 +66,9 @@ def login(request):
 
 def logout(request):
     if request.method == 'POST':
-        del request.session['reference']
+        try:
+            del request.session['reference']
+        except KeyError:
+            pass
         return HttpResponseRedirect('/dictionary/login/')
     return HttpResponseRedirect('/dictionary/show_words/')
