@@ -9,8 +9,9 @@ class WordForm(forms.Form):
     ###########################################
     ###############Word fields#################
     ###########################################
-    word = forms.CharField(max_length=50)
-    definition = forms.CharField(widget=forms.Textarea)
+    word = forms.CharField(max_length=50,
+                            widget=forms.TextInput(attrs={'placeholder': 'word'}))
+    definition = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-xlarge', 'rows': '8', 'placeholder': 'definitions, examples ...'}))
 #Should figure out why clean_word doesn't work and show up a syntax error o_O
     def clean(self):
         cleaned_data = super(WordForm, self).clean()
@@ -24,10 +25,12 @@ class RegisterForm(forms.Form):
     ###########################################
     ######Registration fields##################
     ###########################################
-    login = forms.CharField(max_length=40)
-    password = forms.CharField(max_length=100, widget=forms.PasswordInput)
-    re_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
-    email = forms.EmailField(max_length=100)
+    login = forms.CharField(max_length=40,
+                            widget=forms.TextInput(attrs={'placeholder': 'login'}))
+    password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
+    re_password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
+    email = forms.EmailField(max_length=100,
+                            widget=forms.TextInput(attrs={'placeholder': 'email'}))
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()
         user_exists = Internaute.objects.filter(login=cleaned_data.get('login'))
@@ -54,8 +57,9 @@ class LoginForm(forms.Form):
     ###########################################
     ###############Login fields################
     ###########################################
-    name = forms.CharField(max_length=40)
-    passwd = forms.CharField(max_length=100, widget=forms.PasswordInput)
+    name = forms.CharField(max_length=40,
+                            widget=forms.TextInput(attrs={'placeholder': 'name'}))
+    passwd = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
 
     def clean(self):
         cleaned_data = super(LoginForm, self).clean()

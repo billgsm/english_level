@@ -5,28 +5,29 @@
         <title>Word translation</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
+        <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
     </head>
     <body>
-    <form method="POST" action="../login/">{% csrf_token %}
+    <form class="well" method="POST" action="../login/">{% csrf_token %}
       <p>
         <table>
         {{ loginform.as_table }}
         </table>
         <br />
-        <input type="submit" value="login" />
+        <input class="btn btn-primary" type="submit" value="login" />
       </p>
     </form>
     <hr />
     <hr />
     <hr />
-    <form method="POST" action="../createuser/">{% csrf_token %}
+    <form class="well" method="POST" action="../createuser/">{% csrf_token %}
       <p>
         <table>
         {{ register.as_table }}
         </table>
         <br />
-        <input type="submit" value="Create" />
+        <input class="btn btn-primary" type="submit" value="Create" />
       </p>
     </form>
     <script src="http://code.jquery.com/jquery.js"></script>

@@ -1,0 +1,12 @@
+body {
+    background-color:#DDD;
+}
+
+[class*="span"] {
+ background-color: lightgreen;
+ margin-bottom: 10px;
+ border-radius: 5px 5px 5px 5px;
+ line-height: 80px;
+ text-align: center;
+}
+

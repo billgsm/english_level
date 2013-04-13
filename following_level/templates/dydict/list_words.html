@@ -5,63 +5,66 @@
         <title>Word list</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
-        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
-        <style>
-        #left{
-            float: left;
-        }
-
-        #right{
-            float: right;
-        }
-        </style>
+        <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
     </head>
     <body>
-
-        <div id="left">
+    <nav class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <li><a class="brand" href="#">Level up</a></li>
+            <li> <a href="#">Accueil</a> </li>
+            <li> <a href="#">Liens</a> </li>
+            <li class="divider-vertical"></li>
+            <li> <a href="#">Témoignages</a> </li>
+            <li> <a href="#">Références</a> </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="raw">
     <!-- ################################################### -->
     <!-- ############## Profile ############################ -->
     <!-- ################################################### -->
-        <div id="profil">
+        <div id="profil" class="span4">
         <h3>Hi {{ user_name }}</h3>
         </div>
 
+    <!-- ############# Recommended words ################### -->
+        <div id="recommanded" class="span2 offset6">
+        <form method="POST" action="../logout/" class="well">{% csrf_token %}
+            <p>
+                <input class="btn btn-primary" type="submit" value="logout" />
+            </p>
+        </form>
+        </div>
+        </div> <!-- /raw -->
+
+        <div class="raw">
     <!-- ################################################### -->
     <!-- ############# Enter word ########################## -->
     <!-- ################################################### -->
-        <div id="research_word">
-        <form method="POST" action="../show_words/">{% csrf_token %}
+        <div id="research_word" class="span5">
+        <form method="POST" action="../show_words/" class="well">{% csrf_token %}
           <p>
             <table>
             {{  word_form.as_table }}
             </table>
-            <input type="submit" value="save" />
+            <input class="btn btn-primary btn-block" type="submit" value="save" />
           </p>
         </form>
         </div>
-        </div>
 
-        <div id="right">
-    <!-- ################################################### -->
-    <!-- ############# Recommended words ################### -->
-    <!-- ################################################### -->
-        <div id="recommanded" style="text-align: right">
-        <form method="POST" action="../logout/">{% csrf_token %}
-            <p>
-                <input type="submit" value="logout" />
-            </p>
-        </form>
-        </div>
-
-    <!-- ################################################### -->
     <!-- ############# Known words ######################### -->
-    <!-- ################################################### -->
-        <div style="text-align: left;" id="knowledge">
+        <div id="knowledge" class="span7">
         {% for word in words %}
         <p><strong>{{ word.word }}:</strong> {{ word.definition|truncatechars:60 }}</p>
         {% endfor %}
         </div>
         </div>
+    </div>
 
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
