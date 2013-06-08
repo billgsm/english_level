@@ -9,39 +9,39 @@
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
     </head>
     <body>
-    <nav class="navbar">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <ul class="nav">
-            <li><a class="brand" href="#">Level up</a></li>
-            <li> <a href="#">Accueil</a> </li>
-            <li> <a href="#">Liens</a> </li>
-            <li class="divider-vertical"></li>
-            <li> <a href="#">Témoignages</a> </li>
-            <li> <a href="#">Références</a> </li>
-          </ul>
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href=".">Dictionary</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="."><i class="icon-home icon-white"></i>Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>{{ user_name }}</strong><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Profil</a></li>
+                  <li><a href="#">Recommended articles</a></li>
+                  <!--<li class="divider"></li>
+                  <li class="nav-header">Nav header</li>-->
+                  <li><a href="#">Help</a></li>
+                </ul>
+              </li>
+            </ul>
+            <form class="navbar-form pull-right" method="POST" action="../logout/">{% csrf_token %}
+              <button type="submit" class="btn btn-info"><i class="icon-off icon-white"></i> Logout</button>
+            </form>
+          </div><!--/.nav-collapse -->
         </div>
       </div>
-    </nav>
+    </div>
     <div class="container-fluid">
-        <div class="raw">
-    <!-- ################################################### -->
-    <!-- ############## Profile ############################ -->
-    <!-- ################################################### -->
-        <div id="profil" class="span4">
-        <h3>Hi {{ user_name }}</h3>
-        </div>
-
-    <!-- ############# Recommended words ################### -->
-        <div id="recommanded" class="span2 offset6">
-        <form method="POST" action="../logout/" class="well">{% csrf_token %}
-            <p>
-                <input class="btn btn-primary" type="submit" value="logout" />
-            </p>
-        </form>
-        </div>
-        </div> <!-- /raw -->
-
         <div class="raw">
     <!-- ################################################### -->
     <!-- ############# Enter word ########################## -->
@@ -52,16 +52,18 @@
             <table>
             {{  word_form.as_table }}
             </table>
-            <input class="btn btn-primary btn-block" type="submit" value="save" />
+            <button class="btn btn-primary btn-block" type="submit">save</button>
           </p>
         </form>
         </div>
 
     <!-- ############# Known words ######################### -->
         <div id="knowledge" class="span7">
+        <fieldset>
         {% for word in words %}
         <p><strong>{{ word.word }}:</strong> {{ word.definition|truncatechars:60 }}</p>
         {% endfor %}
+        </fieldset>
         </div>
         </div>
     </div>
