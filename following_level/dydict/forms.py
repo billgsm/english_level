@@ -1,16 +1,14 @@
 #-*- coding: utf-8 -*-
-import hashlib
-
 from django import forms
+from django.contrib.auth.models import User
 
 from dydict.models import Internaute, Dict
 
 class WordForm(forms.Form):
-    ###########################################
-    ###############Word fields#################
-    ###########################################
+    """Word fields"""
+
     word = forms.CharField(max_length=50,
-                            widget=forms.TextInput(attrs={'placeholder': 'word'}))
+                           widget=forms.TextInput(attrs={'placeholder': 'word'}))
     definition = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-xlarge', 'rows': '8', 'placeholder': 'definitions, examples ...'}))
 #Should figure out why clean_word doesn't work and show up a syntax error o_O
     def clean(self):
@@ -22,9 +20,8 @@ class WordForm(forms.Form):
         return cleaned_data
 
 class RegisterForm(forms.Form):
-    ###########################################
-    ######Registration fields##################
-    ###########################################
+    """Registration fields"""
+
     login = forms.CharField(max_length=40,
                             widget=forms.TextInput(attrs={'placeholder': 'login'}))
     password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
@@ -54,35 +51,5 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
 class LoginForm(forms.Form):
-    ###########################################
-    ###############Login fields################
-    ###########################################
-    name = forms.CharField(max_length=40,
-                            widget=forms.TextInput(attrs={'placeholder': 'name'}))
-    passwd = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
-
-    def clean(self):
-        cleaned_data = super(LoginForm, self).clean()
-        name = cleaned_data.get('name')
-        passwd = cleaned_data.get('passwd')
-        msg = u"This field is required."
-        if not name:
-            self._errors['name'] = self.error_class([msg])
-        elif not passwd:
-            self._errors['passwd'] = self.error_class([msg])
-        else:
-            passwd_hash = hashlib.sha224(passwd).hexdigest()
-            user_exists = Internaute.objects.filter(login=name)
-            if not user_exists:
-                msg = u"This user doesn't exist."
-                self._errors['name'] = self.error_class([msg])
-                del cleaned_data['name']
-                del cleaned_data['passwd']
-            else:
-                user_password = user_exists[0].password
-                if user_password != passwd_hash:
-                    msg = u"Wrong information."
-                    self._errors['name'] = self._errors['passwd'] = self.error_class([msg])
-                    del cleaned_data['name']
-                    del cleaned_data['passwd']
-        return cleaned_data
+    username = forms.CharField(label="Login", max_length=30)
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)

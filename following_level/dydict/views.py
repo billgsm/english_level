@@ -1,20 +1,25 @@
 # -*- coding: utf-8 -*-
 import hashlib
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 
 from dydict.models import *
 from dydict.forms import *
 
 
+@login_required
 def listWords(request):
-    try:
-        user = Internaute.objects.filter(id=request.session['reference'])[0]
-        user_name = user.login
-        words = user.dictionary.all()
-    except KeyError:
-        return HttpResponseRedirect('/dictionary/login/')
+    if request.user.is_authenticated():
+        try:
+            internaute = Internaute.objects.get(id=request.user.id)
+        except DoesNotExist:
+            pass
+        words = internaute.dictionary.all()
 
     if request.method == 'POST':
         word_form = WordForm(request.POST)
@@ -26,7 +31,7 @@ def listWords(request):
                             definition=definition,
                             hash_definition=hash_def)
             new_word.save()
-            user.dictionary.add(new_word)
+            internaute.dictionary.add(new_word)
     else:
         word_form = WordForm()
 
@@ -52,23 +57,23 @@ def createUser(request):
         register = RegisterForm()
     return render(request, 'dydict/register.html', locals())
 
-def login(request):
-    register = RegisterForm()
+def user_login(request):
+    error = False
     if request.method == 'POST':
         loginform = LoginForm(request.POST)
         if loginform.is_valid():
-            login = loginform.cleaned_data['name']
-            request.session['reference'] = Internaute.objects.filter(login=login)[0].id
-            return HttpResponseRedirect('/dictionary/show_words/')
+            username = loginform.cleaned_data["username"]
+            password = loginform.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return HttpResponseRedirect('/dictionary/show_words/')
+            else:
+                error = True
     else:
         loginform = LoginForm()
     return render(request, 'dydict/register.html', locals())
 
-def logout(request):
-    if request.method == 'POST':
-        try:
-            del request.session['reference']
-        except KeyError:
-            pass
-        return HttpResponseRedirect('/dictionary/login/')
-    return HttpResponseRedirect('/dictionary/show_words/')
+def user_logout(request):
+    logout(request)
+    return redirect(reverse(user_login))
