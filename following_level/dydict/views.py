@@ -7,11 +7,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 
 from dydict.models import *
 from dydict.forms import *
 
 
+@cache_page(60 * 15)
 @login_required
 def listWords(request):
     if request.user.is_authenticated():

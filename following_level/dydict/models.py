@@ -7,7 +7,7 @@ class Dict(models.Model):
                           unique=True)
   definition = models.TextField()
   hash_definition = models.CharField(max_length=255,
-                                     unique=True)
+                                     unique=False)
   last_update = models.DateTimeField(auto_now_add=True,
                                      auto_now=True,
                                      verbose_name="creation date")

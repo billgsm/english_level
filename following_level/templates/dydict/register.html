@@ -13,6 +13,8 @@
 <body>
   <div class="container">
       <div class="hero-unit">
+      {% load cache %}
+      {% cache 500 carrousel %}
         <!--carroussel-->
         <div id="myCarousel" class="carousel slide" data-interval=4000>
           <ol class="carousel-indicators">
@@ -49,6 +51,7 @@
           <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
         <!--carroussel-->
+    {% endcache %}
     </div><!--hero-unit-->
     <div class="content">
       <div class="row">
