@@ -2,3 +2,7 @@
 html, body {
     background-color: #eee;
 }
+
+#static_content {
+    padding-top: 46px;
+}

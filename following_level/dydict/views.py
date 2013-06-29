@@ -8,9 +8,18 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
+from django.views.generic import TemplateView
 
 from dydict.models import *
 from dydict.forms import *
+
+
+class AboutView(TemplateView):
+    template_name = 'dydict/about.html'
+
+
+class HelpView(TemplateView):
+    template_name = 'dydict/help.html'
 
 
 @cache_page(60 * 15)

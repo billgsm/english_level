@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Word list</title>
+        <title>{% block title %}Word list{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
         <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
@@ -17,20 +17,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href=".">Dictionary</a>
+          <a class="brand" href="{% url 'dydict.views.listWords' %}">Dictionary</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="."><i class="icon-home icon-white"></i>Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li class="active"><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li>
+              <li><a href="{% url "dydict_about" %}"><i class="icon-qrcode icon-white"></i> About</a></li>
+              <li><a href="#contact"><i class="icon-envelope icon-white"></i> Contact</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>{{ user.username }}</strong><b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Profil</a></li>
-                  <li><a href="#">Recommended articles</a></li>
+                  <li><a href="#"><i class="icon-wrench"></i> Profil</a></li>
+                  <li><a href="#"><i class="icon-thumbs-up"></i> Recommended articles</a></li>
                   <!--<li class="divider"></li>
                   <li class="nav-header">Nav header</li>-->
-                  <li><a href="#">Help</a></li>
+                  <li><a href="{% url "dydict_help" %}"><i class="icon-question-sign"></i> Help</a></li>
                 </ul>
               </li>
             </ul>
@@ -41,6 +41,7 @@
         </div>
       </div>
     </div>
+    {% block content %}
     <div class="container-fluid">
         <div class="hero-unit">
         </div>
@@ -107,7 +108,9 @@
         </div>
     </div>
 </div>-->
+    {% endblock %}
 </body>
+{% block scripts %}
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
@@ -123,4 +126,5 @@
       })
   });
 </script>
+{% endblock %}
 </html>
