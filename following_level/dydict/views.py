@@ -9,20 +9,26 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
+from django.utils.decorators import method_decorator
 
 from dydict.models import *
 from dydict.forms import *
 
 
-class AboutView(TemplateView):
+class StaticTemplateView(TemplateView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(StaticTemplateView, self).dispatch(*args, **kwargs)
+
+
+class AboutView(StaticTemplateView):
     template_name = 'dydict/about.html'
 
 
-class HelpView(TemplateView):
+class HelpView(StaticTemplateView):
     template_name = 'dydict/help.html'
 
 
-@cache_page(60 * 15)
 @login_required
 def listWords(request):
     if request.user.is_authenticated():
@@ -68,6 +74,7 @@ def createUser(request):
         register = RegisterForm()
     return render(request, 'dydict/register.html', locals())
 
+#@cache_page(60 * 15)
 def user_login(request):
     error = False
     if request.method == 'POST':
