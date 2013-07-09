@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 
 from dydict.models import *
 from dydict.forms import *
+import tasks
 
 
 class StaticTemplateView(TemplateView):
@@ -31,28 +32,10 @@ class HelpView(StaticTemplateView):
 
 @login_required
 def listWords(request):
-    if request.user.is_authenticated():
-        try:
-            internaute = Internaute.objects.get(id=request.user.id)
-        except DoesNotExist:
-            pass
-        words = internaute.dictionary.all()
-
-    if request.method == 'POST':
-        word_form = WordForm(request.POST)
-        if word_form.is_valid():
-            hash_def = hashlib.md5(word_form.cleaned_data['definition']).hexdigest()
-            word = word_form.cleaned_data['word']
-            definition = word_form.cleaned_data['definition']
-            new_word = Dict(word=word,
-                            definition=definition,
-                            hash_definition=hash_def)
-            new_word.save()
-            internaute.dictionary.add(new_word)
-    else:
-        word_form = WordForm()
-
-    return render(request, 'dydict/list_words.html', locals())
+    tpl_dict = tasks.words.delay(request.user, request.POST, request.method)
+    if tpl_dict.get():
+        return render(request, 'dydict/list_words.html',
+                               tpl_dict.get())
 
 def createUser(request):
     loginform = LoginForm()
