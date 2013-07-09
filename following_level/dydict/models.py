@@ -8,6 +8,8 @@ class Dict(models.Model):
   definition = models.TextField()
   hash_definition = models.CharField(max_length=255,
                                      unique=False)
+  user_def= models.TextField()
+  word_ref = models.TextField()
   last_update = models.DateTimeField(auto_now_add=True,
                                      auto_now=True,
                                      verbose_name="creation date")
