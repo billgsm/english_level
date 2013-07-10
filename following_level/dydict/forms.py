@@ -28,33 +28,13 @@ class WordForm(forms.Form):
 class RegisterForm(forms.Form):
     """Registration fields"""
 
-    login = forms.CharField(max_length=40,
+    username = forms.CharField(max_length=40,
                             widget=forms.TextInput(attrs={'placeholder': 'login'}))
     password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
     re_password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
     email = forms.EmailField(max_length=100,
                             widget=forms.TextInput(attrs={'placeholder': 'email'}))
-    def clean(self):
-        cleaned_data = super(RegisterForm, self).clean()
-        user_exists = Internaute.objects.filter(login=cleaned_data.get('login'))
-        email_exists = Internaute.objects.filter(email=cleaned_data.get('email'))
-        if user_exists:
-            msg_login = u"Login already used."
-            self._errors['login'] = self.error_class([msg_login])
-            del cleaned_data['login']
-        if email_exists:
-            msg_email = u"Email already registered"
-            self._errors['email'] = self.error_class([msg_email])
-            del cleaned_data['email']
-        password = cleaned_data.get('password')
-        re_password = cleaned_data.get('re_password')
-        if password != re_password:
-            msg = u"Please enter your password twice"
-            self._errors['password'] = self.error_class([msg])
-            self._errors['re_password'] = self.error_class([msg])
-            del cleaned_data['password']
-            del cleaned_data['re_password']
-        return cleaned_data
+
 
 class LoginForm(forms.Form):
     """Login fields"""

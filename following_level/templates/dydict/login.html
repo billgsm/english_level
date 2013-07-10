@@ -58,23 +58,23 @@
         <div class="login-form">
           <h2>Login</h2>
           {% if error %}
-          <p><strong>Login/email already exists.</strong></p>
+          <p><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></p>
           {% endif %}
 
           {% if user.is_authenticated %}
           Vous êtes connecté, {{ user.username }} !
           {% else %}
-          <form class="well" method="POST" action="{% url "dydict.views.createUser" %}">{% csrf_token %}
+          <form class="well" method="POST" action="{% url "dydict.views.user_login" %}">{% csrf_token %}
             <fieldset>
               <p>
                 <table>
-                {{ registerform.as_table }}
+                {{ loginform.as_table }}
                 </table>
                 <br />
                 <label class="checkbox">
                     <input type="checkbox"> Remember me
                 </label>
-                <button class="btn btn-primary" type="submit">Inscription</button>
+                <button class="btn btn-primary" type="submit">login</button>
               </p>
             </fieldset>
             </form>

@@ -38,23 +38,24 @@ def listWords(request):
                                tpl_dict.get())
 
 def createUser(request):
-    loginform = LoginForm()
+    error = False
     if request.method == 'POST':
-        register = RegisterForm(request.POST)
-        if register.is_valid():
-            login = register.cleaned_data['login']
-            email = register.cleaned_data['email']
-            hash_password = hashlib.sha224(register.cleaned_data['password']).hexdigest()
-            student = Internaute(
-                login=login,
-                password=hash_password,
-                email=email,
-            )
-            student.save()
-            request.session['reference'] = student.id
+        registerform = RegisterForm(request.POST)
+        if registerform.is_valid():
+            username = registerform.cleaned_data['username']
+            email = registerform.cleaned_data['email']
+            password = registerform.cleaned_data['password']
+            user = User.objects.create_user(username=username,
+                        email=email,
+                        password=password)
+
+            internaute = Internaute(user=user)
+            internaute.save()
+            user = authenticate(username=username, password=password)
+            login(request, user)
             return HttpResponseRedirect('/dictionary/show_words/')
     else:
-        register = RegisterForm()
+        registerform = RegisterForm()
     return render(request, 'dydict/register.html', locals())
 
 #@cache_page(60 * 15)
@@ -73,7 +74,7 @@ def user_login(request):
                 error = True
     else:
         loginform = LoginForm()
-    return render(request, 'dydict/register.html', locals())
+    return render(request, 'dydict/login.html', locals())
 
 def user_logout(request):
     logout(request)
