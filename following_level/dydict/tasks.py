@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import hashlib
-
 from celery import task
 from django.utils.encoding import smart_unicode, smart_str
 
@@ -11,7 +9,7 @@ from dydict.forms import *
 def words(user, post, methode):
     if user.is_authenticated():
         try:
-            internaute = Internaute.objects.get(id=user.id)
+            internaute = Internaute.objects.get(user=user)
         except DoesNotExist:
             pass
         words = internaute.dictionary.all()
@@ -19,12 +17,14 @@ def words(user, post, methode):
     if methode == 'POST':
         word_form = WordForm(post)
         if word_form.is_valid():
-            hash_def = hashlib.md5(smart_str(word_form.cleaned_data['definition'])).hexdigest()
             word = smart_unicode(word_form.cleaned_data['word'])
             definition = smart_unicode(word_form.cleaned_data['definition'])
+            user_def = smart_unicode(word_form.cleaned_data['user_def'])
+            word_ref = smart_unicode(word_form.cleaned_data['word_ref'])
             new_word = Dict(word=word,
                             definition=definition,
-                            hash_definition=hash_def)
+                            user_def=user_def,
+                            word_ref=word_ref)
             new_word.save()
             internaute.dictionary.add(new_word)
             # Clear fields

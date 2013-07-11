@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import hashlib
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
