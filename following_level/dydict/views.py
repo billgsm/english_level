@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from random import randint
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -32,8 +34,17 @@ class HelpView(StaticTemplateView):
 def listWords(request):
     tpl_dict = tasks.words.delay(request.user, request.POST, request.method)
     if tpl_dict.get():
+        words_page = tpl_dict.get()["words"]
+        rand_page = randint(1, words_page.num_pages)
+        words = words_page.page(rand_page).object_list
+
+        user = request.user
+        word_form = tpl_dict.get()["word_form"]
+
         return render(request, 'dydict/list_words.html',
-                               tpl_dict.get())
+                      {'user': user,
+                       'word_form': word_form,
+                       'words': words})
 
 def createUser(request):
     error = False

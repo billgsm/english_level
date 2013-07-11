@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from celery import task
 from django.utils.encoding import smart_unicode, smart_str
+from django.core.paginator import Paginator
 
 from dydict.models import *
 from dydict.forms import *
@@ -12,7 +13,7 @@ def words(user, post, methode):
             internaute = Internaute.objects.get(user=user)
         except DoesNotExist:
             pass
-        words = internaute.dictionary.all()
+        words = Paginator(internaute.dictionary.all(), 10)
 
     if methode == 'POST':
         word_form = WordForm(post)
