@@ -31,18 +31,22 @@ class HelpView(StaticTemplateView):
 
 
 @login_required
-def listWords(request):
+def listWords(request, page_number=1):
     tpl_dict = tasks.words.delay(request.user, request.POST, request.method)
     if tpl_dict.get():
         words_page = tpl_dict.get()["words"]
-        rand_page = randint(1, words_page.num_pages)
-        words = words_page.page(rand_page).object_list
+        num_pages = words_page.num_pages
+        page_number = int(page_number)
+        current_page = page_number if page_number in range(1, num_pages + 1) else 1
+        words = words_page.page(current_page).object_list
 
         user = request.user
         word_form = tpl_dict.get()["word_form"]
 
         return render(request, 'dydict/list_words.html',
                       {'user': user,
+                       'num_pages': words_page.num_pages,
+                       'current_page': current_page,
                        'word_form': word_form,
                        'words': words})
 

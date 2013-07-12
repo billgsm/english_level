@@ -22,11 +22,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{% url 'dydict.views.listWords' %}">Dictionary</a>
+          <a class="brand" href="{% url 'dydict.views.listWords' 1 %}">Dictionary</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-                <!--<li class="active"><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li>-->
-              <li><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li>
+                <!--<li class="active"><a href="{% url 'dydict.views.listWords' 1 %}"><i class="icon-home icon-white"></i>Home</a></li>-->
+              <li><a href="{% url 'dydict.views.listWords' 1 %}"><i class="icon-home icon-white"></i>Home</a></li>
               <li><a href="{% url "dydict_about" %}"><i class="icon-qrcode icon-white"></i> About</a></li>
               <li><a href="#contact"><i class="icon-envelope icon-white"></i> Contact</a></li>
               <li class="dropdown">
@@ -83,7 +83,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <div class="pagination">
+            <!--<div class="pagination">
                 <ul>
                     <li class="disabled"><a href="">&laquo;</a></li>
                     <li class="active"><a href="">1</a></li>
@@ -93,7 +93,8 @@
                     <li><a href="">5</a></li>
                     <li><a href="">&raquo;</a></li>
                 </ul>
-            </div>
+            </div>-->
+            <div id="pagination"></div>
             {% else %}
             <h3>Let's get started!!</h3>
             {% endif %}
@@ -120,8 +121,15 @@
     {% endblock %}
 </body>
 {% block scripts %}
+<script>
+    var MyGlobal = {
+        num_pages: {{ num_pages }},
+        current_page: {{ current_page }},
+    };
+</script>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap-paginator.min.js' %}"></script>
 <script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jq_dict_effects.js' %}"></script>
 {% endblock %}

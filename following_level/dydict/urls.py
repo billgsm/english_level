@@ -4,7 +4,7 @@ from dydict.views import AboutView, HelpView
 
 
 urlpatterns = patterns('dydict.views',
-    url(r'^show_words/$', 'listWords'),
+    url(r'^show_words/(?P<page_number>\d{1})/$', 'listWords'),
     url(r'^createuser/$', 'createUser'),
     url(r'^login/$', 'user_login'),
     url(r'^logout/$', 'user_logout'),

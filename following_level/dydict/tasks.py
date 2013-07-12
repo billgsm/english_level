@@ -13,7 +13,7 @@ def words(user, post, methode):
             internaute = Internaute.objects.get(user=user)
         except DoesNotExist:
             pass
-        words = Paginator(internaute.dictionary.all(), 10)
+        words = Paginator(internaute.dictionary.all(), 5, 3, True)
 
     if methode == 'POST':
         word_form = WordForm(post)
