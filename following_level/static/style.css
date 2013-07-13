@@ -6,3 +6,18 @@ html, body {
 #static_content {
     padding-top: 46px;
 }
+
+div.container-fluid {
+    padding-top: 58px;
+}
+
+#sortTable tbody tr th {
+    background-color: #d9edf7;
+}
+
+.badge-mini {
+    float: left;
+    font-size: 11px;
+    padding: 1px 4px 1px;
+    background-color: rgba(128, 173, 172, 0.63);
+}

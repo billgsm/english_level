@@ -5,13 +5,8 @@
         <title>{% block title %}Word list{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% load static %}
-        <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
-        <style>
-            #sortTable tbody tr th {
-                background-color: #d9edf7;
-            }
-        </style>
+        <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
     </head>
     <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,16 +17,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="{% url 'dydict.views.listWords' 1 %}">Dictionary</a>
+          <a class="brand" href="{% url 'dydict.views.listWords' %}">Dictionary</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-                <!--<li class="active"><a href="{% url 'dydict.views.listWords' 1 %}"><i class="icon-home icon-white"></i>Home</a></li>-->
-              <li><a href="{% url 'dydict.views.listWords' 1 %}"><i class="icon-home icon-white"></i>Home</a></li>
+                <!--<li class="active"><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li>-->
+              <li><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i> Home</a></li>
               <li><a href="{% url "dydict_about" %}"><i class="icon-qrcode icon-white"></i> About</a></li>
               <li><a href="#contact"><i class="icon-envelope icon-white"></i> Contact</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="icon-user icon-white"></i>
+                    {% if False %}
+                    <span class="badge badge-important badge-mini">{{ notif_number }}</span>
+                    {% endif %}
                     <strong> {{ user.username }}</strong><b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -52,14 +50,14 @@
     </div>
     {% block content %}
     <div class="container-fluid">
-        <div class="hero-unit">
-        </div>
+        <!--<div class="hero-unit">
+        </div>-->
         <div class="raw">
     <!-- ################################################### -->
     <!-- ############# Enter word ########################## -->
     <!-- ################################################### -->
         <div id="research_word" class="span5">
-        <form method="POST" action="../show_words/" class="well">{% csrf_token %}
+        <form method="POST" action="{% url 'dydict.views.listWords' %}" class="well">{% csrf_token %}
           <p>
             <table>
             {{  word_form.as_table }}
@@ -72,6 +70,12 @@
     <!-- ############# Known words ######################### -->
         <div class="span5">
             {% if words %}
+                {% if word_saved %}
+                <div class="alert alert-success">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>{{ word }}</strong> added successfully.
+                </div>
+                {% endif %}
             <table class="table table-striped table-hover" id="sortTable">
                 <thead>
                     <th class="blue">Word</th>
@@ -79,7 +83,7 @@
                 </thead>
                 <tbody>
                 {% for word in words %}
-                    <tr><td>{{ word.word }}:</td><td>{{ word.definition|truncatechars:60 }}</td></tr>
+                    <tr><td>{{ word.word }}:</td><td>{{ word.definition|truncatechars:20 }}</td></tr>
                 {% endfor %}
                 </tbody>
             </table>

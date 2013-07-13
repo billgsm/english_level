@@ -42,13 +42,19 @@ def listWords(request, page_number=1):
 
         user = request.user
         word_form = tpl_dict.get()["word_form"]
+        word_saved = tpl_dict.get()["word_saved"]
+        tpl_vars = {'user': user,
+                    'num_pages': words_page.num_pages,
+                    'current_page': current_page,
+                    'word_form': word_form,
+                    'words': words,
+                    'word_saved': word_saved,}
+
+        if word_saved:
+            tpl_vars['word'] = tpl_dict.get()["word"]
 
         return render(request, 'dydict/list_words.html',
-                      {'user': user,
-                       'num_pages': words_page.num_pages,
-                       'current_page': current_page,
-                       'word_form': word_form,
-                       'words': words})
+                      tpl_vars)
 
 def createUser(request):
     error = False

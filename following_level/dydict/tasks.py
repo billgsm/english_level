@@ -9,6 +9,7 @@ from dydict.forms import *
 @task()
 def words(user, post, methode):
     if user.is_authenticated():
+        word_saved = False
         try:
             internaute = Internaute.objects.get(user=user)
         except DoesNotExist:
@@ -28,11 +29,19 @@ def words(user, post, methode):
                             word_ref=word_ref)
             new_word.save()
             internaute.dictionary.add(new_word)
+            word_saved = True
             # Clear fields
             word_form = WordForm()
     else:
         word_form = WordForm()
 
-    return {'user': user,
-            'word_form': word_form,
-            'words': words}
+    word_args = {
+        'user': user,
+        'word_form': word_form,
+        'words': words,
+        'word_saved': word_saved}
+
+    if word_saved:
+        word_args['word'] = word
+
+    return word_args
