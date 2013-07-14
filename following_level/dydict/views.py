@@ -10,8 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 
-from dydict.models import *
+from dydict.models import Internaute
 from dydict.forms import *
 import tasks
 
@@ -32,12 +33,14 @@ class HelpView(StaticTemplateView):
 
 @login_required
 def listWords(request, page_number=1):
+    #messages.info(request, u'test message')
     tpl_dict = tasks.words.delay(request.user, request.POST, request.method)
     if tpl_dict.get():
         words_page = tpl_dict.get()["words"]
         num_pages = words_page.num_pages
         page_number = int(page_number)
-        current_page = page_number if page_number in range(1, num_pages + 1) else 1
+        current_page = page_number if page_number in range(1, num_pages + 1) \
+                                   else 1
         words = words_page.page(current_page).object_list
 
         user = request.user

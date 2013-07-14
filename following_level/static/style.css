@@ -16,8 +16,18 @@ div.container-fluid {
 }
 
 .badge-mini {
-    float: left;
+    position: relative;
+    left: 0px;
+    top: 2px;
     font-size: 11px;
-    padding: 1px 4px 1px;
-    background-color: rgba(128, 173, 172, 0.63);
+    background-color: rgba(247, 123, 106, 0.7);
+    z-index: 10000;
+}
+
+.badge-mini a {
+    color: white;
+}
+
+.hide {
+    display: none;
 }

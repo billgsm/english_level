@@ -8,13 +8,18 @@ class WordForm(forms.Form):
     """Word fields"""
 
     word = forms.CharField(max_length=50,
-        widget=forms.TextInput(attrs={'placeholder': 'The word', 'x-webkit-speech': True}))
+        widget=forms.TextInput(attrs={'placeholder': 'The word',
+                                      'x-webkit-speech': True,
+                                      'required': "true"}))
     definition = forms.CharField(max_length=500,
-        widget=forms.TextInput(attrs={'placeholder': 'Definition'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Definition',
+                                      'required': "true"}))
     user_def = forms.CharField(max_length=500,
-        widget=forms.TextInput(attrs={'placeholder': 'My definition'}))
+        widget=forms.TextInput(attrs={'placeholder': 'My definition',
+                                      'required': "true"}))
     word_ref = forms.CharField(max_length=500,
-        widget=forms.TextInput(attrs={'placeholder': 'The source'}))
+        widget=forms.TextInput(attrs={'placeholder': 'The source',
+                                      'required': "true"}))
     #definition = forms.CharField(widget=forms.Textarea(attrs={'class': 'input-xlarge', 'rows': '8', 'placeholder': 'definitions, examples ...'}))
     #Should figure out why clean_word doesn't work and show up a syntax error o_O
     def clean(self):
@@ -29,14 +34,24 @@ class RegisterForm(forms.Form):
     """Registration fields"""
 
     username = forms.CharField(max_length=40,
-                            widget=forms.TextInput(attrs={'placeholder': 'login'}))
-    password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
-    re_password = forms.CharField(max_length=100, widget=forms.PasswordInput(attrs={'placeholder': '*********'}))
+                   widget=forms.TextInput(attrs={'placeholder': 'login',
+                                                 'required': "true"}))
+    password = forms.CharField(max_length=100,
+                   widget=forms.PasswordInput(attrs={'placeholder': '*********',
+                                                     'required': "true"}))
+    re_password = forms.CharField(max_length=100,
+                      widget=forms.PasswordInput(attrs={'placeholder': '*********',
+                                                        'required': "true"}))
     email = forms.EmailField(max_length=100,
-                            widget=forms.TextInput(attrs={'placeholder': 'email'}))
+            widget=forms.TextInput(attrs={'placeholder': 'email',
+                                          'required': "true"}))
 
 
 class LoginForm(forms.Form):
     """Login fields"""
-    username = forms.CharField(label="Login", max_length=30)
-    password = forms.CharField(label="Password", widget=forms.PasswordInput)
+    username = forms.CharField(label="Login", max_length=30,
+                   widget=forms.TextInput(attrs={'placeholder': 'login',
+                                                 'required': "true"}))
+    password = forms.CharField(label="Password",
+                   widget=forms.PasswordInput(attrs={'placeholder': '*********',
+                                                     'required': "true"}))
