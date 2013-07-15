@@ -8,9 +8,13 @@ class WordForm(forms.Form):
     """Word fields"""
 
     word = forms.CharField(max_length=50,
-        widget=forms.TextInput(attrs={'placeholder': 'The word',
+        widget=forms.TextInput(attrs={'id': 'put_word',
+                                      'placeholder': 'The word',
                                       'x-webkit-speech': True,
-                                      'required': "true"}))
+                                      'required': "true",
+                                      'data-provide': 'typeahead',
+                                      'autocomplete': "off",
+                                      }))
     definition = forms.CharField(max_length=500,
         widget=forms.TextInput(attrs={'placeholder': 'Definition',
                                       'required': "true"}))

@@ -1,4 +1,8 @@
 jQuery(function($) {
+
+  // Autocompletion
+  $('#put_word').typeahead({source: MyGlobal.words});
+
   // Table sortable setup
   $("table#sortTable").tablesorter({ sortList: [[1,0]] });
   // Modal setup
@@ -52,6 +56,7 @@ jQuery(function($) {
         placement: 'bottom'
     }
   };
+    //console.log(MyGlobal.js_words);
   $('#pagination').bootstrapPaginator(options);
   // Button loading
   $('#load-btn').click(function () {

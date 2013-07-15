@@ -86,8 +86,8 @@
                     <th class="yellow">Definition</th>
                 </thead>
                 <tbody>
-                {% for word in words %}
-                    <tr><td>{{ word.word }}:</td><td>{{ word.definition|truncatechars:20 }}</td></tr>
+                {% for word, definition in words.items %}
+                    <tr><td>{{ word }}:</td><td>{{ definition|truncatechars:20 }}</td></tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -123,6 +123,7 @@
     var MyGlobal = {
         num_pages: {{ num_pages }},
         current_page: {{ current_page }},
+        words: {{ word_keys|safe }},
     };
 </script>
 <script src="http://code.jquery.com/jquery.js"></script>

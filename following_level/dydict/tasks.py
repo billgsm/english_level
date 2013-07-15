@@ -15,6 +15,7 @@ def words(user, post, methode):
         except DoesNotExist:
             pass
         words = Paginator(internaute.dictionary.all(), 5, 3, True)
+        word_keys = Dict.objects.values('word').distinct()
 
     if methode == 'POST':
         word_form = WordForm(post)
@@ -39,7 +40,8 @@ def words(user, post, methode):
         'user': user,
         'word_form': word_form,
         'words': words,
-        'word_saved': word_saved}
+        'word_saved': word_saved,
+        'word_keys': word_keys}
 
     if word_saved:
         word_args['word'] = word

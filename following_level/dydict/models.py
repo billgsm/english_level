@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Dict(models.Model):
-  word = models.CharField(max_length=50)
+  word = models.CharField(db_index=True, max_length=50)
   definition = models.TextField()
   user_def= models.TextField()
   word_ref = models.TextField()
