@@ -14,7 +14,7 @@ from django.contrib import messages
 
 from dydict.models import Internaute
 from dydict.forms import *
-import tasks
+import get_words
 
 
 class StaticTemplateView(TemplateView):
@@ -34,33 +34,30 @@ class HelpView(StaticTemplateView):
 @login_required
 def listWords(request, page_number=1):
     #messages.info(request, u'test message')
-    tpl_dict = tasks.words.delay(request.user, request.POST, request.method)
-    if tpl_dict.get():
-        words_page = tpl_dict.get()["words"]
-        num_pages = words_page.num_pages
-        page_number = int(page_number)
-        current_page = page_number if page_number in range(1, num_pages + 1) \
-                                   else 1
-        words = {word.word: word.definition for word in \
-                    words_page.page(current_page).object_list}
+    tpl_dict = get_words.words(request.user, request.POST, request.method)
+    words_page = tpl_dict["words"]
+    num_pages = words_page.num_pages
+    page_number = int(page_number)
+    current_page = page_number if page_number in range(1, num_pages + 1) \
+                               else 1
+    words = {word.word: word.definition for word in \
+                words_page.page(current_page).object_list}
+    user = request.user
+    word_form = tpl_dict["word_form"]
+    word_saved = tpl_dict["word_saved"]
+    word_keys = [x['word'].encode('ascii', 'ignore') for x in tpl_dict["word_keys"]]
+    tpl_vars = {'user': user,
+                'num_pages': words_page.num_pages,
+                'current_page': current_page,
+                'word_form': word_form,
+                'words': words,
+                'word_keys': word_keys,
+                'word_saved': word_saved,}
+    if word_saved:
+        tpl_vars['word'] = tpl_dict["word"]
 
-        user = request.user
-        word_form = tpl_dict.get()["word_form"]
-        word_saved = tpl_dict.get()["word_saved"]
-        word_keys = [x['word'].encode('ascii', 'ignore') for x in tpl_dict.get()["word_keys"]]
-        tpl_vars = {'user': user,
-                    'num_pages': words_page.num_pages,
-                    'current_page': current_page,
-                    'word_form': word_form,
-                    'words': words,
-                    'word_keys': word_keys,
-                    'word_saved': word_saved,}
-
-        if word_saved:
-            tpl_vars['word'] = tpl_dict.get()["word"]
-
-        return render(request, 'dydict/list_words.html',
-                      tpl_vars)
+    return render(request, 'dydict/list_words.html',
+                  tpl_vars)
 
 def createUser(request):
     error = False

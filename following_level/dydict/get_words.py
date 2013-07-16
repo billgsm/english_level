@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from celery import task
 from django.utils.encoding import smart_unicode, smart_str
 from django.core.paginator import Paginator
 
 from dydict.models import *
 from dydict.forms import *
 
-@task()
 def words(user, post, methode):
     if user.is_authenticated():
         word_saved = False
