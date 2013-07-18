@@ -1,7 +1,55 @@
 jQuery(function($) {
 
+  // take into account user's preferences on displayed words
+  $('li.delete_word').click(function () {
+    var current_delete = $(this);
+    rm_word = $.trim(current_delete.parent().parent().parent().prev().text())
+    bootbox.confirm('Removing this word "'+rm_word+'", are you sure ?', 'No', 'Yes, I\'m sure', function(result) {
+      if (result) {
+        $.ajax('/dictionary/remove_words/',
+        {
+          type: 'POST',
+  //timeout: 3000,
+          data: {
+            'word_id': $.trim(current_delete.parent().parent().parent().prev().prev().text()),
+            'word': rm_word,
+          },
+          dataType: 'text',
+          headers: {
+            'X-CSRFToken': $.trim($.cookie('csrftoken')),
+          },
+          success: function(data) {
+            current_delete.parent().parent().parent().parent().remove();
+            console.log(data);
+          },
+          error: function() {
+            console.log($(this).text());
+          }
+        });
+      }
+    });
+  });
+
   // Autocompletion
   $('#put_word').typeahead({source: MyGlobal.words});
+
+  // Visibility of the settings button over each word
+  //var can_hide = false;
+  //var can_display = true;
+  //$('body').click(function(){console.log('c_h: '+can_hide+'|c_d: '+can_display)});
+  $('table#sortTable tbody tr').hover(function () {
+      //if ( can_display ) {
+          $(this).find('.word_settings').removeClass('non_visible');
+      //}
+      //$(this).find('.word_settings').click(function () {
+      //    console.log('here');
+      //});
+  },
+  function () {
+      //if ( can_hide ) {
+          $(this).find('.word_settings').addClass('non_visible');
+      //}
+  });
 
   // Table sortable setup
   $("table#sortTable").tablesorter({ sortList: [[1,0]] });
