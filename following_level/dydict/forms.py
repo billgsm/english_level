@@ -28,7 +28,7 @@ class WordForm(forms.Form):
     def clean(self):
         cleaned_data = super(WordForm, self).clean()
         if not cleaned_data.get('word') or not cleaned_data.get('definition'):
-            msg_word = u'You should enter a word with no white space'
+            msg_word = u'You should fill all these fields'
             self._errors['word'] = self.error_class([msg_word])
         return cleaned_data
 

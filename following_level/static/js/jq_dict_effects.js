@@ -19,8 +19,10 @@ jQuery(function($) {
             'X-CSRFToken': $.trim($.cookie('csrftoken')),
           },
           success: function(data) {
+            // Remove all word's tracks and update autocompletion source
             current_delete.parent().parent().parent().parent().remove();
-            console.log(data);
+            MyGlobal.words.splice(MyGlobal.words.indexOf(rm_word), 1);
+            $('#put_word').typeahead({source: MyGlobal.words});
           },
           error: function() {
             console.log($(this).text());
