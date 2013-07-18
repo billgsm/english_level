@@ -9,9 +9,8 @@ jQuery(function($) {
         $.ajax('/dictionary/remove_words/',
         {
           type: 'POST',
-  //timeout: 3000,
+          //timeout: 3000,
           data: {
-            'word_id': $.trim(current_delete.parent().parent().parent().prev().prev().text()),
             'word': rm_word,
           },
           dataType: 'text',
@@ -22,6 +21,37 @@ jQuery(function($) {
             // Remove all word's tracks and update autocompletion source
             current_delete.parent().parent().parent().parent().remove();
             MyGlobal.words.splice(MyGlobal.words.indexOf(rm_word), 1);
+            $('#put_word').typeahead({source: MyGlobal.words});
+          },
+          error: function() {
+            console.log($(this).text());
+          }
+        });
+      }
+    });
+  });
+  // User may want to hide some words because
+  // he doesn't need to review them anymore
+  $('li.hide_word').click(function () {
+    var current_delete = $(this);
+    hide_word = $.trim(current_delete.parent().parent().parent().prev().text())
+    bootbox.confirm('Hide this word "'+hide_word+'", are you sure ?', 'No', 'Yes, I\'m sure', function(result) {
+      if (result) {
+        $.ajax('/dictionary/hide_words/',
+        {
+          type: 'POST',
+  //timeout: 3000,
+          data: {
+            'word': hide_word,
+          },
+          dataType: 'text',
+          headers: {
+            'X-CSRFToken': $.trim($.cookie('csrftoken')),
+          },
+          success: function(data) {
+            // Remove all word's tracks and update autocompletion source
+            current_delete.parent().parent().parent().parent().remove();
+            MyGlobal.words.splice(MyGlobal.words.indexOf(hide_word), 1);
             $('#put_word').typeahead({source: MyGlobal.words});
           },
           error: function() {

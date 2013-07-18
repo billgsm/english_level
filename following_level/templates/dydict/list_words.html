@@ -89,7 +89,7 @@
                 <tbody>
                 {% for word in words %}
                 <tr>
-                    <td>{{ word.id }}</td>
+                    <td class="word_counter">{{ forloop.counter|add:word_index }}</td>
                     <td>{{ word.word }}</td>
                     <td>{{ word.definition|truncatechars:20 }}
                         <div class="btn-group pull-right word_settings non_visible">

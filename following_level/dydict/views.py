@@ -42,6 +42,9 @@ def listWords(request, page_number=1):
     page_number = int(page_number)
     current_page = page_number if page_number in range(1, num_pages + 1) \
                                else 1
+    word_index = (current_page - 1) * 5
+    page_list = words_page.page(current_page).object_list
+    page_list = [ w for w in page_list if w.rank != 0 ]
     word_form = tpl_dict.get()["word_form"]
     word_saved = tpl_dict.get()["word_saved"]
     word_keys = [ x['word'].encode('ascii', 'ignore') for x in tpl_dict.get()["word_keys"] ]
@@ -49,8 +52,9 @@ def listWords(request, page_number=1):
                 'num_pages': words_page.num_pages,
                 'current_page': current_page,
                 'word_form': word_form,
-                'words': words_page.page(current_page).object_list,
+                'words': page_list ,
                 'word_keys': word_keys,
+                'word_index': word_index,
                 'word_saved': word_saved,}
 
     if word_saved:
