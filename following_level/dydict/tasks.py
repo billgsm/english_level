@@ -10,7 +10,7 @@ from dydict.forms import *
 def words(user, post, methode):
     if user.user.is_authenticated():
       word_saved = False
-      words = Paginator(Dict.objects.filter(internaute=user), 5, 3, True)
+      words = Paginator(Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')[:50], 5, 3, True)
       word_keys = Dict.objects.values('word').distinct()
 
       if methode == 'POST':

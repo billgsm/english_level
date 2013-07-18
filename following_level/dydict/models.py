@@ -9,7 +9,7 @@ class Internaute(models.Model):
                                      auto_now=True,
                                      verbose_name="creation date")
 
-  def __unicode(self):
+  def __unicode__(self):
     return u"%s" % self.user
 
 
@@ -25,5 +25,5 @@ class Dict(models.Model):
                                      verbose_name="creation date")
   internaute = models.ForeignKey(Internaute)
 
-  def __unicode(self):
+  def __unicode__(self):
     return u"%s" % self.word
