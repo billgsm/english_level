@@ -31,3 +31,7 @@ div.container-fluid {
 .hide {
     display: none;
 }
+
+.non_visible {
+    visibility: hidden;
+}
