@@ -95,11 +95,11 @@
                         <div class="btn-group pull-right word_settings non_visible">
                           <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                           <ul class="dropdown-menu">
-                              <li class="edit_word"><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                              <li class="hide_word"><a href="#"><i class="icon-eye-open"></i> Hide</a></li>
-                              <li class="delete_word"><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                              <li class="divider"></li>
-                              <li class="get_help"><a href="#"><i class="icon-question-sign"></i> Help</a></li>
+                            <li class="edit_word"><a href="/dictionary/edit_words/{{ word.word|slugify }}"><i class="icon-pencil"></i> Edit</a></li>
+                            <li class="hide_word"><a href="#"><i class="icon-eye-open"></i> Hide</a></li>
+                            <li class="delete_word"><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                            <li class="divider"></li>
+                            <li class="get_help"><a href="#"><i class="icon-question-sign"></i> Help</a></li>
                           </ul>
                         </div>
                     </td>
@@ -136,7 +136,7 @@
 </div>-->
     {% endblock %}
 </body>
-{% block scripts %}
+{% block tpl_to_js %}
 <script>
     var MyGlobal = {
         num_pages: {{ num_pages }},
@@ -144,6 +144,8 @@
         words: {{ word_keys|safe }},
     };
 </script>
+{% endblock %}
+{% block scripts %}
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap-paginator.min.js' %}"></script>

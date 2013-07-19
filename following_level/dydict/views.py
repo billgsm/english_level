@@ -18,17 +18,17 @@ import tasks
 
 
 class StaticTemplateView(TemplateView):
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(StaticTemplateView, self).dispatch(*args, **kwargs)
+  @method_decorator(login_required)
+  def dispatch(self, *args, **kwargs):
+    return super(StaticTemplateView, self).dispatch(*args, **kwargs)
 
 
 class AboutView(StaticTemplateView):
-    template_name = 'dydict/about.html'
+  template_name = 'dydict/about.html'
 
 
 class HelpView(StaticTemplateView):
-    template_name = 'dydict/help.html'
+  template_name = 'dydict/help.html'
 
 
 @login_required
@@ -48,20 +48,20 @@ def listWords(request, page_number=1):
     word_form = tpl_dict.get()["word_form"]
     word_saved = tpl_dict.get()["word_saved"]
     word_keys = [ x['word'].encode('ascii', 'ignore') for x in tpl_dict.get()["word_keys"] ]
+
     tpl_vars = {'user': request.user,
                 'num_pages': words_page.num_pages,
                 'current_page': current_page,
                 'word_form': word_form,
-                'words': page_list ,
+                'words': page_list,
                 'word_keys': word_keys,
                 'word_index': word_index,
-                'word_saved': word_saved,}
+                'word_saved': word_saved}
 
     if word_saved:
       tpl_vars['word'] = tpl_dict.get()["word"]
 
-    return render(request, 'dydict/list_words.html',
-                  tpl_vars)
+    return render(request, 'dydict/list_words.html', tpl_vars)
 
 def createUser(request):
   error = False

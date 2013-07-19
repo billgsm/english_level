@@ -30,6 +30,7 @@ jQuery(function($) {
       }
     });
   });
+
   // User may want to hide some words because
   // he doesn't need to review them anymore
   $('li.hide_word').click(function () {
@@ -63,7 +64,9 @@ jQuery(function($) {
   });
 
   // Autocompletion
-  $('#put_word').typeahead({source: MyGlobal.words});
+  if ( typeof(MyGlobal) != 'undefined') {
+    $('#put_word').typeahead({source: MyGlobal.words});
+  }
 
   // Visibility of the settings button over each word
   //var can_hide = false;
@@ -97,47 +100,49 @@ jQuery(function($) {
   })
 
   // pagination setup
-  var options = {
-    currentPage: MyGlobal.current_page,
-    totalPages: MyGlobal.num_pages,
-    numberOfPages: 5,
-    pageUrl: function(type, page, current){
-      // Disable the current button
-      if( page === current) {
-          return;
-      } else {
-          return "http://localhost:8000/dictionary/show_words/"+page+"/";
-      }
-    },
-    onPageChanged: function(e, oldPage, newPage){
-      $('#page-url-alert-content').text(newPage+"/"+options.totalPages/*+'    previous page: '+oldPage*/);
-    },
-    useBootstrapTooltip: true,
-    tooltipTitles: function (type, page, current) {
-        //console.log('type: '+type+'| page: '+page+'| current: '+current);
-        switch (type) {
-        case "first":
-            return "Go To First Page <i class='icon-fast-backward icon-white'></i>";
-        case "prev":
-            return "Go To Previous Page <i class='icon-backward icon-white'></i>";
-        case "next":
-            return "Go To Next Page <i class='icon-forward icon-white'></i>";
-        case "last":
-            return "Go To Last Page <i class='icon-fast-forward icon-white'></i>";
-        case "page":
-            if (page === current) {
-                return;
-            }
-            return "Go to page " + page + " <i class='icon-file icon-white'></i>";
+  if ( typeof(MyGlobal) != 'undefined') {
+    var options = {
+      currentPage: MyGlobal.current_page,
+      totalPages: MyGlobal.num_pages,
+      numberOfPages: 5,
+      pageUrl: function(type, page, current){
+        // Disable the current button
+        if( page === current) {
+            return;
+        } else {
+            return "http://localhost:8000/dictionary/show_words/"+page+"/";
         }
-    },
-    bootstrapTooltipOptions: {
-        html: true,
-        placement: 'bottom'
-    }
-  };
+      },
+      onPageChanged: function(e, oldPage, newPage){
+        $('#page-url-alert-content').text(newPage+"/"+options.totalPages/*+'    previous page: '+oldPage*/);
+      },
+      useBootstrapTooltip: true,
+      tooltipTitles: function (type, page, current) {
+          //console.log('type: '+type+'| page: '+page+'| current: '+current);
+          switch (type) {
+          case "first":
+              return "Go To First Page <i class='icon-fast-backward icon-white'></i>";
+          case "prev":
+              return "Go To Previous Page <i class='icon-backward icon-white'></i>";
+          case "next":
+              return "Go To Next Page <i class='icon-forward icon-white'></i>";
+          case "last":
+              return "Go To Last Page <i class='icon-fast-forward icon-white'></i>";
+          case "page":
+              if (page === current) {
+                  return;
+              }
+              return "Go to page " + page + " <i class='icon-file icon-white'></i>";
+          }
+      },
+      bootstrapTooltipOptions: {
+          html: true,
+          placement: 'bottom'
+      }
+    };
     //console.log(MyGlobal.js_words);
-  $('#pagination').bootstrapPaginator(options);
+    $('#pagination').bootstrapPaginator(options);
+  }
   // Button loading
   $('#load-btn').click(function () {
     var btn = $(this)
