@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from dydict.models import Dict, Internaute
-from dydict.forms import WordForm
+from manage_word.forms import WordForm
 
 @login_required
 def removeWords(request):
