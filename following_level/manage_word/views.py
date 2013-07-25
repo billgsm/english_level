@@ -14,7 +14,7 @@ def removeWords(request):
       dict2_remove = Dict.objects.get(
           internaute=Internaute.objects.get(user=request.user),
           word=request.POST['word'])
-    except Dict.DoesNotExist:
+    except:#Dict.DoesNotExist
       pass
     else:
       dict2_remove.delete()
@@ -42,25 +42,25 @@ def editWords(request, word=None):
       dict2_edit = Dict.objects.get(
           internaute=Internaute.objects.get(user=request.user),
           word=word_form.cleaned_data['word'])
-      dict2_edit.word = word_form.cleaned_data['word']
       dict2_edit.definition = word_form.cleaned_data['definition']
       dict2_edit.user_def = word_form.cleaned_data['user_def']
       dict2_edit.word_ref = word_form.cleaned_data['word_ref']
       dict2_edit.save()
       return HttpResponseRedirect('/dictionary/show_words/')
+  try:
+    word = word.replace('-', ' ')
+    dict2_edit = Dict.objects.get(
+        internaute=Internaute.objects.get(user=request.user),
+        word=word)
+  except (Dict.DoesNotExist):
+    pass
+  except AttributeError:
+    return HttpResponseRedirect('/dictionary/show_words/')
   else:
-    try:
-      word = word.replace('-', ' ')
-      dict2_edit = Dict.objects.get(
-          internaute=Internaute.objects.get(user=request.user),
-          word=word)
-    except Dict.DoesNotExist:
-      pass
-    else:
-      word_form = WordForm({'word': dict2_edit.word,
-                          'definition': dict2_edit.definition,
-                          'user_def': dict2_edit.user_def,
-                          'word_ref': dict2_edit.word_ref})
+    word_form = WordForm({'word': dict2_edit.word,
+                        'definition': dict2_edit.definition,
+                        'user_def': dict2_edit.user_def,
+                        'word_ref': dict2_edit.word_ref})
 
-      return render(request, 'manage_word/edit_word.html',
-                      {'word_form': word_form})
+    return render(request, 'manage_word/edit_word.html',
+                           {'word_form': word_form})

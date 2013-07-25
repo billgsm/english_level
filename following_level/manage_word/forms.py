@@ -9,7 +9,7 @@ class WordForm(forms.Form):
                                       'placeholder': 'The word',
                                       'x-webkit-speech': True,
                                       'required': "true",
-                                      'disabled': "true",
+                                      'readonly': "true",
                                       'autocomplete': "off",
                                       'background-color': 'rgba(72,72,72, 0.4);',
                                       }))

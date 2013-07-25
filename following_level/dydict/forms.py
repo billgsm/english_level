@@ -1,12 +1,10 @@
 #-*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth.models import User
 
 from dydict.models import Internaute, Dict
 
 class WordForm(forms.Form):
     """Word fields"""
-
     word = forms.CharField(max_length=50,
         widget=forms.TextInput(attrs={'id': 'put_word',
                                       'placeholder': 'The word',
@@ -27,14 +25,16 @@ class WordForm(forms.Form):
     #Should figure out why clean_word doesn't work and show up a syntax error o_O
     def clean(self):
         cleaned_data = super(WordForm, self).clean()
-        if not cleaned_data.get('word') or not cleaned_data.get('definition'):
+        if not cleaned_data.get('word') or \
+           not cleaned_data.get('definition') or \
+           not cleaned_data.get('user_def') or \
+           not cleaned_data.get('word_ref'):
             msg_word = u'You should fill all these fields'
             self._errors['word'] = self.error_class([msg_word])
         return cleaned_data
 
 class RegisterForm(forms.Form):
     """Registration fields"""
-
     username = forms.CharField(max_length=40,
                    widget=forms.TextInput(attrs={'placeholder': 'login',
                                                  'required': "true"}))

@@ -11,10 +11,10 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 from dydict.models import Internaute
 from dydict.forms import *
-import tasks
 
 
 class StaticTemplateView(TemplateView):
@@ -34,34 +34,52 @@ class HelpView(StaticTemplateView):
 @login_required
 def listWords(request, page_number=1):
   #messages.info(request, u'test message')
+  word_saved = False
   user = Internaute.objects.get(user=request.user)
-  tpl_dict = tasks.words.delay(user, request.POST, request.method)
-  if tpl_dict.get():
-    words_page = tpl_dict.get()["words"]
-    num_pages = words_page.num_pages
-    page_number = int(page_number)
-    current_page = page_number if page_number in range(1, num_pages + 1) \
-                               else 1
-    word_index = (current_page - 1) * 5
-    page_list = words_page.page(current_page).object_list
-    page_list = [ w for w in page_list if w.rank != 0 ]
-    word_form = tpl_dict.get()["word_form"]
-    word_saved = tpl_dict.get()["word_saved"]
-    word_keys = [ x['word'].encode('ascii', 'ignore') for x in tpl_dict.get()["word_keys"] ]
+  words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
+  words_page = Paginator(words[:50], 5, 3, True)
+  word_keys = Dict.objects.values('word').distinct()
 
-    tpl_vars = {'user': request.user,
-                'num_pages': words_page.num_pages,
-                'current_page': current_page,
-                'word_form': word_form,
-                'words': page_list,
-                'word_keys': word_keys,
-                'word_index': word_index,
-                'word_saved': word_saved}
+  if request.method == 'POST':
+    word_form = WordForm(request.POST)
+    if word_form.is_valid():
+      word = word_form.cleaned_data['word']
+      definition = word_form.cleaned_data['definition']
+      user_def = word_form.cleaned_data['user_def']
+      word_ref = word_form.cleaned_data['word_ref']
+      new_word = Dict(word=word, definition=definition, user_def=user_def,
+                      word_ref=word_ref, internaute=user)
+      word_saved = True
+      new_word.save()
+      # Clear fields
+      return HttpResponseRedirect('/dictionary/show_words/')
+  else:
+    word_form = WordForm()
 
-    if word_saved:
-      tpl_vars['word'] = tpl_dict.get()["word"]
+  num_pages = words_page.num_pages
+  page_number = int(page_number)
+  current_page = page_number if page_number in range(1, num_pages + 1) \
+                             else 1
+  word_index = (current_page - 1) * 5
+  page_list = words_page.page(current_page).object_list
+  page_list = [ w for w in page_list if w.rank != 0 ]
+  word_form = word_form
+  word_saved = word_saved
+  word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
 
-    return render(request, 'dydict/list_words.html', tpl_vars)
+  tpl_vars = {'user': request.user,
+              'num_pages': words_page.num_pages,
+              'current_page': current_page,
+              'word_form': word_form,
+              'words': page_list,
+              'word_keys': word_keys,
+              'word_index': word_index,
+              'word_saved': word_saved}
+
+  if word_saved:
+    tpl_vars['word'] = word
+
+  return render(request, 'dydict/list_words.html', tpl_vars)
 
 def createUser(request):
   error = False
