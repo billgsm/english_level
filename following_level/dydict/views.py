@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from random import randint
+import logging
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -16,6 +16,7 @@ from django.core.paginator import Paginator
 from dydict.models import Internaute
 from dydict.forms import *
 
+logger = logging.getLogger(__name__)
 
 class StaticTemplateView(TemplateView):
   @method_decorator(login_required)
@@ -34,9 +35,15 @@ class HelpView(StaticTemplateView):
 @login_required
 def listWords(request, page_number=1):
   #messages.info(request, u'test message')
+  logger.info('hello')
   word_saved = False
-  user = Internaute.objects.get(user=request.user)
+  try:
+    user = Internaute.objects.get(user=request.user)
+  except(MultipleObjectsReturned, DoesNotExist):
+    logger.critical('{0} is not found'.format(request.user.username))
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
+  if not words:
+    logger.info('{0} has no word in his dictionary!'.format(user.username))
   words_page = Paginator(words[:50], 5, 3, True)
   word_keys = Dict.objects.values('word').distinct()
 
