@@ -7,6 +7,9 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+import os
+PROJECT_ROOT = os.path.join(os.path.dirname(__file__), '..')
+
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -68,9 +71,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, 'static/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -107,6 +108,7 @@ ROOT_URLCONF = 'following_level.urls'
 WSGI_APPLICATION = 'following_level.wsgi.application'
 
 TEMPLATE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'templates'),
 )
 
 INSTALLED_APPS = (
@@ -116,6 +118,11 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dydict',
+    'djcelery',
+    'south',
+    'manage_word',
+    'loggers',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -129,7 +136,15 @@ INSTALLED_APPS = (
 # more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s:%(levelname)s:%(module)s:%(message)s'
+        },
+        'simple': {
+            'format': '%(asctime)s:%(levelname)s:%(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -140,13 +155,58 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'fileError': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logconfig.log',
+            'formatter': 'verbose',
+        },
+        'mysqlError': {
+            'level': 'DEBUG',
+            'class': 'loggers.handlers.HandlerDB',
+            'formatter': 'verbose',
+        },
+        'custom': {
+            '()': 'loggers.handlers.HandlerDB',
+            #'alternate': 'cfg://handlers.mail_admins'
+        },
     },
     'loggers': {
-        'django.request': {
+        'django': {
             'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'dydict': {
+            'handlers': ['mail_admins', 'mysqlError', 'fileError'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     }
 }
+
+LOGIN_URL = '/dictionary/login/'
+
+# Use files as cache memory as data exchange is not considerable
+#CACHES = {
+    #'default': {
+        #'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        #'LOCATION': '/var/tmp/django_cache',
+    #}
+#}
+
+BROKER_URL = 'redis://localhost:6379/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+#BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+
+# Celery
+import djcelery
+djcelery.setup_loader()
+
+# Email configuration
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+#DEFAULT_CHARSET = 'utf-8'
