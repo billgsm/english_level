@@ -34,18 +34,25 @@ class HelpView(StaticTemplateView):
 
 @login_required
 def listWords(request, page_number=1):
+  """
+  Send information to template:
+  * page number
+  * word to display
+  * word's indexes
+  * all words for autocompletion purpose
+  * a word was saved
+  """
   #messages.info(request, u'test message')
-  logger.info('hello')
   word_saved = False
   try:
     user = Internaute.objects.get(user=request.user)
   except(MultipleObjectsReturned, DoesNotExist):
     logger.critical('{0} is not found'.format(request.user.username))
+    # these are impossible cases
+    return HttpResponseRedirect('/dictionary/show_words/')
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
-  if not words:
-    logger.info('{0} has no word in his dictionary!'.format(user.username))
   words_page = Paginator(words[:50], 5, 3, True)
-  word_keys = Dict.objects.values('word').distinct()
+  word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
 
   if request.method == 'POST':
     word_form = WordForm(request.POST)
@@ -70,6 +77,8 @@ def listWords(request, page_number=1):
   word_index = (current_page - 1) * 5
   page_list = words_page.page(current_page).object_list
   page_list = [ w for w in page_list if w.rank != 0 ]
+  if not page_list:
+    logger.warning('<{0}> has no word to display!'.format(user.user.username))
   word_form = word_form
   word_saved = word_saved
   word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]

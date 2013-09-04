@@ -3,8 +3,8 @@ from django.test import TestCase
 
 
 class SimpleTest(TestCase):
-    def test_basic_addition(self):
+    def test_dydict(self):
         """
-        Tests that 1 + 1 always equals 2.
+        check dydict views
         """
         self.assertEqual(1 + 1, 2)
