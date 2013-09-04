@@ -14,7 +14,7 @@ class HandlerDB(logging.Handler):
     # datetime.strptime(datetime.fromtimestamp(record.created).strftime('%Y-%m-%d %H:%M:%S'), "%Y-%m-%d %H:%M:%S")
     created = datetime.fromtimestamp(record.created).strftime('%Y-%m-%d %H:%M:%S.%f')
     full_debug = ':'.join((created, record.levelname,
-                           record.filename, str(record.lineno),
+                           record.name, str(record.lineno),
                            record.msg))
     debug_data = DebugData(msg_level=record.levelname,
                            msg=record.msg,
