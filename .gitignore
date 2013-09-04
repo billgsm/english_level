@@ -1,6 +1,6 @@
 *.py[cod]
 *.pyc
-settings.py
+local_settings.py
 *.swp
 *.un~
 *.swo
