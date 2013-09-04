@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist as DoesNotExist, MultipleObjectsReturned
 from django.utils.encoding import smart_unicode
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
