@@ -10,4 +10,4 @@ class DebugData(models.Model):
                                      verbose_name="creation date")
 
   def __unicode__(self):
-    return u"%s" % self.info_type
+    return u"%s" % self.msg_level

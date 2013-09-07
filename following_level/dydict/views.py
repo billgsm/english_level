@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator
 
-from dydict.models import Internaute
+from dydict.models import Internaute, Dict
 from dydict.forms import *
 
 logger = logging.getLogger(__name__)
@@ -56,7 +56,6 @@ def listWords(request, page_number=1):
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
   words_page = Paginator(words[:50], 5, 3, True)
   word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
-
   if request.method == 'POST':
     word_form = WordForm(request.POST)
     if word_form.is_valid():
@@ -81,7 +80,7 @@ def listWords(request, page_number=1):
   page_list = words_page.page(current_page).object_list
   page_list = [ w for w in page_list if w.rank != 0 ]
   if not page_list:
-    logger.warning('<{0}> has no word to display!'.format(user.user.username))
+    logger.info('<{0}> has no word to display!'.format(user.user.username))
   word_form = word_form
   word_saved = word_saved
   word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
@@ -109,14 +108,17 @@ def createUser(request):
       email = registerform.cleaned_data['email']
       password = registerform.cleaned_data['password']
       user = User.objects.create_user(username=username,
-                  email=email,
-                  password=password)
+                                      email=email,
+                                      password=password)
 
       internaute = Internaute(user=user)
       internaute.save()
       user = authenticate(username=username, password=password)
       login(request, user)
       return HttpResponseRedirect('/dictionary/show_words/')
+    else:
+      error = True
+      registerform = RegisterForm()
   else:
     registerform = RegisterForm()
   return render(request, 'dydict/register.html', locals())

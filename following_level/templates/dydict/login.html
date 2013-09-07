@@ -2,89 +2,57 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>A word per day</title>
+    <title>Login to MyDict</title>
 
     <!-- Le styles -->
     {% load static %}
-    <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
     <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/x-icon" />
 </head>
 <body>
-  <div class="container">
-      <div class="hero-unit">
-      {% load cache %}
-      {% cache 500 carrousel %}
-        <!--carroussel-->
-        <div id="myCarousel" class="carousel slide" data-interval=4000>
-          <ol class="carousel-indicators">
-            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-            <li data-target="#myCarousel" data-slide-to="1"></li>
-            <li data-target="#myCarousel" data-slide-to="2"></li>
-          </ol>
-          <!-- Carousel items -->
-          <div class="carousel-inner">
-            <div class="active item">
-                <img src="{% static 'images/lorem1.jpg' %}" alt='hello'>
-                <div class="carousel-caption">
-                    <h4>First Thumbnail label</h4>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="{% static 'images/lorem2.jpg' %}" alt='hello'>
-                <div class="carousel-caption">
-                    <h4>First Thumbnail label</h4>
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus.</p>
-                </div>
-            </div>
-            <div class="item">
-                <img src="{% static 'images/lorem3.jpg' %}" alt='hello'>
-                <div class="carousel-caption">
-                    <h4>First Thumbnail label</h4>
-                    <p>Cras justo odio, dapibus ac facilisis in</p>
-                </div>
-            </div>
-          </div>
-          <!-- Carousel nav -->
-          <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-          <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-        </div>
-        <!--carroussel-->
-    {% endcache %}
-    </div><!--hero-unit-->
-    <div class="content">
-      <div class="row">
-        <div class="login-form">
-          <h2>Login</h2>
-          {% if error %}
-          <p><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></p>
-          {% endif %}
-
-          {% if user.is_authenticated %}
-          Vous êtes connecté, {{ user.username }} !
-          {% else %}
-          <form class="well" method="POST" action="{% url "dydict.views.user_login" %}">{% csrf_token %}
-            <fieldset>
-              <p>
-                <table>
-                {{ loginform.as_table }}
-                </table>
-                <a href="{% url "dydict.views.createUser" %}">Sign up</a>
-                <br />
-                <label class="checkbox">
-                    <input type="checkbox"> Remember me
-                </label>
-                <button class="btn btn-primary" type="submit">login</button>
-              </p>
-            </fieldset>
-            </form>
-            {% endif %}
-        </div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="{% url "dydict.views.user_login" %}"><img src="" alt="MyDict logo"></a>
       </div>
     </div>
+  </div>
+  <div class="container">
+    <div id="login_wraper">
+    {% if error %}
+      <p><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></p>
+    {% endif %}
+    {% if user.is_authenticated %}
+      Vous êtes connecté, {{ user.username }} !
+    {% else %}
+      <form class="form-signin" method="POST" action="{% url "dydict.views.user_login" %}">{% csrf_token %}
+        <legend>Sign in to <span class="blue">MyDict</span></legend>
+        <div class="body">
+        {% for input in loginform %}
+          {{ input }}
+        {% endfor %}
+        </div><!-- div.body -->
+        <div class="footer">
+          <label class="checkbox inline">
+              <input type="checkbox" id="inlineCheckbox1" value="remember_me"> Remember me
+          </label>
+          <button class="btn btn-primary" type="submit">Sign in</button>
+        </div> <!-- div.footer -->
+      </form>
+    {% endif %}
+    </div> <!-- div#login_wrapper -->
   </div> <!-- /container -->
+  <footer class="white navbar-fixed-bottom">
+      Don't have an account yet? <a href="{% url "dydict.views.createUser" %}" class="btn btn-black">Register</a>
+  </footer>
 <script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+<script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
   jQuery(function($) {
@@ -94,7 +62,13 @@
       });*/
       $('.carousel').carousel({
         interval: 4000
-      })
+      });
+      $.backstretch([
+        "http://lorempixel.com/output/nature-q-c-804-480-1.jpg",
+        "http://lorempixel.com/output/nature-q-g-804-480-9.jpg",
+        "http://lorempixel.com/output/abstract-q-c-804-480-2.jpg",
+        "http://lorempixel.com/output/abstract-q-c-804-480-8.jpg"
+    ], {duration: 3000, fade: 750});
   });
 </script>
 </body>
