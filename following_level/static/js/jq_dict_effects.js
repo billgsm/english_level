@@ -3,6 +3,7 @@ jQuery(function($) {
   // take into account user's preferences on displayed words
   $('li.delete_word').click(function () {
     var current_delete = $(this);
+    console.log($(this).text());
     rm_word = $.trim(current_delete.parent().parent().parent().prev().text())
     bootbox.confirm('Removing this word "'+rm_word+'", are you sure ?', 'No', 'Yes, I\'m sure', function(result) {
       if (result) {
@@ -110,7 +111,7 @@ jQuery(function($) {
         if( page === current) {
             return;
         } else {
-            return "http://localhost:8000/dictionary/show_words/"+page+"/";
+            return "http://bilousite.alwaysdata.net/dictionary/show_words/"+page+"/";
         }
       },
       onPageChanged: function(e, oldPage, newPage){
@@ -141,7 +142,7 @@ jQuery(function($) {
       }
     };
     //console.log(MyGlobal.js_words);
-    $('#pagination').bootstrapPaginator(options);
+    $('.pagination').bootstrapPaginator(options);
   }
   // Button loading
   $('#load-btn').click(function () {
