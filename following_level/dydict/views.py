@@ -54,7 +54,7 @@ def listWords(request, page_number=1):
     # these are impossible cases
     return HttpResponseRedirect('/dictionary/show_words/')
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
-  words_page = Paginator(words[:50], 5, 3, True)
+  words_page = Paginator(words[:50], 6, 0, True)
   word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
   if request.method == 'POST':
     word_form = WordForm(request.POST)
