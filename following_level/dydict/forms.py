@@ -4,22 +4,26 @@ from django.contrib.auth.models import User
 
 class WordForm(forms.Form):
     """Word fields"""
-    word = forms.CharField(max_length=50,
+    word = forms.CharField(label="", max_length=50,
         widget=forms.TextInput(attrs={'id': 'put_word',
+                                      'class': 'input-block-level',
                                       'placeholder': 'The word',
                                       'x-webkit-speech': True,
                                       'required': "true",
                                       'data-provide': 'typeahead',
                                       'autocomplete': "off",
                                       }))
-    definition = forms.CharField(max_length=500,
+    definition = forms.CharField(label="", max_length=500,
         widget=forms.TextInput(attrs={'placeholder': 'Definition',
+                                      'class': 'input-block-level',
                                       'required': "true"}))
-    user_def = forms.CharField(max_length=500,
+    user_def = forms.CharField(label="", max_length=500,
         widget=forms.TextInput(attrs={'placeholder': 'My definition',
+                                      'class': 'input-block-level',
                                       'required': "true"}))
-    word_ref = forms.CharField(max_length=500,
+    word_ref = forms.CharField(label="", max_length=500,
         widget=forms.TextInput(attrs={'placeholder': 'The source',
+                                      'class': 'input-block-level',
                                       'required': "true"}))
     #Should figure out why clean_word doesn't work and show up a syntax error o_O
     def clean(self):
@@ -36,15 +40,19 @@ class RegisterForm(forms.Form):
     """Registration fields"""
     username = forms.CharField(label="", max_length=40,
                    widget=forms.TextInput(attrs={'placeholder': 'login',
+                                                 'class': 'input-block-level',
                                                  'required': "true"}))
     password = forms.CharField(label="", max_length=100,
                    widget=forms.PasswordInput(attrs={'placeholder': 'password',
+                                                     'class': 'input-block-level',
                                                      'required': "true"}))
     re_password = forms.CharField(label="", max_length=100,
                       widget=forms.PasswordInput(attrs={'placeholder': 're-password',
+                                                        'class': 'input-block-level',
                                                         'required': "true"}))
     email = forms.EmailField(label="", max_length=100,
             widget=forms.TextInput(attrs={'placeholder': 'email',
+                                           'class': 'input-block-level',
                                           'required': "true"}))
     def clean(self):
       cleaned_data = super(RegisterForm, self).clean()
