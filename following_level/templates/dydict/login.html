@@ -46,12 +46,12 @@
         </div> <!-- div.footer -->
       </form>
     {% endif %}
-    </div> <!-- div#login_wrapper -->
+    </div> <!-- div#login_wraper -->
   </div> <!-- /container -->
   <footer class="white navbar-fixed-bottom">
       Don't have an account yet? <a href="{% url "dydict.views.createUser" %}" class="btn btn-black">Register</a>
   </footer>
-<script src="{% static 'js/jquery-1.10.2.min.js' %}"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
@@ -64,10 +64,9 @@
         interval: 4000
       });
       $.backstretch([
-        "http://lorempixel.com/output/nature-q-c-804-480-1.jpg",
-        "http://lorempixel.com/output/nature-q-g-804-480-9.jpg",
-        "http://lorempixel.com/output/abstract-q-c-804-480-2.jpg",
-        "http://lorempixel.com/output/abstract-q-c-804-480-8.jpg"
+        "{% static 'images/abstract1.jpg' %}",
+        "{% static 'images/abstract3.jpg' %}",
+        "{% static 'images/nature2.jpg' %}",
     ], {duration: 3000, fade: 750});
   });
 </script>
