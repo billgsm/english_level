@@ -86,7 +86,7 @@ def listWords(request, page_number=1):
   word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
 
   tpl_vars = {'user': request.user,
-              'num_pages': words_page.num_pages,
+              'num_pages': range(words_page.num_pages),
               'current_page': current_page,
               'word_form': word_form,
               'words': page_list,

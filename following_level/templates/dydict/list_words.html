@@ -26,7 +26,7 @@
         {% endif %}
           <ul class="nav">
             {# <li class="active"><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li> #}
-            <li><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i> Home</a></li>
+            <li class='active'><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i> Home</a></li>
             <li><a href="#contact"><i class="icon-envelope icon-white"></i> Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -39,12 +39,13 @@
                 <!--<li class="divider"></li>
                 <li class="nav-header">Nav header</li>-->
                 <li><a href="{% url "dydict_help" %}"><i class="icon-question-sign"></i> Help</a></li>
+                <li><a href="{% url "dydict.views.user_logout" %}"><i class="icon-off"></i> logout</a></li>
               </ul>
             </li>
           </ul>
-          <form class="navbar-form pull-right" method="POST" action="{% url "dydict.views.user_logout" %}">{% csrf_token %}
+          <!--<form class="navbar-form pull-right" method="POST" action="{% url "dydict.views.user_logout" %}">{% csrf_token %}
             <button type="submit" class="btn btn-custom"><i class="icon-off icon-white"></i> Logout</button>
-          </form>
+          </form>-->
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -54,7 +55,21 @@
     <ul class="nav nav-pills" id="myTab">
       <li class='active'><a href="#words" data-toggle="pill">Words</a></li>
       <li><a href="#research_word" data-toggle="pill">Add</a></li>
+      <li><a href="#practice" data-toggle="pill">Play</a></li>
     </ul>
+    {% if num_pages > 1 %}
+    <div class='row-fluid'>
+      <div class="span12">
+        <form method='GET' action=''>
+          <select class='span1'>
+          {% for page in num_pages %}
+            <option>row{{ page|add:"1" }}</option>
+          {% endfor %}
+          </select>
+        </form>
+      </div>
+    </div>
+    {% endif %}
     <div class="tab-content">
     <!-- ############# Known words ######################### -->
       <div class="tab-pane row-fluid active fade in" id='words'>
@@ -65,7 +80,7 @@
         </div>
         {% endif %}{% endcomment %}
       {% for word in words %}
-        <div class="span2 word_box">
+        <div class="span2 word_box" data-content="{{ word.definition }}">
           <h4> {{ word.word|truncatechars:20 }}</h4>
             <div class="btn-group pull-right word_settings non_visible">
               <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
@@ -100,7 +115,19 @@
           </p>
         </form>
       </div> <!-- research_word -->
+      <div id="practice" class='tab-pane fade'>
+      </div>
     </div> <!-- tab-content -->
+    <div class="row-fluid">
+      <ul class="pager">
+        <li class="previous disabled">
+          <a href="#">&larr; Older</a>
+        </li>
+        <li class="next disabled">
+          <a href="#">Newer &rarr;</a>
+        </li>
+      </ul>
+    </div>
     {% comment %}
     {# {% if num_pages > 1 %} #}
     <div class="row-fluid">
@@ -167,5 +194,8 @@
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
 <script src="{% static 'js/bootbox.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jq_dict_effects.js' %}"></script>
+<script type='text/javascript'>
+  $('div.span2.word_box').popover({placement: 'bottom', trigger: 'click', title: 'Definition'});
+</script>
 {% endblock %}
 </html>
