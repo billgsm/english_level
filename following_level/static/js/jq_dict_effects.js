@@ -152,6 +152,18 @@ jQuery(function($) {
         btn.button('reset')
     }, 1000)
   });
+
+/**********Make focus on the last hitted title in the nav-bar**********/
+$('div.nav-collapse.collapse > ul.nav > li').click(function() {
+  var current_li = this;
+  $(this).parent().children().each(function(index, element) {
+    if(element!==current_li) {
+      $(element).removeClass('active');
+    } else {
+      $(element).addClass('active');
+    }
+  }); });
+
 //// Inputs should get ready to be checked
 //var input = $('input[type="text"]');
 //input.wrap('<div class="control-group" />')
