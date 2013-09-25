@@ -126,6 +126,8 @@ def createUser(request):
 #@cache_page(60 * 15)
 def user_login(request):
   error = False
+  if request.user.is_authenticated():
+    return HttpResponseRedirect('/dictionary/show_words/')
   if request.method == 'POST':
     loginform = LoginForm(request.POST)
     if loginform.is_valid():
