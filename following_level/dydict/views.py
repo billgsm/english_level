@@ -36,7 +36,7 @@ class HelpView(StaticTemplateView):
 
 
 @login_required
-def listWords(request, page_number=1):
+def listWords(request):
   """
   Send information to template:
   * page number
@@ -55,6 +55,8 @@ def listWords(request, page_number=1):
     return HttpResponseRedirect('/dictionary/show_words/')
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
   words_page = Paginator(words[:50], 6, 0, True)
+  num_pages = words_page.num_pages
+  requested_page = 1
   word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
   if request.method == 'POST':
     word_form = WordForm(request.POST)
@@ -72,12 +74,14 @@ def listWords(request, page_number=1):
   else:
     word_form = WordForm()
 
-  num_pages = words_page.num_pages
-  page_number = int(page_number)
-  current_page = page_number if page_number in range(1, num_pages + 1) \
+  if request.method == 'GET':
+    if 'page' in request.GET and request.GET and \
+            int(request.GET['page']) <= num_pages:
+      requested_page = int(request.GET['page'])
+
+  requested_page = requested_page if requested_page in range(1, num_pages + 1) \
                              else 1
-  word_index = (current_page - 1) * 5
-  page_list = words_page.page(current_page).object_list
+  page_list = words_page.page(requested_page).object_list
   page_list = [ w for w in page_list if w.rank != 0 ]
   if not page_list:
     logger.info('<{0}> has no word to display!'.format(user.user.username))
@@ -87,11 +91,10 @@ def listWords(request, page_number=1):
 
   tpl_vars = {'user': request.user,
               'num_pages': range(words_page.num_pages),
-              'current_page': current_page,
+              'current_page': requested_page,
               'word_form': word_form,
               'words': page_list,
               'word_keys': word_keys,
-              'word_index': word_index,
               'word_saved': word_saved}
 
   if word_saved:

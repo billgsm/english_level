@@ -1,5 +1,7 @@
 jQuery(function($) {
-
+  /******************** Useful var ********************/
+  var current_url = $(location).attr('href');
+  /****************************************************/
   // take into account user's preferences on displayed words
   $('li.delete_word').click(function () {
     var current_delete = $(this);
@@ -100,50 +102,83 @@ jQuery(function($) {
     interval: 5000
   })
 
+
   // pagination setup
-  if ( typeof(MyGlobal) != 'undefined') {
-    var options = {
-      currentPage: MyGlobal.current_page,
-      totalPages: MyGlobal.num_pages,
-      numberOfPages: 5,
-      pageUrl: function(type, page, current){
-        // Disable the current button
-        if( page === current) {
-            return;
-        } else {
-            return "http://bilousite.alwaysdata.net/dictionary/show_words/"+page+"/";
-        }
-      },
-      onPageChanged: function(e, oldPage, newPage){
-        $('#page-url-alert-content').text(newPage+"/"+options.totalPages/*+'    previous page: '+oldPage*/);
-      },
-      useBootstrapTooltip: true,
-      tooltipTitles: function (type, page, current) {
-          //console.log('type: '+type+'| page: '+page+'| current: '+current);
-          switch (type) {
-          case "first":
-              return "Go To First Page <i class='icon-fast-backward icon-white'></i>";
-          case "prev":
-              return "Go To Previous Page <i class='icon-backward icon-white'></i>";
-          case "next":
-              return "Go To Next Page <i class='icon-forward icon-white'></i>";
-          case "last":
-              return "Go To Last Page <i class='icon-fast-forward icon-white'></i>";
-          case "page":
-              if (page === current) {
-                  return;
-              }
-              return "Go to page " + page + " <i class='icon-file icon-white'></i>";
-          }
-      },
-      bootstrapTooltipOptions: {
-          html: true,
-          placement: 'bottom'
-      }
-    };
-    //console.log(MyGlobal.js_words);
-    $('.pagination').bootstrapPaginator(options);
+  var current_page = MyGlobal.current_page
+      last_page = MyGlobal.num_pages.length;
+  console.log(current_url);
+  console.log(current_page);
+  console.log('********************');
+  if(current_page !== last_page) {
+  console.log('111');
+    //alert(current_url.substring(0
+    if(!(current_url.indexOf("?page=") >= 0)) {
+  console.log('114');
+      new_url = current_url + "?page=" + (current_page + 1);
+  console.log(new_url);
+    } else {
+  console.log('118');
+      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
+  console.log(new_url);
+    }
+    $('ul.pager li.next').removeClass('disabled')
+                         .children('a').attr('href', new_url);
+  } else {
+    $('ul.pager li.next').children('a').click(function(e){
+      e.preventDefault();
+    });
   }
+  if(current_page !== 1) {
+    new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
+    $('ul.pager li.previous').removeClass('disabled')
+                             .children('a').attr('href', new_url);
+  } else {
+    $('ul.pager li.previous').children('a').click(function(e){
+      e.preventDefault();
+    });
+  }
+//  if ( typeof(MyGlobal) != 'undefined') {
+//    var options = {
+//      currentPage: MyGlobal.current_page,
+//      totalPages: MyGlobal.num_pages,
+//      numberOfPages: 5,
+//      pageUrl: function(type, page, current){
+//        // Disable the current button
+//        if( page === current) {
+//            return;
+//        } else {
+//            return "http://bilousite.alwaysdata.net/dictionary/show_words/"+page+"/";
+//        }
+//      },
+//      onPageChanged: function(e, oldPage, newPage){
+//        $('#page-url-alert-content').text(newPage+"/"+options.totalPages/*+'    previous page: '+oldPage*/);
+//      },
+//      useBootstrapTooltip: true,
+//      tooltipTitles: function (type, page, current) {
+//          switch (type) {
+//          case "first":
+//              return "Go To First Page <i class='icon-fast-backward icon-white'></i>";
+//          case "prev":
+//              return "Go To Previous Page <i class='icon-backward icon-white'></i>";
+//          case "next":
+//              return "Go To Next Page <i class='icon-forward icon-white'></i>";
+//          case "last":
+//              return "Go To Last Page <i class='icon-fast-forward icon-white'></i>";
+//          case "page":
+//              if (page === current) {
+//                  return;
+//              }
+//              return "Go to page " + page + " <i class='icon-file icon-white'></i>";
+//          }
+//      },
+//      bootstrapTooltipOptions: {
+//          html: true,
+//          placement: 'bottom'
+//      }
+//    };
+//    //console.log(MyGlobal.js_words);
+//    $('.pagination').bootstrapPaginator(options);
+//  }
   // Button loading
   $('#load-btn').click(function () {
     var btn = $(this)
@@ -154,16 +189,24 @@ jQuery(function($) {
   });
 
 /**********Make focus on the last hitted title in the nav-bar**********/
-$('div.nav-collapse.collapse > ul.nav > li').click(function() {
-  var current_li = this;
-  $(this).parent().children().each(function(index, element) {
-    if(element!==current_li) {
-      $(element).removeClass('active');
-    } else {
-      $(element).addClass('active');
-    }
-  }); });
+  $('div.nav-collapse.collapse > ul.nav > li').click(function() {
+    var current_li = this;
+    $(this).parent().children().each(function(index, element) {
+      if(element!==current_li) {
+        $(element).removeClass('active');
+      } else {
+        $(element).addClass('active');
+      }
+    });
+  });
 
+/* popover when clicking on the word */
+  $('div.span2.word_box').popover(
+    {
+      placement: 'bottom',
+      trigger: 'click',
+    }
+  );
 //// Inputs should get ready to be checked
 //var input = $('input[type="text"]');
 //input.wrap('<div class="control-group" />')

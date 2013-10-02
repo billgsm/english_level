@@ -80,7 +80,7 @@
         </div>
         {% endif %}{% endcomment %}
       {% for word in words %}
-        <div class="span2 word_box" data-content="{{ word.definition }}">
+        <div class="span2 word_box" data-title="{{ word.word  }}" data-content="{{ word.definition }}">
           <h4> {{ word.word|truncatechars:20 }}</h4>
             <div class="btn-group pull-right word_settings non_visible">
               <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
@@ -194,8 +194,5 @@
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
 <script src="{% static 'js/bootbox.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jq_dict_effects.js' %}"></script>
-<script type='text/javascript'>
-  $('div.span2.word_box').popover({placement: 'bottom', trigger: 'click', title: 'Definition'});
-</script>
 {% endblock %}
 </html>
