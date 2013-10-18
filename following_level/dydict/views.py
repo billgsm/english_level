@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from math import ceil
 
 from django.core.exceptions import ObjectDoesNotExist as DoesNotExist, MultipleObjectsReturned
 from django.utils.encoding import smart_unicode
@@ -15,6 +16,7 @@ from django.views.generic import TemplateView
 from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.views.generic import DetailView, ListView
 
 from dydict.models import Internaute, Dict
 from dydict.forms import *
@@ -54,11 +56,11 @@ def listWords(request):
     # these are impossible cases
     return HttpResponseRedirect('/dictionary/show_words/')
   words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
-  words_page = Paginator(words[:50], 6, 0, True)
-  num_pages = words_page.num_pages
-  requested_page = 1
+  requested_page = row_number = 1
   word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
   if request.method == 'POST':
+    if 'row' in request.POST:
+      row_number = int(request.POST['row'])
     word_form = WordForm(request.POST)
     if word_form.is_valid():
       word = word_form.cleaned_data['word']
@@ -74,10 +76,15 @@ def listWords(request):
   else:
     word_form = WordForm()
 
+  words_page = Paginator(words[:50], row_number*6, 0, True)
+  num_pages = words_page.num_pages
   if request.method == 'GET':
     if 'page' in request.GET and request.GET and \
             int(request.GET['page']) <= num_pages:
       requested_page = int(request.GET['page'])
+    elif 'research' in request.GET:
+      import pdb; pdb.set_trace()
+      requested_page = [page.num_pages for page in words_page if request.GET['research'] in page.object_list]
 
   requested_page = requested_page if requested_page in range(1, num_pages + 1) \
                              else 1
@@ -90,7 +97,8 @@ def listWords(request):
   word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
 
   tpl_vars = {'user': request.user,
-              'num_pages': range(words_page.num_pages),
+              'row_number': row_number,
+              'num_pages': range(int(ceil(words_page.num_pages/float(row_number)))),
               'current_page': requested_page,
               'word_form': word_form,
               'words': page_list,
@@ -149,3 +157,10 @@ def user_login(request):
 def user_logout(request):
   logout(request)
   return redirect(reverse(user_login))
+
+class Word_List(ListView):
+
+  def get_queryset(self):
+    print self.request.user
+    words = Dict.objects.filter(internaute__user=self.request.user)
+    return words

@@ -1,0 +1,13 @@
+{% extends "dydict/list_words.html" %}
+{% block title %}{{ object.word|truncatechars:20 }}{% endblock %}
+{% block content %}
+<br />
+<br />
+  <ul>
+    <li class="info1">{{ object.word }}</li>
+    <li class="info2">{{ object.definition }}</li>
+    <li class="info3">{{ object.user_def }}</li>
+    <li class="info4">{{ object.word_ref }}</li>
+  </ul>
+  <div class="well"><a href="{% url 'list' %}">back to my list</a></div>
+{% endblock %}

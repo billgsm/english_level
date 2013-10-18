@@ -5,7 +5,6 @@ jQuery(function($) {
   // take into account user's preferences on displayed words
   $('li.delete_word').click(function () {
     var current_delete = $(this);
-    console.log($(this).text());
     rm_word = $.trim(current_delete.parent().parent().parent().prev().text())
     bootbox.confirm('Removing this word "'+rm_word+'", are you sure ?', 'No', 'Yes, I\'m sure', function(result) {
       if (result) {
@@ -104,39 +103,34 @@ jQuery(function($) {
 
 
   // pagination setup
-  var current_page = MyGlobal.current_page
-      last_page = MyGlobal.num_pages.length;
-  console.log(current_url);
-  console.log(current_page);
-  console.log('********************');
-  if(current_page !== last_page) {
-  console.log('111');
-    //alert(current_url.substring(0
-    if(!(current_url.indexOf("?page=") >= 0)) {
-  console.log('114');
-      new_url = current_url + "?page=" + (current_page + 1);
-  console.log(new_url);
+  // ****************************************
+  if (typeof(MyGlobal) != "undefined") {
+    var last_page = MyGlobal.last_page
+        current_page = MyGlobal.current_page;
+    if(current_page !== last_page) {
+      if(!(current_url.indexOf("?page=") >= 0)) {
+        new_url = current_url + "?page=" + (current_page + 1);
+      } else {
+        new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
+      }
+      $('ul.pager li.next').removeClass('disabled')
+                           .children('a').attr('href', new_url);
     } else {
-  console.log('118');
-      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
-  console.log(new_url);
+      $('ul.pager li.next').children('a').click(function(e){
+        e.preventDefault();
+      });
     }
-    $('ul.pager li.next').removeClass('disabled')
-                         .children('a').attr('href', new_url);
-  } else {
-    $('ul.pager li.next').children('a').click(function(e){
-      e.preventDefault();
-    });
+    if(current_page !== 1) {
+      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
+      $('ul.pager li.previous').removeClass('disabled')
+                               .children('a').attr('href', new_url);
+    } else {
+      $('ul.pager li.previous').children('a').click(function(e){
+        e.preventDefault();
+      });
+    }
   }
-  if(current_page !== 1) {
-    new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
-    $('ul.pager li.previous').removeClass('disabled')
-                             .children('a').attr('href', new_url);
-  } else {
-    $('ul.pager li.previous').children('a').click(function(e){
-      e.preventDefault();
-    });
-  }
+
 //  if ( typeof(MyGlobal) != 'undefined') {
 //    var options = {
 //      currentPage: MyGlobal.current_page,
@@ -176,9 +170,16 @@ jQuery(function($) {
 //          placement: 'bottom'
 //      }
 //    };
-//    //console.log(MyGlobal.js_words);
 //    $('.pagination').bootstrapPaginator(options);
 //  }
+  // ****************************************
+  // Choose the number of rows to show on one single page
+  $("#row_number select").change(function(e){
+    select_url = current_url + "?&row=" + $(this).val();
+    console.log(select_url);
+    $(this).closest('form').submit();
+  });
+
   // Button loading
   $('#load-btn').click(function () {
     var btn = $(this)
@@ -205,8 +206,29 @@ jQuery(function($) {
     {
       placement: 'bottom',
       trigger: 'click',
+      html: true,
+      title: 'Definiton',
+      animation: true,
     }
   );
+/* tooltip when clicking on the word */
+  $('div.span2.word_box').tooltip(
+    {
+      placement: 'top',
+      trigger: 'hover focus',
+      title: 'mon titre',
+      delay: {
+        show: 0,
+        hide: 200
+          },
+    }
+  );
+
+  /*generic list: show and hide details*/
+  $('h3.toggle-show').next('ul').hide();
+  $('h3.toggle-show').click(function(e) {
+    $(this).next('ul').toggle(400);
+  });
 //// Inputs should get ready to be checked
 //var input = $('input[type="text"]');
 //input.wrap('<div class="control-group" />')

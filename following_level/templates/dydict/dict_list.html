@@ -1,0 +1,18 @@
+{% extends "dydict/list_words.html" %}
+{% block title %}All words{% endblock %}
+{% block content %}
+<br />
+<br />
+
+  {% for object in object_list %}
+    <h3 class="toggle-show">{{ forloop.counter0|add:"1" }}: {{ object.word }}(<a href="{{ object.permalink }}">details</a>)</h3>
+    <ul>
+      <li class="word1">{{ object.definition }}</li>
+      <li class="word2">{{ object.user_def }}</li>
+      <li class="word3">{{ object.word_ref }}</li>
+    </ul>
+    <hr />
+  {% empty %}
+    <h2>No words in your Dict</h2>
+  {% endfor %}
+{% endblock content %}

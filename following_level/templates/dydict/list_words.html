@@ -58,45 +58,57 @@
       <li><a href="#practice" data-toggle="pill">Play</a></li>
     </ul>
     {% if num_pages > 1 %}
-    <div class='row-fluid'>
-      <div class="span12">
-        <form method='GET' action=''>
-          <select class='span1'>
-          {% for page in num_pages %}
-            <option>row{{ page|add:"1" }}</option>
-          {% endfor %}
-          </select>
-        </form>
+      <div class='row-fluid'>
+        <div class="span1">
+          <form method='GET' action=''>
+            <select class='span12'>
+            {% for page in num_pages %}
+              <option>page{{ page|add:"1" }}</option>
+            {% endfor %}
+            </select>
+          </form>
+        </div>
       </div>
-    </div>
     {% endif %}
     <div class="tab-content">
     <!-- ############# Known words ######################### -->
-      <div class="tab-pane row-fluid active fade in" id='words'>
-        {% comment %}{% if word_saved %}
-        <div class="alert alert-success">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>{{ word }}</strong> added successfully.
+      <div class="tab-pane active fade in" id='words'>
+        <div class="row-fluid">
+          {% comment %}{% if word_saved %}
+          <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>{{ word }}</strong> added successfully.
+          </div>
+          {% endif %}{% endcomment %}
+        {% for word in words %}
+        <div class="span2 word_box" title="{{ word.word  }}" data-original-title="{{ word.definition }}" data-title="{{ word.word  }}" data-content="<ur><li>{{ word.definition }}</li><li>{{word.user_def }}</li></ul>">
+            <h4> {{ word.word|truncatechars:20 }}</h4>
+              <div class="btn-group pull-right word_settings non_visible">
+                <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li class="edit_word"><a href="/dictionary/edit_words/{{ word.word|slugify }}"><i class="icon-pencil"></i> Edit</a></li>
+                  <li class="hide_word"><a href="#"><i class="icon-eye-open"></i> Hide</a></li>
+                  <li class="delete_word"><a href="#"><i class="icon-trash"></i> Delete</a></li>
+                  <li class="divider"></li>
+                  <li class="get_help"><a href="#"><i class="icon-question-sign"></i> Help</a></li>
+                </ul>
+              </div> <!--div.non_visible-->
+          </div> <!--div.span4-->
+        {% empty %}
+          <h3>Let's get started!!</h3>
+        {% endfor %}
+        </div> <!--div.row-fluid-->
+        <div class="row-fluid">
+          <ul class="pager">
+            <li class="previous disabled">
+              <a href="#">&larr; Older</a>
+            </li>
+            <li class="next disabled">
+              <a href="#">Newer &rarr;</a>
+            </li>
+          </ul>
         </div>
-        {% endif %}{% endcomment %}
-      {% for word in words %}
-        <div class="span2 word_box" data-title="{{ word.word  }}" data-content="{{ word.definition }}">
-          <h4> {{ word.word|truncatechars:20 }}</h4>
-            <div class="btn-group pull-right word_settings non_visible">
-              <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li class="edit_word"><a href="/dictionary/edit_words/{{ word.word|slugify }}"><i class="icon-pencil"></i> Edit</a></li>
-                <li class="hide_word"><a href="#"><i class="icon-eye-open"></i> Hide</a></li>
-                <li class="delete_word"><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                <li class="divider"></li>
-                <li class="get_help"><a href="#"><i class="icon-question-sign"></i> Help</a></li>
-              </ul>
-            </div> <!--div.non_visible-->
-        </div> <!--div.span4-->
-      {% empty %}
-        <h3>Let's get started!!</h3>
-      {% endfor %}
-      </div> <!--div.row-fluid-->
+      </div>
       <!--<div class="row-fluid">
         <div class="span12" id="explanations">test</div>
       </div>-->
@@ -118,16 +130,6 @@
       <div id="practice" class='tab-pane fade'>
       </div>
     </div> <!-- tab-content -->
-    <div class="row-fluid">
-      <ul class="pager">
-        <li class="previous disabled">
-          <a href="#">&larr; Older</a>
-        </li>
-        <li class="next disabled">
-          <a href="#">Newer &rarr;</a>
-        </li>
-      </ul>
-    </div>
     {% comment %}
     {# {% if num_pages > 1 %} #}
     <div class="row-fluid">
@@ -180,9 +182,8 @@
 {% block tpl_to_js %}
 <script>
     var MyGlobal = {
-        num_pages: {{ num_pages }},
-        current_page: {{ current_page }},
-        words: {{ word_keys|safe }},
+      last_page: {{ num_pages|length }},
+      current_page: {{ current_page|default:"0" }}
     };
 </script>
 {% endblock %}

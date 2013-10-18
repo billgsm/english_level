@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 class Internaute(models.Model):
   user = models.OneToOneField(User)
@@ -27,3 +28,6 @@ class Dict(models.Model):
 
   def __unicode__(self):
     return u"%s" % self.word
+
+  def permalink(self):
+    return reverse("details", kwargs={"pk": self.pk})
