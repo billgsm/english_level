@@ -162,5 +162,5 @@ class Word_List(ListView):
 
   def get_queryset(self):
     print self.request.user
-    words = Dict.objects.filter(internaute__user=self.request.user)
+    words = Dict.objects.filter(internaute__user=self.request.user).order_by('-last_update', '-rank')
     return words
