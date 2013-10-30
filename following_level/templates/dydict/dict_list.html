@@ -3,18 +3,7 @@
 {% block content %}
 <div class="container-fluid">
   <div class="row-fluid">
-    <div class="well sidebar-nav span4 offset1" style="">
-      <ul class="nav nav-list">
-        <li class="nav-header">Admin Menu</li>
-        <li class="active"><a href="index"><i class="icon-home"></i> Dashboard</a></li>
-        <li><a href="#"><i class="icon-envelope"></i> Messages <span class="badge badge-info">4</span></a></li>
-        <li><a href="#"><i class="icon-comment"></i> Comments <span class="badge badge-info">10</span></a></li>
-        <li><a href="#"><i class="icon-user"></i> Members</a></li>
-          <li class="divider"></li>
-        <li><a href="#"><i class="icon-comment"></i> Report a problem</a></li>
-        <li><a href="#"><i class="icon-share"></i> Logout</a></li>
-      </ul>
-    </div>
+    {% include 'blocks/menu_side.html' %}
     <div class='span6'>
       <div id="accordion2" class="accordion">
       {% for object in object_list %}
@@ -22,7 +11,7 @@
           <div class="accordion-heading">
             <a style="display: inline-block;" class="accordion-toggle" href="#collapse{{ forloop.counter0|add:"1" }}" data-toggle="collapse" data-parent="#accordion2">
               {{ forloop.counter0|add:"1" }}: {{ object.word }}
-            </a><a style="display: inline-block;" href="{{ object.permalink }}">  <i class="icon-eye-open"></i></a>
+            </a><a style="display: inline-block;" href="{{ object.get_absolute_url }}">  <i class="icon-eye-open"></i></a>
           </div>
           <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse">
             <div class="accordion-inner">
@@ -34,14 +23,6 @@
             </div>
           </div>
         </div>
-
-      {% comment %}<h3 class="toggle-show">{{ forloop.counter0|add:"1" }}: {{ object.word }}(<a href="{{ object.permalink }}">details</a>)</h3>
-        <ul>
-          <li class="word1">{{ object.definition }}</li>
-          <li class="word2">{{ object.user_def }}</li>
-          <li class="word3">{{ object.word_ref }}</li>
-        </ul>
-        <hr />{% endcomment %}
       {% empty %}
         <h2>No words in your Dict</h2>
       {% endfor %}

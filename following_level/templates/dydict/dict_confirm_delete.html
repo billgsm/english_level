@@ -1,0 +1,17 @@
+{% extends "dydict/list_words.html" %}
+{% block title %}{{ object.word|truncatechars:20 }}{% endblock %}
+{% block content %}
+<br />
+<br />
+<br />
+<div class="row">
+  <h4 class="well span9" style="background: rgba(255, 0, 0, 0.8);"><strong>are you sure you want to remove the event</strong></h4>
+  <div class="span3">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input class="btn btn-danger" type="submit" value="Yes" />
+    </form>
+    <a class="btn" href="{{ object.get_absolute_url }}">No</a>
+  </div>
+</div>
+{% endblock content %}

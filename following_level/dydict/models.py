@@ -29,5 +29,8 @@ class Dict(models.Model):
   def __unicode__(self):
     return u"%s" % self.word
 
-  def permalink(self):
+  def get_absolute_url(self):
+    """
+    * The method name will be used by django
+    """
     return reverse("details", kwargs={"pk": self.pk})
