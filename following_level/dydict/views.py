@@ -162,5 +162,8 @@ class Word_List(ListView):
 
   def get_queryset(self):
     print self.request.user
-    words = Dict.objects.filter(internaute__user=self.request.user).order_by('-last_update', '-rank')
+    words = Dict.objects.filter(internaute__user=self.request.user) \
+                        .order_by('-last_update', '-rank')
+    if 'query' in self.request.GET and self.request.GET['query']:
+      words = words.filter(word__contains=self.request.GET['query'])
     return words
