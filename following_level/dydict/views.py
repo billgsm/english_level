@@ -138,7 +138,7 @@ def createUser(request):
 def user_login(request):
   error = False
   if request.user.is_authenticated():
-    return HttpResponseRedirect('/dictionary/show_words/')
+    return HttpResponseRedirect('/dictionary/list/')
   if request.method == 'POST':
     loginform = LoginForm(request.POST)
     if loginform.is_valid():
@@ -147,7 +147,7 @@ def user_login(request):
       user = authenticate(username=username, password=password)
       if user:
         login(request, user)
-        return HttpResponseRedirect('/dictionary/show_words/')
+        return HttpResponseRedirect('/dictionary/list/')
       else:
         error = True
   else:

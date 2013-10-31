@@ -142,3 +142,4 @@ LOGGING = {
 }
 
 LOGIN_URL = '/dictionary/login/'
+LOGIN_REDIRECT_URL = '/dictionary/list/'

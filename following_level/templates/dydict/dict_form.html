@@ -1,16 +1,25 @@
 {% extends "dydict/list_words.html" %}
-{% block title %}{{ form.word.value|truncatechars:15 }}{% endblock %}
+{% block title %}
+  {% if form.initial.word %}
+    {{ form.word.value|truncatechars:15 }}
+  {% else %}
+    New word
+  {% endif %}
+{% endblock %}
 {% block content %}
 <br />
 <br />
 <br />
-{% include 'blocks/menu_side.html' %}
-<div class="span4">
-  <form method="POST" action="">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input class="btn btn-warning" type="submit" value="Modify" />
-  </form>
+<div class="row-fluid">
+  {% include 'blocks/menu_side.html' %}
+  <div class="span4">
+    <form method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-warning" type="submit" value="{% if form.initial.word %}Modify{% else %}Create{% endif %}" />
+    <a class="btn btn-warning" href="{% url 'list' %}">Back</a>
+    </form>
+  </div>
+  <div class="span1"></div>
 </div>
-<div class="span1"></div>
 {% endblock %}

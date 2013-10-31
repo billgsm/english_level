@@ -15,6 +15,8 @@ urlpatterns = patterns('dydict.views',
     url(r'^(?P<pk>\d+)/details/?$', DetailView.as_view(model=Dict), name="details"),
     url(r'^(?P<pk>\d+)/update/$', UpdateView.as_view(model=Dict,
       form_class=WordForm), name='update'),
+    url(r'^create/$', CreateView.as_view(model=Dict,
+      form_class=WordForm), name='create'),
     url(r'^(?P<pk>\d+)/delete/$', DeleteView.as_view(
       model=Dict, success_url=reverse_lazy('list')), name='delete'),
 
@@ -22,7 +24,7 @@ urlpatterns = patterns('dydict.views',
     url(r'^show_words/(?P<page_number>\d{1})/?$', 'listWords'),
     url(r'^createuser/$', 'createUser'),
     url(r'^login/$', 'user_login'),
-    url(r'^logout/$', 'user_logout'),
+    url(r'^logout/$', 'user_logout', name='logout'),
     url(r'^about/$', AboutView.as_view(), name="dydict_about"),
     url(r'^help/$', HelpView.as_view(), name="dydict_help"),
 )

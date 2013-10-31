@@ -3,16 +3,24 @@
 {% block content %}
 <br />
 <br />
+<br />
+<div class="row-fluid">
 {% include 'blocks/menu_side.html' %}
-<div class="span4">
-  <ul>
-    <li class="info1">{{ object.word }}</li>
-    <li class="info2">{{ object.definition }}</li>
-    <li class="info3">{{ object.user_def }}</li>
-    <li class="info4">{{ object.word_ref }}</li>
-  </ul>
-  <a class="btn btn-danger" href="{% url 'delete' pk=object.pk %}">Delete</a>
+  <div class="span4">
+    <ul>
+      <li class="info1">{{ object.word }}</li>
+      <li class="info2">{{ object.definition }}</li>
+      <li class="info3">{{ object.user_def }}</li>
+      <li class="info4">{{ object.word_ref }}</li>
+    </ul>
+    <a href="{% url 'update' pk=object.pk %}" class="btn btn-info">Modify</a>
+    <a class="btn btn-danger" href="{% url 'delete' pk=object.pk %}">Delete</a>
+  </div>
+  <div class="span1"></div>
 </div>
-<div class="span1"></div>
-<div style="clear: both;" class="clearfix well"><a href="{% url 'list' %}">back to my list</a></div>
+<div class="row-fluid">
+  <div class="well span8 offset1">
+    <a href="{% url 'list' %}">back to my list</a>
+  </div>
+</div>
 {% endblock %}

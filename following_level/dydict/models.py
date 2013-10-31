@@ -15,7 +15,7 @@ class Internaute(models.Model):
 
 
 class Dict(models.Model):
-  word = models.CharField(db_index=True, max_length=50)
+  word = models.CharField(db_index=True, max_length=250)
   definition = models.TextField()
   user_def= models.TextField()
   word_ref = models.TextField()
