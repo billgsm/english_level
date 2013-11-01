@@ -17,6 +17,7 @@ from django.utils.decorators import method_decorator
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView
 
 from dydict.models import Internaute, Dict
 from dydict.forms import *
@@ -167,3 +168,16 @@ class Word_List(ListView):
     if 'query' in self.request.GET and self.request.GET['query']:
       words = words.filter(word__contains=self.request.GET['query'])
     return words
+
+class CreateDict(CreateView):
+  model = Dict
+  form_class = WordForm
+
+  def post(self, request, *args, **kwargs):
+    form = WordForm(request.POST)
+    if form.is_valid():
+      save_dict = form.save(commit=False)
+      save_dict.internaute_id = request.user.pk
+      save_dict.save()
+      return HttpResponseRedirect(reverse('details', args=[save_dict.pk]))
+    return render(request, 'dydict/dict_form.html', {'form': form})

@@ -20,8 +20,8 @@
                 <li class="word2">{{ object.user_def }}</li>
                 <li class="word3">{{ object.word_ref }}</li>
               </ul>
-              <a href="{% url 'update' pk=object.pk %}" class="btn btn-small btn-info">Modify</a>
-              <a href="{% url 'delete' pk=object.pk %}" class="btn btn-small btn-danger">delete</a>
+              <a href="{% url 'update' pk=object.pk %}" class="btn btn-small btn-info"><i class="icon-pencil icon-white"></i> Modify</a>
+              <a href="{% url 'delete' pk=object.pk %}" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i> delete</a>
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
     </div><!-- -->
   </div><!-- .row-fluid -->
   <div class="span7 offset5">
-    <a href="{% url 'create' %}" class="btn btn-primary">Add new word</a>
+    <a href="{% url 'create' %}" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add new word</a>
   </div>
 </div><!-- .container-fluid -->
 {% endblock content %}

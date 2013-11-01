@@ -13,12 +13,21 @@
 <div class="row-fluid">
   {% include 'blocks/menu_side.html' %}
   <div class="span4">
-    <form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input class="btn btn-warning" type="submit" value="{% if form.initial.word %}Modify{% else %}Create{% endif %}" />
-    <a class="btn btn-warning" href="{% url 'list' %}">Back</a>
-    </form>
+    <div class="row-fluid">
+      <form class="span12" method="POST" action="">
+      {% csrf_token %}
+      {% for field in form %}
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <div class="alert alert-error">{{ error|escape }}</div>
+          {% endfor %}
+        {% endif %}
+        <p>{{ field.label_tag }}{{ field }}</p>
+      {% endfor %}
+      <input class="btn btn-warning" type="submit" value="{% if form.initial.word %}Modify{% else %}Create{% endif %}" />
+      <a class="btn btn-info" href="{% url 'list' %}">Back</a>
+      </form>
+    </div>
   </div>
   <div class="span1"></div>
 </div>
