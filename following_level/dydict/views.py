@@ -177,7 +177,7 @@ class CreateDict(CreateView):
     form = WordForm(request.POST)
     if form.is_valid():
       save_dict = form.save(commit=False)
-      save_dict.internaute_id = request.user.pk
+      save_dict.internaute = Internaute.objects.get(user=request.user)
       save_dict.save()
       return HttpResponseRedirect(reverse('details', args=[save_dict.pk]))
     return render(request, 'dydict/dict_form.html', {'form': form})
