@@ -127,7 +127,7 @@ def createUser(request):
       internaute.save()
       user = authenticate(username=username, password=password)
       login(request, user)
-      return HttpResponseRedirect('/dictionary/show_words/')
+      return HttpResponseRedirect(reverse('list'))
     else:
       error = True
       registerform = RegisterForm()

@@ -19,7 +19,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="{% url "dydict.views.createUser" %}"><img src="" alt="MyDict logo"></a>
+        <a class="brand" href="{% url "create_account" %}"><img src="" alt="MyDict logo"></a>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
     {% if user.is_authenticated %}
       Vous êtes connecté, {{ user.username }} !
     {% else %}
-      <form class="form-signin" method="POST" action="{% url "dydict.views.createUser" %}">{% csrf_token %}
+      <form class="form-signin" method="POST" action="{% url "create_account" %}">{% csrf_token %}
         <legend>Sign up to <span class="blue">MyDict</span></legend>
         <div class="body">
         {% for input in registerform %}
@@ -49,7 +49,7 @@
     </div> <!-- div#login_wraper -->
   </div> <!-- /container -->
   <footer class="white navbar-fixed-bottom">
-      You already have an account? <a href="{% url "dydict.views.user_login" %}" class="btn btn-black">Login</a>
+      You already have an account? <a href="{% url "login" %}" class="btn btn-black">Login</a>
   </footer>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
