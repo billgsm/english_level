@@ -104,32 +104,32 @@ jQuery(function($) {
 
   // pagination setup
   // ****************************************
-  if (typeof(MyGlobal) != "undefined") {
-    var last_page = MyGlobal.last_page
-        current_page = MyGlobal.current_page;
-    if(current_page !== last_page) {
-      if(!(current_url.indexOf("?page=") >= 0)) {
-        new_url = current_url + "?page=" + (current_page + 1);
-      } else {
-        new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
-      }
-      $('ul.pager li.next').removeClass('disabled')
-                           .children('a').attr('href', new_url);
-    } else {
-      $('ul.pager li.next').children('a').click(function(e){
-        e.preventDefault();
-      });
-    }
-    if(current_page !== 1) {
-      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
-      $('ul.pager li.previous').removeClass('disabled')
-                               .children('a').attr('href', new_url);
-    } else {
-      $('ul.pager li.previous').children('a').click(function(e){
-        e.preventDefault();
-      });
-    }
-  }
+//if (typeof(MyGlobal) != "undefined") {
+//  var last_page = MyGlobal.last_page
+//      current_page = MyGlobal.current_page;
+//  if(current_page !== last_page) {
+//    if(!(current_url.indexOf("?page=") >= 0)) {
+//      new_url = current_url + "?page=" + (current_page + 1);
+//    } else {
+//      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
+//    }
+//    $('ul.pager li.next').removeClass('disabled')
+//                         .children('a').attr('href', new_url);
+//  } else {
+//    $('ul.pager li.next').children('a').click(function(e){
+//      e.preventDefault();
+//    });
+//  }
+//  if(current_page !== 1) {
+//    new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
+//    $('ul.pager li.previous').removeClass('disabled')
+//                             .children('a').attr('href', new_url);
+//  } else {
+//    $('ul.pager li.previous').children('a').click(function(e){
+//      e.preventDefault();
+//    });
+//  }
+//}
 
 //  if ( typeof(MyGlobal) != 'undefined') {
 //    var options = {

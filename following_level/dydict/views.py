@@ -3,20 +3,19 @@ import logging
 from math import ceil
 
 from django.core.exceptions import ObjectDoesNotExist as DoesNotExist, MultipleObjectsReturned
-from django.utils.encoding import smart_unicode
-from django.core.paginator import Paginator
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator
+from django.http import Http404, HttpResponseRedirect
+from django.utils.encoding import smart_unicode
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
-from django.views.generic import TemplateView
-from django.utils.decorators import method_decorator
 from django.contrib import messages
-from django.core.paginator import Paginator
-from django.views.generic import DetailView, ListView
+from django.views.decorators.cache import cache_page
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from dydict.models import Internaute, Dict
@@ -160,6 +159,37 @@ def user_logout(request):
   return redirect(reverse(user_login))
 
 class Word_List(ListView):
+
+  paginate_by = 10
+  # Parameter's name excpected in the query request.GET
+  # page is the value by default
+  page_kwarg = 'page'
+
+  def paginate_queryset(self, queryset, page_size):
+      """
+      Paginate the queryset, if needed.
+      """
+      paginator = self.get_paginator(queryset, page_size, allow_empty_first_page=self.get_allow_empty())
+      page_kwarg = self.page_kwarg
+      page = self.kwargs.get(page_kwarg) or self.request.GET.get(page_kwarg) or 1
+      try:
+          page_number = int(page)
+      except ValueError:
+          if page == 'last':
+              page_number = paginator.num_pages
+          else:
+              raise Http404(_("Page is not 'last', nor can it be converted to an int."))
+      try:
+          page = paginator.page(page_number \
+              if page_number <= paginator.num_pages \
+              else paginator.num_pages
+              )
+          return (paginator, page, page.object_list, page.has_other_pages())
+      except InvalidPage as e:
+          raise Http404(_('Invalid page (%(page_number)s): %(message)s') % {
+                              'page_number': page_number,
+                              'message': str(e)
+          })
 
   def get_queryset(self):
     print self.request.user
