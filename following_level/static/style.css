@@ -224,3 +224,14 @@ div#explanations {
   background-color: white;
   padding-top: 20px;
 }
+
+div.accordion-body.collapse {
+  background-color: rgba(226, 231, 253, 0.41);
+}
+
+div.accordion-group {
+  border: 0px solid rgba(226, 231, 253, 0.41);
+  /*-webkit-border-radius: 30px;
+     -moz-border-radius: 30px;
+          border-radius: 30px;*/
+}
