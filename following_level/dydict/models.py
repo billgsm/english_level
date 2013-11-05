@@ -15,6 +15,28 @@ class Internaute(models.Model):
 
 
 class Dict(models.Model):
+  """
+  This table contains all data about word
+  - `word`: can be a simple word or many words
+  - `definition`: definition of `word`
+  - `user_def`: examples using `word`
+  - `rank`: score of `word`
+  - `visibility`: `internaute` doesn't want to see it any
+                  more on his page
+  - `last_update`: when was the word modified
+  - `internaute`: owner of `word`
+
+  >>> from dydict.models import Internaute, Dict
+  >>> from django.contrib.auth.models import User
+  >>> user = User(username="john", password="pass", email="john@msn.fr")
+  >>> user.save()
+  >>> internaute = Internaute(user=user)
+  >>> internaute.save()
+  >>> d1 = Dict(word="my word", definition="my definition", user_def="my user_def", word_ref="my word_ref", internaute=internaute)
+  >>> d1.save()
+  >>> Dict.objects.get(word="my word").definition
+  u'my definition'
+  """
   word = models.CharField(db_index=True, max_length=250)
   definition = models.TextField()
   user_def= models.TextField()
