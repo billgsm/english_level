@@ -1,18 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-class Internaute(models.Model):
-  user = models.OneToOneField(User)
-  level = models.IntegerField(default=0)
-  last_update = models.DateTimeField(auto_now_add=True,
-                                     auto_now=True,
-                                     verbose_name="creation date")
-
-  def __unicode__(self):
-    return u"%s" % self.user
-
+from usermanagement.models import Internaute
 
 class Dict(models.Model):
   """
@@ -26,8 +16,9 @@ class Dict(models.Model):
   - `last_update`: when was the word modified
   - `internaute`: owner of `word`
 
-  >>> from dydict.models import Internaute, Dict
+  >>> from dydict.models import Dict
   >>> from django.contrib.auth.models import User
+  >>> from usermanagement.models import Internaute
   >>> user = User(username="john", password="pass", email="john@msn.fr")
   >>> user.save()
   >>> internaute = Internaute(user=user)

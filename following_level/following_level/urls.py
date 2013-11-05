@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -8,6 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'following_level.views.home', name='home'),
     url(r'^dictionary/', include('dydict.urls')),
+    url(r'^user/', include('usermanagement.urls')),
     url(r'^dictionary/', include('manage_word.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

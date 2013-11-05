@@ -2,10 +2,11 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 
-from dydict.models import Internaute, Dict
+from dydict.models import Dict
+from usermanagement.models import Internaute
 
 
-class testInternaute(TestCase):
+class testDict(TestCase):
   def test_create_user(self):
     user = User(username="username",
                 password="password",
@@ -21,13 +22,13 @@ class testInternaute(TestCase):
   def test_create_dict(self):
     self.test_create_user()
     internaute = Internaute.objects.get(user__username='username')
-    word1 = Dict(word="my word",
+    word1 = Dict(word="my_word",
                 definition="my definition",
                 user_def="my user_def",
                 word_ref="my word_ref",
                 internaute=internaute)
     word1.save()
-    word = Dict(word="my word")
+    word = Dict.objects.get(word="my_word")
     self.assertEqual(word.word_ref, u'my word_ref')
 
 class SimpleTest(TestCase):

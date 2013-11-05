@@ -141,5 +141,5 @@ LOGGING = {
   }
 }
 
-LOGIN_URL = '/dictionary/login/'
+LOGIN_URL = '/user/login/'
 LOGIN_REDIRECT_URL = '/dictionary/list/'

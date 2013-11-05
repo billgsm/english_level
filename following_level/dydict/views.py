@@ -19,7 +19,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from dydict.models import Internaute, Dict
-from dydict.forms import *
+from dydict.forms import WordForm
 
 logger = logging.getLogger(__name__)
 
@@ -109,54 +109,6 @@ def listWords(request):
     tpl_vars['word'] = word
 
   return render(request, 'dydict/list_words.html', tpl_vars)
-
-def createUser(request):
-  error = False
-  if request.method == 'POST':
-    registerform = RegisterForm(request.POST)
-    if registerform.is_valid():
-      username = registerform.cleaned_data['username']
-      email = registerform.cleaned_data['email']
-      password = registerform.cleaned_data['password']
-      user = User.objects.create_user(username=username,
-                                      email=email,
-                                      password=password)
-
-      internaute = Internaute(user=user)
-      internaute.save()
-      user = authenticate(username=username, password=password)
-      login(request, user)
-      return HttpResponseRedirect(reverse('list'))
-    else:
-      error = True
-      registerform = RegisterForm()
-  else:
-    registerform = RegisterForm()
-  return render(request, 'dydict/register.html', locals())
-
-#@cache_page(60 * 15)
-def user_login(request):
-  error = False
-  if request.user.is_authenticated():
-    return HttpResponseRedirect('/dictionary/list/')
-  if request.method == 'POST':
-    loginform = LoginForm(request.POST)
-    if loginform.is_valid():
-      username = loginform.cleaned_data["username"]
-      password = loginform.cleaned_data["password"]
-      user = authenticate(username=username, password=password)
-      if user:
-        login(request, user)
-        return HttpResponseRedirect('/dictionary/list/')
-      else:
-        error = True
-  else:
-    loginform = LoginForm()
-  return render(request, 'dydict/login.html', locals())
-
-def user_logout(request):
-  logout(request)
-  return redirect(reverse(user_login))
 
 class Word_List(ListView):
 

@@ -18,12 +18,8 @@ urlpatterns = patterns('dydict.views',
     url(r'^create/$', CreateDict.as_view(), name='create'),
     url(r'^(?P<pk>\d+)/delete/$', DeleteView.as_view(
       model=Dict, success_url=reverse_lazy('list')), name='delete'),
-
     #url(r'^show_words/?$', 'listWords'),
     #url(r'^show_words/(?P<page_number>\d{1})/?$', 'listWords'),
-    url(r'^createuser/$', 'createUser', name="create_account"),
-    url(r'^login/$', 'user_login', name='login'),
-    url(r'^logout/$', 'user_logout', name='logout'),
     url(r'^about/$', AboutView.as_view(), name="dydict_about"),
     url(r'^help/$', HelpView.as_view(), name="dydict_help"),
 )
