@@ -24,8 +24,12 @@
         {% endif %}
         <p>{{ field.label_tag }}{{ field }}</p>
       {% endfor %}
-      <input class="btn btn-warning" type="submit" value="{% if form.initial.word %}Modify{% else %}Create{% endif %}" />
-      <a class="btn btn-info" href="{% url 'list' %}">Back</a>
+        <div class="row-fluid">
+          <div class="btn-group span2">
+            <input class="btn btn-warning" type="submit" value="{% if form.initial.word %}Modify{% else %}Create{% endif %}" />
+            <a class="btn" href="{% url 'list' %}"><i class="icon-list"></i> Back</a>
+          </div>
+        </div>
       </form>
     </div>
   </div>

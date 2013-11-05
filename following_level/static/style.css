@@ -235,3 +235,7 @@ div.accordion-group {
      -moz-border-radius: 30px;
           border-radius: 30px;*/
 }
+
+div.custom-grid {
+  margin-top: 10px;
+}

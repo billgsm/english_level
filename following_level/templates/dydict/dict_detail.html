@@ -13,14 +13,8 @@
       <li class="info3">{{ object.user_def }}</li>
       <li class="info4">{{ object.word_ref }}</li>
     </ul>
-    <a href="{% url 'update' pk=object.pk %}" class="btn btn-info"><i class="icon-pencil icon-white"></i> Modify</a>
-    <a class="btn btn-danger" href="{% url 'delete' pk=object.pk %}"><i class="icon-trash icon-white"></i> Delete</a>
+    {% include 'blocks/buttons_path.html' %}
   </div>
-  <div class="span1"></div>
-</div>
-<div class="row-fluid">
-  <div class="well span8 offset1">
-    <a href="{% url 'list' %}">back to my list</a>
-  </div>
+  <div class="span3"></div>
 </div>
 {% endblock %}
