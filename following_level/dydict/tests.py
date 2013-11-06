@@ -31,9 +31,17 @@ class testDict(TestCase):
     word = Dict.objects.get(word="my_word")
     self.assertEqual(word.word_ref, u'my word_ref')
 
-class SimpleTest(TestCase):
-    def test_dydict(self):
-        """
-        check dydict views
-        """
-        self.assertEqual(1 + 1, 2)
+  def test_update_dict(self):
+    self.test_create_user()
+    internaute = Internaute.objects.get(user__username='username')
+    word1 = Dict(word="my_word",
+                 definition="my definition",
+                 user_def="my user_def",
+                 word_ref="my word_ref",
+                 internaute=internaute)
+    word1.save()
+    word2 = Dict.objects.get(word="my_word")
+    word2.definition = "new my definition"
+    word2.save()
+    word = Dict.objects.get(word="my_word")
+    self.assertEqual(word.definition, u'new my definition')
