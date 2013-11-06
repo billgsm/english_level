@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 
+from usermanagement.models import Internaute
+
 
 class StatusTest(TestCase):
   def setUp(self):
@@ -8,65 +10,66 @@ class StatusTest(TestCase):
 
   def test_public(self):
     urls = ({'url': '/user/login/',
-             'template': 'user/login.html',
+             'template': 'usermanagement/login.html',
              'status': 200},
             {'url': '/user/logout/',
-             'template': 'user/login.html',
+             'template': 'usermanagement/login.html',
              'status': 302},
-            {'url': '/user/profile/',
-             'template': 'user/login.html',
+            {'url': '/dictionary/list/',
+             'template': 'usermanagement/login.html',
              'status': 302},
+            {'url': '/user/createuser/',
+             'template': 'usermanagement/register.html',
+             'status': 200},
            )
     for url in urls:
       response = self.client.get(url['url'])
       self.assertEqual(response.status_code, url['status'])
       response = self.client.get(url['url'], follow=True)
-      self.assertEqual(response.template_name, url['template'])
+      self.assertEqual(response.templates[0].name, url['template'])
 
   def test_register_form(self):
     form = {
             'username': 'john',
-            'password1': 'ggggggg',
-            'password2': 'ggggggg',
+            'password': 'ggggggg',
+            're_password': 'ggggggg',
+            'email': 'john@john.com',
            }
-    response = self.client.post('/user/create_account/', form, follow=True)
+    response = self.client.post('/user/createuser/', form, follow=True)
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(response.template_name[0], 'user/success.html')
-    user = User.objects.get(username='john')
-    self.assertEqual(user.username, 'john')
+    self.assertEqual(response.templates[0].name, 'dydict/dict_list.html')
+    user = Internaute.objects.get(user__username='john')
+    self.assertEqual(user.user.username, 'john')
 
   def test_register_form_fail(self):
     form = {
             'username': 'john',
             'password1': 'ggggggg',
             'password2': 'ggg',
+            'email': 'john@john.com',
            }
-    response = self.client.post('/user/create_account/', form, follow=True)
+    response = self.client.post('/user/createuser/',
+                                form,
+                                follow=True)
     self.assertEqual(response.status_code, 200)
-    self.assertEqual(response.templates[0].name, 'user/create.html')
+    self.assertEqual(response.templates[0].name, 'usermanagement/register.html')
 
   def test_login(self):
     self.test_register_form()
+    response = self.client.get('/user/logout/')
     form = {
             'username': 'john',
             'password': 'ggggggg',
            }
     response = self.client.post('/user/login/', form, follow=True)
-    self.assertEqual(response.templates[0].name, 'user/profile.html')
+    self.assertEqual(response.templates[0].name, 'dydict/dict_list.html')
 
   def test_login_fail(self):
     self.test_register_form()
+    response = self.client.get('/user/logout/')
     form = {
             'username': 'john',
-            'password': 'gg',
+            'password': '00',
            }
     response = self.client.post('/user/login/', form, follow=True)
-    self.assertEqual(response.template_name, 'user/login.html')
-
-
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+    self.assertEqual(response.templates[0].name, 'usermanagement/login.html')

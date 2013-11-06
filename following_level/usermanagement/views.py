@@ -28,7 +28,6 @@ def createUser(request):
       return HttpResponseRedirect(reverse('list'))
     else:
       error = True
-      registerform = RegisterForm()
   else:
     registerform = RegisterForm()
   return render(request, 'usermanagement/register.html', locals())

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Login to MyDict</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <!-- Le styles -->
     {% load static %}
@@ -19,35 +19,16 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <a class="brand" href="{% url "login" %}"><img src="" alt="MyDict logo"></a>
+        <a class="brand" href="{% url "{% block logo_link %}login{% endblock %}" %}"><img src="" alt="MyDict logo"></a>
       </div>
     </div>
   </div>
   <div class="container-fluid">
-    <div id="login_wraper">
-    {% if error %}
-      <div class="alert alert-error"><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></div>
-    {% endif %}
-    {% if not user.is_authenticated %}
-      <form class="form-signin" method="POST" action="{% url "login" %}">{% csrf_token %}
-        <legend>Sign in to <span class="blue">MyDict</span></legend>
-        <div class="body">
-        {% for input in loginform %}
-          {{ input }}
-        {% endfor %}
-        </div><!-- div.body -->
-        <div class="footer">
-          <label class="checkbox inline">
-              <input type="checkbox" id="inlineCheckbox1" value="remember_me"> Remember me
-          </label>
-          <button class="btn btn-primary" type="submit">Sign in</button>
-        </div> <!-- div.footer -->
-      </form>
-    {% endif %}
-    </div> <!-- div#login_wraper -->
+  {% block content %}
+  {% endblock %}
   </div> <!-- /container-fluid -->
   <footer class="white navbar-fixed-bottom">
-      Don't have an account yet? <a href="{% url "create_account" %}" class="btn btn-black">Register</a>
+  {% block footer %}{% endblock %}
   </footer>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
@@ -62,9 +43,8 @@
         interval: 4000
       });
       $.backstretch([
-        "{% static 'images/abstract1.jpg' %}",
-        "{% static 'images/abstract3.jpg' %}",
-        "{% static 'images/nature2.jpg' %}",
+      {% block backstretch_images %}
+      {% endblock %}
     ], {duration: 3000, fade: 750});
   });
 </script>

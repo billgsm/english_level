@@ -18,7 +18,8 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
-from dydict.models import Internaute, Dict
+from usermanagement.models import Internaute
+from dydict.models import Dict
 from dydict.forms import WordForm
 
 logger = logging.getLogger(__name__)
