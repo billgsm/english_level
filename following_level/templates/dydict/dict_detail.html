@@ -7,11 +7,11 @@
 <div class="row-fluid">
 {% include 'blocks/menu_side.html' %}
   <div class="span4">
-    <ul>
-      <li class="info1">{{ object.word }}</li>
-      <li class="info2">{{ object.definition }}</li>
-      <li class="info3">{{ object.user_def }}</li>
-      <li class="info4">{{ object.word_ref }}</li>
+    <ul class="unstyled well well-large">
+      <li class="info1"><span class="label label-info">Word</span> {{ object.word }}</li>
+      <li class="info2"><span class="label label-info">Definition</span> {{ object.definition }}</li>
+      <li class="info3"><span class="label label-info">Examples</span> {{ object.user_def }}</li>
+      <li class="info4"><span class="label label-info">Word reference</span> {{ object.word_ref }}</li>
     </ul>
     {% include 'blocks/buttons_path.html' %}
   </div>
