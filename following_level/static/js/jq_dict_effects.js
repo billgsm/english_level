@@ -43,7 +43,7 @@ jQuery(function($) {
         $.ajax('/dictionary/hide_words/',
         {
           type: 'POST',
-  //timeout: 3000,
+          //timeout: 3000,
           data: {
             'word': hide_word,
           },
@@ -70,31 +70,15 @@ jQuery(function($) {
     $('#put_word').typeahead({source: MyGlobal.words});
   }
 
-  // Visibility of the settings button over each word
-  //var can_hide = false;
-  //var can_display = true;
-  //$('body').click(function(){console.log('c_h: '+can_hide+'|c_d: '+can_display)});
   $('table#sortTable tbody tr').hover(function () {
-      //if ( can_display ) {
           $(this).find('.word_settings').removeClass('non_visible');
-      //}
-      //$(this).find('.word_settings').click(function () {
-      //    console.log('here');
-      //});
   },
   function () {
-      //if ( can_hide ) {
           $(this).find('.word_settings').addClass('non_visible');
-      //}
   });
 
   // Table sortable setup
   $("table#sortTable").tablesorter({ sortList: [[1,0]] });
-  // Modal setup
-/*          $(".modal .close").bind("click", function(){
-      $(".modal-backdrop").fadeOut();
-      return false;
-  });*/
 
   // Carousel setup
   $('.carousel').carousel({
@@ -102,76 +86,6 @@ jQuery(function($) {
   })
 
 
-  // pagination setup
-  // ****************************************
-//if (typeof(MyGlobal) != "undefined") {
-//  var last_page = MyGlobal.last_page
-//      current_page = MyGlobal.current_page;
-//  if(current_page !== last_page) {
-//    if(!(current_url.indexOf("?page=") >= 0)) {
-//      new_url = current_url + "?page=" + (current_page + 1);
-//    } else {
-//      new_url = current_url.replace(/page=.*/g, 'page=' + (current_page + 1));
-//    }
-//    $('ul.pager li.next').removeClass('disabled')
-//                         .children('a').attr('href', new_url);
-//  } else {
-//    $('ul.pager li.next').children('a').click(function(e){
-//      e.preventDefault();
-//    });
-//  }
-//  if(current_page !== 1) {
-//    new_url = current_url.replace(/page=.*/g, 'page=' + (current_page - 1));
-//    $('ul.pager li.previous').removeClass('disabled')
-//                             .children('a').attr('href', new_url);
-//  } else {
-//    $('ul.pager li.previous').children('a').click(function(e){
-//      e.preventDefault();
-//    });
-//  }
-//}
-
-//  if ( typeof(MyGlobal) != 'undefined') {
-//    var options = {
-//      currentPage: MyGlobal.current_page,
-//      totalPages: MyGlobal.num_pages,
-//      numberOfPages: 5,
-//      pageUrl: function(type, page, current){
-//        // Disable the current button
-//        if( page === current) {
-//            return;
-//        } else {
-//            return "http://bilousite.alwaysdata.net/dictionary/show_words/"+page+"/";
-//        }
-//      },
-//      onPageChanged: function(e, oldPage, newPage){
-//        $('#page-url-alert-content').text(newPage+"/"+options.totalPages/*+'    previous page: '+oldPage*/);
-//      },
-//      useBootstrapTooltip: true,
-//      tooltipTitles: function (type, page, current) {
-//          switch (type) {
-//          case "first":
-//              return "Go To First Page <i class='icon-fast-backward icon-white'></i>";
-//          case "prev":
-//              return "Go To Previous Page <i class='icon-backward icon-white'></i>";
-//          case "next":
-//              return "Go To Next Page <i class='icon-forward icon-white'></i>";
-//          case "last":
-//              return "Go To Last Page <i class='icon-fast-forward icon-white'></i>";
-//          case "page":
-//              if (page === current) {
-//                  return;
-//              }
-//              return "Go to page " + page + " <i class='icon-file icon-white'></i>";
-//          }
-//      },
-//      bootstrapTooltipOptions: {
-//          html: true,
-//          placement: 'bottom'
-//      }
-//    };
-//    $('.pagination').bootstrapPaginator(options);
-//  }
   // ****************************************
   // Choose the number of rows to show on one single page
   $("#row_number select").change(function(e){
@@ -229,35 +143,12 @@ jQuery(function($) {
   $('h3.toggle-show').click(function(e) {
     $(this).next('ul').toggle(400);
   });
-//// Inputs should get ready to be checked
-//var input = $('input[type="text"]');
-//input.wrap('<div class="control-group" />')
-//     .parent().css('display', 'inline');
-//// Check fields before submitting
-//input.focusout(function() {
-//    if (!$(this).val()) {
-//        $(this).parent().addClass('error');
-//    } else {
-//        $(this).parent().addClass('success');
-//    }
-//});
 
-//input.focusin(function() {
-//    if ( $(this).parent().hasClass('error') || $(this).parent().hasClass('success') ) {
-//        $(this).parent().removeClass('error success');
-//    }
-//});
+  // Model: modify word: do not save
+  // and go to the page word
+  $('#not_save').click(function(e) {
+      e.preventDefault();
+      window.location = get_absolute_url;
+      });
 
-//$('#load-btn').click(function() {
-//    input.each(function(index, element) {
-//        if ($(element).parent().hasClass('error') || !$(element).val()) {
-//          if ( !$(element).parent().hasClass('error') ){
-//              $(element).parent().addClass('error');
-//          }
-//          $('#word_dict').submit(function() {
-//              return false;
-//          });
-//        }
-//    });
-//});
 });
