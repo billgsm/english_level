@@ -13,16 +13,18 @@
               {{ object.word }} <i class="icon-arrow-down"></i>
             </a>
           </div>
-          <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse">
+          <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse light-color">
             <div class="accordion-inner">
               <ul class="unstyled">
                 <li class="word1"><span class="label label-info">Defintion</span> {{ object.definition }}</span></li>
                 <li class="word2"><span class="label label-info">Examples</span> {{ object.user_def }}</li>
               </ul>
               <div class="btn-group">
-                <a href="{{ object.get_absolute_url }}" class="btn btn-small"><i class="icon-plus"></i> Details</a>
-                <a href="{% url 'update' pk=object.pk %}" class="btn btn-small"><i class="icon-pencil"></i> Modify</a>
-                <a href="{% url 'delete' pk=object.pk %}" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i> delete</a>
+                <a href="{{ object.get_absolute_url }}" class="btn btn-link"><i class="icon-plus"></i> Details</a>
+                {% comment %}
+                  <a href="{% url 'update' pk=object.pk %}" class="btn btn-small"><i class="icon-pencil"></i> Modify</a>
+                  <a href="{% url 'delete' pk=object.pk %}" class="btn btn-small btn-danger"><i class="icon-trash icon-white"></i> delete</a>
+                {% endcomment %}
               </div>
             </div>
           </div>
