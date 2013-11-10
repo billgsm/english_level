@@ -38,81 +38,80 @@ class HelpView(StaticTemplateView):
   template_name = 'dydict/help.html'
 
 
-@login_required
-def listWords(request):
-  """
-  Send information to template:
-  * page number
-  * word to display
-  * word's indexes
-  * all words for autocompletion purpose
-  * a word was saved
-  """
-  #messages.info(request, u'test message')
-  word_saved = False
-  try:
-    user = Internaute.objects.get(user=request.user)
-  except(MultipleObjectsReturned, DoesNotExist):
-    logger.critical('{0} is not found'.format(request.user.username))
-    # these are impossible cases
-    return HttpResponseRedirect('/dictionary/show_words/')
-  words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
-  requested_page = row_number = 1
-  word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
-  if request.method == 'POST':
-    if 'row' in request.POST:
-      row_number = int(request.POST['row'])
-    word_form = WordForm(request.POST)
-    if word_form.is_valid():
-      word = word_form.cleaned_data['word']
-      definition = word_form.cleaned_data['definition']
-      user_def = word_form.cleaned_data['user_def']
-      word_ref = word_form.cleaned_data['word_ref']
-      new_word = Dict(word=word, definition=definition, user_def=user_def,
-                      word_ref=word_ref, internaute=user)
-      word_saved = True
-      new_word.save()
-      # Clear fields
-      return HttpResponseRedirect('/dictionary/show_words/')
-  else:
-    word_form = WordForm()
-
-  words_page = Paginator(words[:50], row_number*6, 0, True)
-  num_pages = words_page.num_pages
-  if request.method == 'GET':
-    if 'page' in request.GET and request.GET and \
-            int(request.GET['page']) <= num_pages:
-      requested_page = int(request.GET['page'])
-    elif 'research' in request.GET:
-      import pdb; pdb.set_trace()
-      requested_page = [page.num_pages for page in words_page if request.GET['research'] in page.object_list]
-
-  requested_page = requested_page if requested_page in range(1, num_pages + 1) \
-                             else 1
-  page_list = words_page.page(requested_page).object_list
-  page_list = [ w for w in page_list if w.rank != 0 ]
-  if not page_list:
-    logger.info('<{0}> has no word to display!'.format(user.user.username))
-  word_form = word_form
-  word_saved = word_saved
-  word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
-
-  tpl_vars = {'user': request.user,
-              'row_number': row_number,
-              'num_pages': range(int(ceil(words_page.num_pages/float(row_number)))),
-              'current_page': requested_page,
-              'word_form': word_form,
-              'words': page_list,
-              'word_keys': word_keys,
-              'word_saved': word_saved}
-
-  if word_saved:
-    tpl_vars['word'] = word
-
-  return render(request, 'dydict/list_words.html', tpl_vars)
+#@login_required
+#def listWords(request):
+#  """
+#  Send information to template:
+#  * page number
+#  * word to display
+#  * word's indexes
+#  * all words for autocompletion purpose
+#  * a word was saved
+#  """
+#  #messages.info(request, u'test message')
+#  word_saved = False
+#  try:
+#    user = Internaute.objects.get(user=request.user)
+#  except(MultipleObjectsReturned, DoesNotExist):
+#    logger.critical('{0} is not found'.format(request.user.username))
+#    # these are impossible cases
+#    return HttpResponseRedirect('/dictionary/show_words/')
+#  words = Dict.objects.filter(internaute=user).order_by('-last_update', '-rank')
+#  requested_page = row_number = 1
+#  word_keys = Dict.objects.values('word').exclude(internaute=user).distinct()
+#  if request.method == 'POST':
+#    if 'row' in request.POST:
+#      row_number = int(request.POST['row'])
+#    word_form = WordForm(request.POST)
+#    if word_form.is_valid():
+#      word = word_form.cleaned_data['word']
+#      definition = word_form.cleaned_data['definition']
+#      user_def = word_form.cleaned_data['user_def']
+#      word_ref = word_form.cleaned_data['word_ref']
+#      new_word = Dict(word=word, definition=definition, user_def=user_def,
+#                      word_ref=word_ref, internaute=user)
+#      word_saved = True
+#      new_word.save()
+#      # Clear fields
+#      return HttpResponseRedirect('/dictionary/show_words/')
+#  else:
+#    word_form = WordForm()
+#
+#  words_page = Paginator(words[:50], row_number*6, 0, True)
+#  num_pages = words_page.num_pages
+#  if request.method == 'GET':
+#    if 'page' in request.GET and request.GET and \
+#            int(request.GET['page']) <= num_pages:
+#      requested_page = int(request.GET['page'])
+#    elif 'research' in request.GET:
+#      import pdb; pdb.set_trace()
+#      requested_page = [page.num_pages for page in words_page if request.GET['research'] in page.object_list]
+#
+#  requested_page = requested_page if requested_page in range(1, num_pages + 1) \
+#                             else 1
+#  page_list = words_page.page(requested_page).object_list
+#  page_list = [ w for w in page_list if w.rank != 0 ]
+#  if not page_list:
+#    logger.info('<{0}> has no word to display!'.format(user.user.username))
+#  word_form = word_form
+#  word_saved = word_saved
+#  word_keys = [ x['word'].encode('ascii', 'ignore') for x in word_keys ]
+#
+#  tpl_vars = {'user': request.user,
+#              'row_number': row_number,
+#              'num_pages': range(int(ceil(words_page.num_pages/float(row_number)))),
+#              'current_page': requested_page,
+#              'word_form': word_form,
+#              'words': page_list,
+#              'word_keys': word_keys,
+#              'word_saved': word_saved}
+#
+#  if word_saved:
+#    tpl_vars['word'] = word
+#
+#  return render(request, 'dydict/list_words.html', tpl_vars)
 
 class Word_List(ListView):
-
   paginate_by = 10
   # Parameter's name excpected in the query request.GET
   # page is the value by default
