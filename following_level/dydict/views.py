@@ -125,7 +125,7 @@ class Word_List(ListView):
       page_kwarg = self.page_kwarg
       page = self.kwargs.get(page_kwarg) or self.request.GET.get(page_kwarg) or 1
       try:
-          page_number = int(page)
+          page_number = int(page) or 1
       except ValueError:
           if page == 'last':
               page_number = paginator.num_pages

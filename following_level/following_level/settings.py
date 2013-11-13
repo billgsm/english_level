@@ -79,7 +79,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dydict',
-    'south',
     'loggers',
     'usermanagement',
     'stats',
@@ -121,12 +120,12 @@ LOGGING = {
   },
   'handlers': {
     'mail_admins': {
-      'level': 'ERROR',
+      'level': 'DEBUG',
       'filters': ['require_debug_false'],
       'class': 'django.utils.log.AdminEmailHandler'
     },
     'fileError': {
-      'level': 'DEBUG',
+      'level': 'WARNING',
       'class': 'logging.handlers.RotatingFileHandler',
       'filename': 'logconfig.log',
       'formatter': 'verbose',
