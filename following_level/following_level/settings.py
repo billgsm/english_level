@@ -80,7 +80,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'dydict',
     'south',
-    'manage_word',
     'loggers',
     'usermanagement',
     'stats',

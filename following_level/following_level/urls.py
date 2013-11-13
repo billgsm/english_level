@@ -10,7 +10,6 @@ urlpatterns = patterns('',
     # url(r'^$', 'following_level.views.home', name='home'),
     url(r'^dictionary/', include('dydict.urls')),
     url(r'^user/', include('usermanagement.urls')),
-    url(r'^dictionary/', include('manage_word.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
