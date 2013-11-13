@@ -4,20 +4,19 @@
 <div class="container-fluid">
   <div class="row-fluid">
     {% include 'blocks/menu_side.html' %}
-    <div class='span6'>
-      <div id="accordion2" class="accordion">
+    <div class='span3'>
+      <div id="accordion">
       {% for object in object_list %}
         <div class="accordion-group">
           <div class="accordion-heading">
-            <a style="display: inline-block;" class="accordion-toggle btn" href="#collapse{{ forloop.counter0|add:"1" }}" data-toggle="collapse" data-parent="#accordion2">
-              {{ object.word }} <i class="icon-arrow-down"></i>
+            <a class="accordion-toggle btn{{ object.colored_word }}" href="#collapse{{ forloop.counter0|add:"1" }}" data-toggle="collapse" data-parent="#accordion">
+              <i class="icon-arrow-down"></i> {{ object.word|truncatechars:25 }}
             </a>
           </div>
           <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse light-color">
             <div class="accordion-inner">
               <ul class="unstyled">
-                <li class="word1"><span class="label label-info">Defintion</span> {{ object.definition }}</span></li>
-                <li class="word2"><span class="label label-info">Examples</span> {{ object.user_def }}</li>
+                <li class="word1"><span class="label label-info">Definition</span> {{ object.definition }}</span></li>
               </ul>
               <div class="btn-group">
                 <a href="{{ object.get_absolute_url }}" class="btn btn-link"><i class="icon-plus"></i> Details</a>
@@ -44,8 +43,8 @@
           <a href="{% url 'create' %}" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add a new word</a>
         </div>
       </div> <!--accordion-->
-      <div class="span1"></div>
-    </div><!-- -->
+    </div><!-- div.span4 -->
+    <div class="span3"></div>
   </div><!-- .row-fluid -->
 </div><!-- .container-fluid -->
 {% endblock content %}
