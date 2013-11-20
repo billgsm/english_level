@@ -84,7 +84,7 @@ INSTALLED_APPS = (
     'usermanagement',
     'stats',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -152,7 +152,7 @@ LOGGING = {
       'level': 'DEBUG',
       'propagate': True,
     },
-    'manage_word': {
+    'usermanagement': {
       'handlers': ['mail_admins', 'mysqlError', 'fileError'],
       'level': 'DEBUG',
       'propagate': True,
