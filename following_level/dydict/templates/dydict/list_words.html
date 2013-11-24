@@ -120,7 +120,7 @@
   <!-- ### Enter word ### -->
   <!-- ####  ### ###  ### ###  ### ###  ### ###  ### ###  ### ###  ### ##  ### -->
       <div id="research_word" class='tab-pane fade'>
-        <form id="word_dict" method="POST" action="{% url 'dydict.views.listWords' %}" class="well">{% csrf_token %}
+          {#<form id="word_dict" method="POST" action="{% url 'dydict.views.listWords' %}" class="well">{% csrf_token %}#}
           <p>
             <div id="warning_fields" class="alert alert-error hide">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -161,11 +161,15 @@
       </form>
     </div>
   <div> --> <!-- div.container-fluid -->
+  {% endblock %}
+  {% block footer %}
   <footer>
-  <p style="text-align: center;">
-  <small>@Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
-  </p>
+      <hr />
+      <p style="text-align: center;">
+          <small>@Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
+      </p>
   </footer>
+  {% endblock %}
 <!-- Modal -->
 <!--<div class="modal-backdrop">
   <div class="modal">
@@ -182,7 +186,6 @@
       </div>
   </div>
 </div>-->
-  {% endblock %}
   </body>
 {% block tpl_to_js %}
 <script>

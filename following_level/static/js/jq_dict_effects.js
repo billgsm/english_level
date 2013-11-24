@@ -2,6 +2,39 @@ jQuery(function($) {
   /******************** Useful var ********************/
   var current_url = $(location).attr('href');
   /****************************************************/
+
+
+  // vocabulary test
+  $('form#quiz').submit(function(e) {
+      e.preventDefault();
+      //alert($(this).children('button.check_word_try').html());
+      var button = $(this).find('button.check_word_try');
+      var form = $(this);
+      var input_guessed = button.prev('input');
+      var key_word = input_guessed.attr('name');
+      var value_word = input_guessed.val();
+      // input value's not empty
+      if( input_guessed.val() ){
+          button.html('Checking...');
+          $.ajax(
+          {
+              type: 'POST',
+              data: form.serialize(),
+              success: function(data, textStatus) {
+                  button.html(data['ack']);
+                  button.prev().attr('readonly', 'true');
+                  if(data['ack'] == 'Success :)') {
+                      button.addClass('btn-success disabled');
+                      button.parent().addClass('success');
+                  } else {
+                      button.addClass('btn-danger disabled');
+                      button.parent().addClass('error');
+                      button.prev().val(data['right_anwser']);
+                  }
+              }
+          });
+      }
+  });
   // take into account user's preferences on displayed words
   $('li.delete_word').click(function () {
     var current_delete = $(this);
