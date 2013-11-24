@@ -3,8 +3,9 @@ import json
 import logging
 from base64 import b64encode, b64decode
 
+from django.core.urlresolvers import reverse
 from django.views.generic.edit import CreateView
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from guess_meaning.models import GuessMeaning
 from dydict.models import Dict
