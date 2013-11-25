@@ -16,14 +16,8 @@ class CreateGuessMeaning(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateGuessMeaning, self).get_context_data(**kwargs)
-        dicts_passed = GuessMeaning.objects.filter(result__gt=0)
-        dicts_passed = Dict.objects.filter(internaute__user=self.request.user, \
-                pk__in=[tried.dict_to_guess.pk \
-                for tried in dicts_passed])
-        dicts_to_guess = Dict.objects.filter(internaute__user=self.request.user) \
-                .exclude(pk__in=[dict_passed.pk \
-                    for dict_passed in dicts_passed])[:10]
-        dicts_to_guess = list(chain(dicts_to_guess))
+        dicts_to_guess = Dict.objects.filter(internaute__user=self.request.user,
+                visibility=True)[:10]
         for dict_to_guess in dicts_to_guess:
             try:
                 GuessMeaning.objects.get(dict_to_guess=dict_to_guess)
@@ -51,6 +45,8 @@ class CreateGuessMeaning(CreateView):
                                             else guessed_word.result+1
                     if request.POST['word_try'] == dict_data.word:
                         data = {'ack': 'Success :)'}
+                        dict_data.visibility = False
+                        dict_data.save()
                     else:
                         guessed_word.result = 0
                     guessed_word.save()
