@@ -5,7 +5,7 @@ jQuery(function($) {
 
 
   // vocabulary test
-  $('form#quiz').submit(function(e) {
+  $('form.quiz').submit(function(e) {
       e.preventDefault();
       //alert($(this).children('button.check_word_try').html());
       var button = $(this).find('button.check_word_try');
@@ -31,6 +31,7 @@ jQuery(function($) {
                       button.parent().addClass('error');
                       button.prev().val(data['right_anwser']);
                   }
+                  form.replaceWith(button.parent());
               }
           });
       }

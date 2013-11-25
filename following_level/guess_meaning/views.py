@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+from base64 import b64encode, b64decode
+from itertools import chain, izip_longest
 import json
 import logging
-from base64 import b64encode, b64decode
 
 from django.core.urlresolvers import reverse
 from django.views.generic.edit import CreateView
@@ -15,7 +16,14 @@ class CreateGuessMeaning(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CreateGuessMeaning, self).get_context_data(**kwargs)
-        dicts_to_guess = Dict.objects.filter(internaute__user=self.request.user)[:10]
+        dicts_passed = GuessMeaning.objects.filter(result__gt=0)
+        dicts_passed = Dict.objects.filter(internaute__user=self.request.user, \
+                pk__in=[tried.dict_to_guess.pk \
+                for tried in dicts_passed])
+        dicts_to_guess = Dict.objects.filter(internaute__user=self.request.user) \
+                .exclude(pk__in=[dict_passed.pk \
+                    for dict_passed in dicts_passed])[:10]
+        dicts_to_guess = list(chain(dicts_to_guess))
         for dict_to_guess in dicts_to_guess:
             try:
                 GuessMeaning.objects.get(dict_to_guess=dict_to_guess)
@@ -28,16 +36,25 @@ class CreateGuessMeaning(CreateView):
     def post(self, request, *args, **kwargs):
         if 'word_try' in request.POST and 'hidden' in request.POST:
             try:
-                guessed_dict = Dict.objects.get(internaute__user=request.user,
+                dict_data = Dict.objects.get(internaute__user=request.user,
                         pk=request.POST['hidden'])
             except Dict.DoesNotExist:
-                pass
+                # Have to log this
+                return HttpResponseRedirect(reverse('guess'))
             else:
                 if request.is_ajax():
                     data = {'ack': 'Fail :(',
-                            'right_anwser': guessed_dict.word
+                            'right_anwser': dict_data.word
                             }
-                    if request.POST['word_try'] == guessed_dict.word:
+                    guessed_word = GuessMeaning.objects.get(dict_to_guess=dict_data)
+                    guessed_word.result = 1 if not guessed_word.result \
+                                            else guessed_word.result+1
+                    if request.POST['word_try'] == dict_data.word:
                         data = {'ack': 'Success :)'}
-                    return HttpResponse(json.dumps(data), mimetype="application/json")
+                    else:
+                        guessed_word.result = 0
+                    guessed_word.save()
+                    return HttpResponse(json.dumps(data),
+                            mimetype="application/json")
+
         return HttpResponseRedirect(reverse('guess'))

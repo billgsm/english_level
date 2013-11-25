@@ -15,10 +15,10 @@
                               <p><span class="label">Definition(s)</span> {{ hints.definition|safe }}</p>
                           </div> {# div.span6 #}
                           <div class="span6">
-                              <form id="quiz" method="POST" action="">{% csrf_token %}
+                              <form class="quiz" method="POST" action="">{% csrf_token %}
                                   <input name="hidden" type="hidden" value="{{ hints.pk }}" />
                                   <div class="input-append control-group">
-                                      <input name="word_try" type="text" placeholder="Guess the meaning" required />
+                                      <input class="word_try" name="word_try" type="text" placeholder="Guess the meaning" required />
                                       <button class="btn check_word_try"><i class="icon-check"></i> Check</button>
                                   </div>
                               </form>
