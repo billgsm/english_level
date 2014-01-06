@@ -27,7 +27,7 @@
           <ul class="nav">
             {# <li class="active"><a href="{% url 'dydict.views.listWords' %}"><i class="icon-home icon-white"></i>Home</a></li> #}
             <li class='active'><a href="{% url 'list' %}"><i class="icon-home icon-white"></i> Home</a></li>
-            <li><a href="#contact"><i class="icon-envelope icon-white"></i> Contact</a></li>
+            <li><a href="{% url 'contact' %}"><i class="icon-envelope icon-white"></i> Contact</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="icon-user icon-white"></i>
@@ -39,15 +39,9 @@
                 <!--<li class="divider"></li>
                 <li class="nav-header">Nav header</li>-->
                 <li><a href="{% url "dydict_help" %}"><i class="icon-question-sign"></i> Help</a></li>
-                <li><a href="{% url "logout" %}"><i class="icon-off"></i> logout</a></li>
               </ul>
             </li>
           </ul>
-          {% comment %}
-          <!--<form class="navbar-form pull-right" method="POST" action="{% url "dydict.views.user_logout" %}">{% csrf_token %}
-            <button type="submit" class="btn btn-custom"><i class="icon-off icon-white"></i> Logout</button>
-          </form>-->
-          {% endcomment %}
         </div><!--/.nav-collapse -->
         <form class="navbar-search pull-right" method="GET" action="{% url "list" %}">
             <input type="text" class="search-query" name="query" placeholder="Search">
@@ -200,6 +194,7 @@
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap-paginator.min.js' %}"></script>
 <script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
+<script src="{% static 'js/jquery.storage.js' %}"></script>
 <script src="{% static 'js/jquery.cookie.js' %}"></script>
 <script src="{% static 'js/bootbox.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jq_dict_effects.js' %}"></script>

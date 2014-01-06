@@ -30,8 +30,8 @@ class StaticTemplateView(TemplateView):
     return super(StaticTemplateView, self).dispatch(*args, **kwargs)
 
 
-class AboutView(StaticTemplateView):
-  template_name = 'dydict/about.html'
+class ContactView(StaticTemplateView):
+  template_name = 'dydict/contact.html'
 
 
 class HelpView(StaticTemplateView):

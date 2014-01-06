@@ -4,7 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 
-from dydict.views import AboutView, HelpView, Word_List, CreateDict
+from dydict.views import ContactView, HelpView, Word_List, CreateDict
 from dydict.models import Dict
 from dydict.forms import WordForm
 
@@ -20,6 +20,6 @@ urlpatterns = patterns('dydict.views',
       model=Dict, success_url=reverse_lazy('list')), name='delete'),
     #url(r'^show_words/?$', 'listWords'),
     #url(r'^show_words/(?P<page_number>\d{1})/?$', 'listWords'),
-    url(r'^about/$', AboutView.as_view(), name="dydict_about"),
+    url(r'^contact/$', ContactView.as_view(), name="contact"),
     url(r'^help/$', HelpView.as_view(), name="dydict_help"),
 )
