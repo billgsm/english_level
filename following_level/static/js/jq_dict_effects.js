@@ -178,11 +178,33 @@ jQuery(function($) {
     $(this).next('ul').toggle(400);
   });
 
-  // Model: modify word: do not save
-  // and go to the page word
-  $('#not_save').click(function(e) {
-      e.preventDefault();
-      window.location = get_absolute_url;
-      });
+    // Model: modify word: do not save
+    // and go to the page word
+    $('#not_save').click(function(e) {
+        e.preventDefault();
+        window.location = get_absolute_url;
+    });
 
+    /*-------------------------------------------
+     - totem ticker
+     ------------------------------------------*/
+    var v_ticker = $('#vertical-ticker');
+    var length = (v_ticker.find('li').length - 1) * 90;
+    v_ticker.css('height', length);
+
+    v_ticker.totemticker({
+        row_height  :   '90px',
+        next        :   '#ticker-next',
+        previous    :   '#ticker-previous',
+        stop        :   '#stop',
+        start       :   '#start',
+        speed       :   600,
+        interval    :   5000,
+    });
+
+    v_ticker.hover(function () {
+        $(this).data("omr.totemticker").stop_interval();
+    }, function () {
+        $(this).data("omr.totemticker").start_interval();
+    });
 });
