@@ -159,18 +159,6 @@ jQuery(function($) {
       animation: true,
     }
   );
-/* tooltip when clicking on the word */
-  $('div.span2.word_box').tooltip(
-    {
-      placement: 'top',
-      trigger: 'hover focus',
-      title: 'mon titre',
-      delay: {
-        show: 0,
-        hide: 200
-          },
-    }
-  );
 
   /*generic list: show and hide details*/
   $('h3.toggle-show').next('ul').hide();
@@ -198,7 +186,7 @@ jQuery(function($) {
         previous    :   '#ticker-previous',
         stop        :   '#stop',
         start       :   '#start',
-        speed       :   600,
+        speed       :   800,
         interval    :   5000,
     });
 

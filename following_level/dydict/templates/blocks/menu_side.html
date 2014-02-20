@@ -3,7 +3,7 @@
     <div class="well sidebar-nav span11 offset1">
       <ul class="nav nav-list">
         <li class="nav-header">Admin Menu</li>
-        <li class="{% if tab == 'home' %}active{% endif %}"><a href="{% url 'list' %}"><i class="icon-home"></i> Dashboard</a></li>
+        <li class="{% if tab == 'home' %}active{% endif %}"><a href="{% url 'list' 1 %}"><i class="icon-home"></i> Dashboard</a></li>
         <li class="disabled"><a ><i class="icon-envelope"></i> Messages{% if exist %}<span class="badge badge-info">4</span>{% endif %}</a></li>
         <li class="{% if tab == 'quiz' %}active{% endif %}"><a href="{% url 'guess' %}"><i class="icon-book"></i> Quiz</a></li>
         <li class="disabled"><a><i class="icon-comment"></i> Comments{% if exist %}<span class="badge badge-info">10</span>{% endif %}</a></li>
@@ -12,6 +12,9 @@
         <li class="disabled"><a><i class="icon-comment"></i> Report a problem</a></li>
         <li><a href="{% url "logout" %}"><i class="icon-share"></i> Logout</a></li>
       </ul>
-    </div>
+    </div> <!-- span11 -->
+  </div><!-- row-fluid -->
+  <div class="row-fluid">
+      <!-- <div id="idioms_def" class="span11 offset1"></div> -->
   </div><!-- row-fluid -->
 </div>

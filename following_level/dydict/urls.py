@@ -4,14 +4,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
 
-from dydict.views import ContactView, HelpView, Word_List, CreateDict
+from dydict.views import ContactView, HelpView, CreateDict, dictList
 from dydict.models import Dict
 from dydict.forms import WordForm
 
 
 urlpatterns = patterns('dydict.views',
     # Generic views
-    url(r'^list/$', login_required(Word_List.as_view()), name="list"),
+    url(r'^list/(?P<page>\d+)$', login_required(dictList), name="list"),
     url(r'^(?P<pk>\d+)/details/$', DetailView.as_view(model=Dict), name="details"),
     url(r'^(?P<pk>\d+)/update/$', UpdateView.as_view(model=Dict,
       form_class=WordForm), name='update'),

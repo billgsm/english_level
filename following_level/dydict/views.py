@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
 from math import ceil
+import random
 
-from django.core.exceptions import ObjectDoesNotExist as DoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import ObjectDoesNotExist as \
+                                        DoesNotExist, MultipleObjectsReturned
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
 from django.http import Http404, HttpResponseRedirect
@@ -38,48 +40,49 @@ class HelpView(StaticTemplateView):
   template_name = 'dydict/help.html'
 
 
-class Word_List(ListView):
-    paginate_by = 10
-    # Parameter's name excpected in the query request.GET
-    # page is the value by default
-    page_kwarg = 'page'
+def dictList(request, page=1):
+    """
+    """
+    page_obj = {
+            'has_next': False,
+            'has_previous': False,
+            'next_page_number': 1,
+            'previous_page_number': 1,
+    }
 
-    def paginate_queryset(self, queryset, page_size):
-        """
-        Paginate the queryset, if needed.
-        """
-        paginator = self.get_paginator(queryset, page_size,
-                allow_empty_first_page=self.get_allow_empty())
-        page_kwarg = self.page_kwarg
-        page = self.kwargs.get(page_kwarg) or \
-                           self.request.GET.get(page_kwarg) or \
-                           1
-        try:
-            page_number = int(page) or 1
-        except ValueError:
-            if page == 'last':
-                page_number = paginator.num_pages
-            else:
-                raise Http404(_("Page is not 'last', nor can it be converted to an int."))
-        try:
-            page = paginator.page(page_number \
-                if page_number <= paginator.num_pages \
-                else paginator.num_pages
-                )
-            return (paginator, page, page.object_list, page.has_other_pages())
-        except InvalidPage as e:
-            raise Http404(_('Invalid page (%(page_number)s): %(message)s') % {
-                                'page_number': page_number,
-                                'message': str(e)
-            })
+    elements_by_page = 10
+    dicts = Dict.objects.filter(internaute__user=request.user)
+    words = dicts.exclude(word__contains=' ')
+    idioms = dicts.filter(word__contains=' ')
 
-    def get_queryset(self):
-        print self.request.user
-        words = Dict.objects.filter(internaute__user=self.request.user) \
-                            .order_by('-last_update', '-rank')
-        if 'query' in self.request.GET and self.request.GET['query']:
-            words = words.filter(word__contains=self.request.GET['query'])
-        return words
+    words_ten = Paginator(words, elements_by_page)
+    idioms_five = Paginator(idioms, elements_by_page/2)
+
+    if page and isinstance(int(page), int):
+        if words_ten.page(page).has_next():
+            page_obj['next_page_number'] = int(page) + 1
+            page_obj['has_next'] = True
+        else:
+            page_obj['next_page_number'] = words_ten.num_pages - 1
+            page_obj['has_next'] = False
+
+        if words_ten.page(page).has_previous():
+            page_obj['previous_page_number'] = int(page) - 1
+            page_obj['has_previous'] = True
+        else:
+            page_obj['previous_page_number'] = 1
+            page_obj['has_previous'] = False
+
+    words_page = words_ten.page(page)
+    idioms_page = idioms_five.page(random.randint(1, idioms_five.num_pages))
+
+    return render(request,
+                  'dydict/dict_list.html',
+                  {
+                      'idioms': idioms_page,
+                      'words': words_page,
+                      'page_obj': page_obj
+                  })
 
 class CreateDict(CreateView):
   model = Dict
