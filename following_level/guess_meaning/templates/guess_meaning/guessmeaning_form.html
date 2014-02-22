@@ -1,0 +1,35 @@
+{% extends "dydict/list_words.html" %}
+{% block title %}Refresh your memory{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row-fluid">
+      {% with tab='quiz' %}
+          {% include 'blocks/menu_side.html' %}
+      {% endwith %}
+      <div class="span9">
+          {% for hints in dicts_to_guess %}
+              <div class="row-fluid">
+                  <div class="span8">
+                      <div class="row-fluid">
+                          <div class="span6">
+                              <p><span class="label">Definition(s)</span> {{ hints.definition|safe }}</p>
+                          </div> {# div.span6 #}
+                          <div class="span6">
+                              <form class="quiz" method="POST" action="">{% csrf_token %}
+                                  <input name="hidden" type="hidden" value="{{ hints.pk }}" />
+                                  <div class="input-append control-group">
+                                      <input class="word_try" name="word_try" type="text" placeholder="Guess the meaning" required />
+                                      <button class="btn check_word_try"><i class="icon-check"></i> Check</button>
+                                  </div>
+                              </form>
+                          </div> {# div.span6 #}
+                      </div> {# div.row-fluid #}
+                      <hr />
+                  </div> {# div.span8 #}
+                  <div class="span4"></div>
+              </div> {# div.row-fluid #}
+          {% endfor %}
+      </div>
+  </div>
+</div>
+{% endblock %}

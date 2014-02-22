@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        {% include 'blocks/menu_side.html' %}
+        <div class="span4 well" style="padding-bottom: 0;">
+            <form accept-charset="UTF-8" action="" method="POST">{% csrf_token %}
+                <textarea class="span12" id="new_message" name="new_message" placeholder="Type in your message" rows="6" required></textarea>
+                <h6 class="pull-right">320 characters remaining</h6>
+                <button class="btn btn-info" type="submit">Send This Message</button>
+            </form>
+        </div>
+    </div>
+</div>

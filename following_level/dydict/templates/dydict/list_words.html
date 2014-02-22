@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}MyDict{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{% static 'bootstrap/css/bootstrap-responsive.min.css' %}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{% static 'style.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/x-icon" />
+  </head>
+  <body>
+  <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="{% url 'list' 1 %}">MyDict</a>
+        <div class="nav-collapse collapse">
+        {% if messages %}
+          <span class="badge badge-important badge-mini"><a href="#">{{ messages|length }}</a></span>
+        {% endif %}
+          <ul class="nav">
+            <li class='active'><a href="{% url 'list' 1 %}"><i class="icon-home icon-white"></i> Home</a></li>
+            <li><a href="{% url 'contact' %}"><i class="icon-envelope icon-white"></i> Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-user icon-white"></i>
+                <strong> {{ user.username }}</strong><b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="#"><i class="icon-wrench"></i> Profil</a></li>
+                <li><a href="#"><i class="icon-thumbs-up"></i> Recommended articles</a></li>
+                <li><a href="{% url "dydict_help" %}"><i class="icon-question-sign"></i> Help</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+        <form class="navbar-search pull-right" method="GET" action="{% url "list" 1 %}">
+            <input type="text" class="search-query" name="query" placeholder="Search">
+        </form>
+      </div>
+    </div>
+  </div>
+  {% block content %}
+  {% endblock %}
+  {% block footer %}
+  <footer>
+      <hr />
+      <p style="text-align: center;">
+          <small>@Lorem ipsum dolor sit amet, consectetur adipiscing elit.</small>
+      </p>
+  </footer>
+  {% endblock %}
+<!-- Modal -->
+<!--<div class="modal-backdrop">
+  <div class="modal">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3>Alert</h3>
+      </div>
+      <div class="modal-body">
+          <p>Pay attention please</p>
+      </div>
+      <div class="modal-footer">
+          <a href="" class="btn">Cancel</a>
+          <a href="" class="btn primary">Ok</a>
+      </div>
+  </div>
+</div>-->
+{% block tpl_to_js %}
+<script>
+    var MyGlobal = {
+      last_page: {{ num_pages|length }},
+      current_page: {{ current_page|default:"0" }}
+    };
+</script>
+{% endblock %}
+{% block scripts %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap-paginator.min.js' %}"></script>
+<script src="{% static 'js/jquery.tablesorter.min.js' %}"></script>
+<script src="{% static 'js/jquery.storage.js' %}"></script>
+<script src="{% static 'js/jquery.cookie.js' %}"></script>
+<script src="{% static 'js/bootbox.min.js' %}"></script>
+<script src="{% static 'js/jquery.totemticker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jq_dict_effects.js' %}"></script>
+{% endblock %}
+</html>

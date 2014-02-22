@@ -35,16 +35,16 @@ class Dict(models.Model):
   u'my definition'
   """
   word = models.CharField(db_index=True, max_length=250)
-  definition = models.TextField()
-  user_def= models.TextField()
-  word_ref = models.TextField()
+  definition = models.TextField(blank=True, null=True)
+  user_def= models.TextField(blank=True, null=True)
+  word_ref = models.TextField(blank=True, null=True)
   rank = models.PositiveSmallIntegerField(default=1)
   visibility = models.BooleanField(default=True)
   last_update = models.DateTimeField(auto_now_add=True,
                                      auto_now=True,
                                      verbose_name="Update date")
-  #created_date = models.DateTimeField(auto_now_add=True,
-  #                                    verbose_name="Creation date")
+  created_date = models.DateTimeField(auto_now_add=True,
+                                      verbose_name="Creation date")
   internaute = models.ForeignKey(Internaute)
 
   def __unicode__(self):

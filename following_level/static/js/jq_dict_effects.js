@@ -2,6 +2,40 @@ jQuery(function($) {
   /******************** Useful var ********************/
   var current_url = $(location).attr('href');
   /****************************************************/
+
+
+  // vocabulary test
+  $('form.quiz').submit(function(e) {
+      e.preventDefault();
+      //alert($(this).children('button.check_word_try').html());
+      var button = $(this).find('button.check_word_try');
+      var form = $(this);
+      var input_guessed = button.prev('input');
+      var key_word = input_guessed.attr('name');
+      var value_word = input_guessed.val();
+      // input value's not empty
+      if( input_guessed.val() ){
+          button.html('Checking...');
+          $.ajax(
+          {
+              type: 'POST',
+              data: form.serialize(),
+              success: function(data, textStatus) {
+                  button.html(data['ack']);
+                  button.prev().attr('readonly', 'true');
+                  if(data['ack'] == 'Success :)') {
+                      button.addClass('btn-success disabled');
+                      button.parent().addClass('success');
+                  } else {
+                      button.addClass('btn-danger disabled');
+                      button.parent().addClass('error');
+                      button.prev().val(data['right_anwser']);
+                  }
+                  form.replaceWith(button.parent());
+              }
+          });
+      }
+  });
   // take into account user's preferences on displayed words
   $('li.delete_word').click(function () {
     var current_delete = $(this);
@@ -125,18 +159,6 @@ jQuery(function($) {
       animation: true,
     }
   );
-/* tooltip when clicking on the word */
-  $('div.span2.word_box').tooltip(
-    {
-      placement: 'top',
-      trigger: 'hover focus',
-      title: 'mon titre',
-      delay: {
-        show: 0,
-        hide: 200
-          },
-    }
-  );
 
   /*generic list: show and hide details*/
   $('h3.toggle-show').next('ul').hide();
@@ -144,11 +166,33 @@ jQuery(function($) {
     $(this).next('ul').toggle(400);
   });
 
-  // Model: modify word: do not save
-  // and go to the page word
-  $('#not_save').click(function(e) {
-      e.preventDefault();
-      window.location = get_absolute_url;
-      });
+    // Model: modify word: do not save
+    // and go to the page word
+    $('#not_save').click(function(e) {
+        e.preventDefault();
+        window.location = get_absolute_url;
+    });
 
+    /*-------------------------------------------
+     - totem ticker
+     ------------------------------------------*/
+    var v_ticker = $('#vertical-ticker');
+    var length = (v_ticker.find('li').length - 1) * 90;
+    v_ticker.css('height', length);
+
+    v_ticker.totemticker({
+        row_height  :   '90px',
+        next        :   '#ticker-next',
+        previous    :   '#ticker-previous',
+        stop        :   '#stop',
+        start       :   '#start',
+        speed       :   800,
+        interval    :   5000,
+    });
+
+    v_ticker.hover(function () {
+        $(this).data("omr.totemticker").stop_interval();
+    }, function () {
+        $(this).data("omr.totemticker").start_interval();
+    });
 });

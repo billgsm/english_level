@@ -25,7 +25,7 @@ def createUser(request):
       internaute.save()
       user = authenticate(username=username, password=password)
       login(request, user)
-      return HttpResponseRedirect(reverse('list'))
+      return HttpResponseRedirect(reverse('list', kwargs={'page': 1}))
     else:
       error = True
   else:
@@ -36,7 +36,7 @@ def createUser(request):
 def user_login(request):
   error = False
   if request.user.is_authenticated():
-    return HttpResponseRedirect(reverse('list'))
+      return HttpResponseRedirect(reverse('list', kwargs={'page': 1}))
   if request.method == 'POST':
     loginform = LoginForm(request.POST)
     if loginform.is_valid():
@@ -45,7 +45,7 @@ def user_login(request):
       user = authenticate(username=username, password=password)
       if user:
         login(request, user)
-        return HttpResponseRedirect(reverse('list'))
+        return HttpResponseRedirect(reverse('list', kwargs={'page': 1}))
       else:
         error = True
   else:
