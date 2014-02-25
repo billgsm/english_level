@@ -20,7 +20,14 @@
                            <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse light-color">
                              <div class="accordion-inner">
                                <ul class="unstyled">
-                                 <li class="word1"><span class="label label-info">Definition</span> {{ object.definition }}</span></li>
+                                 <li class="word1">
+                                     <span class="label label-info">
+                                         Definition 
+                                     {% if object.definition %}
+                                         {{ object.definition }}
+                                     {% endif %} 
+                                     </span>
+                                 </li>
                                </ul>
                                <div class="btn-group">
                                  <a href="{{ object.get_absolute_url }}" class="btn btn-link"><i class="icon-plus"></i> Details</a>
