@@ -58,13 +58,15 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dydict',
-    'south',
     'loggers',
     'usermanagement',
     'stats',
     'django.contrib.admin',
     'guess_meaning',
 )
+
+if DEBUG:
+    INSTALLED_APPS += ('south',)
 
 ROOT_URLCONF = 'following_level.urls'
 
