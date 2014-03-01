@@ -5,48 +5,40 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- Le styles -->
-    {% load static %}
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% block stylesheet %}
+        {% load static %}
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% endblock %}
     <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/x-icon" />
 </head>
 <body>
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="{% url "{% block logo_link %}login{% endblock %}" %}"><img src="" alt="MyDict logo"></a>
+    {% block navbar %}
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="{% url "login" %}"><img src="" alt="MyDict logo"></a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="container-fluid">
-  {% block content %}
-  {% endblock %}
-  </div> <!-- /container-fluid -->
-  <footer class="white navbar-fixed-bottom">
-  {% block footer %}{% endblock %}
-  </footer>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript">
-  jQuery(function($) {
-/*          $(".modal .close").bind("click", function(){
-          $(".modal-backdrop").fadeOut();
-          return false;
-      });*/
-      $('.carousel').carousel({
-        interval: 4000
-      });
-      $.backstretch([
-      {% block backstretch_images %}
-      {% endblock %}
-    ], {duration: 3000, fade: 750});
-  });
-</script>
+    {% endblock %}
+    {% block content %}
+        <div class="container-fluid">
+        </div> <!-- /container-fluid -->
+    {% endblock %}
+    <footer class="white navbar-fixed-bottom">
+        {% block footer %}{% endblock %}
+    </footer>
+    {% block javascript %}
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    {% endblock %}
+    {% block js_import %}{% endblock %}
 </body>
 </html>
