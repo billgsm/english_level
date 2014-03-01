@@ -1,73 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Login to MyDict</title>
+{% extends "base.html" %}
 
-    <!-- Le styles -->
-    {% load static %}
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <link href="{% static 'images/favicon.png' %}" rel="icon" type="image/x-icon" />
-</head>
-<body>
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="{% url "login" %}"><img src="" alt="MyDict logo"></a>
-      </div>
-    </div>
-  </div>
-  <div class="container-fluid">
-    <div id="login_wraper">
-    {% if error %}
-      <div class="alert alert-error"><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></div>
-    {% endif %}
-    {% if not user.is_authenticated %}
-      <form class="form-signin" method="POST" action="{% url "login" %}">{% csrf_token %}
-        <legend>Sign in to <span class="blue">MyDict</span></legend>
-        <div class="body">
-        {% for input in loginform %}
-          {{ input }}
-        {% endfor %}
-        </div><!-- div.body -->
-        <div class="footer">
-            <a href="{% url 'password_reset' %}">Forgot password?</a>
-          <label class="checkbox inline">
-              <input type="checkbox" id="inlineCheckbox1" value="remember_me"> Remember me
-          </label>
-          <button class="btn btn-primary" type="submit">Sign in</button>
-        </div> <!-- div.footer -->
-      </form>
-    {% endif %}
-    </div> <!-- div#login_wraper -->
-  </div> <!-- /container-fluid -->
-  <footer class="white navbar-fixed-bottom">
+{% block title %}Login to MyDict{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div id="login_wraper">
+        {% if error %}
+            <div class="alert alert-error"><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></div>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <form class="form-signin" method="POST" action="{% url "login" %}">{% csrf_token %}
+                <legend>Sign in to <span class="blue">MyDict</span></legend>
+                <div class="body">
+                {% for input in loginform %}
+                    {{ input }}
+                {% endfor %}
+                </div><!-- div.body -->
+                <div class="footer">
+                    <a href="{% url 'password_reset' %}">Forgot password?</a>
+                    <label class="checkbox inline">
+                        <input type="checkbox" id="inlineCheckbox1" value="remember_me"><!--
+                        --> Remember me
+                    </label>
+                    <button class="btn btn-primary" type="submit">Sign in</button>
+                </div> <!-- div.footer -->
+            </form>
+        {% endif %}
+        </div> <!-- div#login_wraper -->
+    </div> <!-- /container-fluid -->
+{% endblock %}
+{% block footer %}
       Don't have an account yet? <a href="{% url "create_account" %}" class="btn btn-black">Register</a>
-  </footer>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script type="text/javascript">
-  jQuery(function($) {
-/*          $(".modal .close").bind("click", function(){
-          $(".modal-backdrop").fadeOut();
-          return false;
-      });*/
-      $('.carousel').carousel({
-        interval: 4000
+{% endblock %}
+{% block js_import %}
+    {% load static %}
+    <script type="text/javascript">
+      jQuery(function($) {
+          $('.carousel').carousel({
+            interval: 4000
+          });
+          $.backstretch([
+            "{% static 'images/abstract1.jpg' %}",
+            "{% static 'images/abstract3.jpg' %}",
+            "{% static 'images/nature2.jpg' %}",
+        ], {duration: 3000, fade: 750});
       });
-      $.backstretch([
-        "{% static 'images/abstract1.jpg' %}",
-        "{% static 'images/abstract3.jpg' %}",
-        "{% static 'images/nature2.jpg' %}",
-    ], {duration: 3000, fade: 750});
-  });
-</script>
-</body>
-</html>
+    </script>
+{% endblock %}

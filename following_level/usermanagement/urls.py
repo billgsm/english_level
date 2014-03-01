@@ -12,10 +12,25 @@ urlpatterns = patterns('usermanagement.views',
     # Reset password
     ################
     url(r'^password/reinit/$', password_reset,
-        {'post_reset_redirect': '/user/password/reset/done/'},
-        name='password_reset'),
-    url(r'^password/reset/done/$', password_reset_done),
+            {
+                'post_reset_redirect': '/user/password/reset/done/',
+                'template_name': 'usermanagement/password_reset_form.html'
+            },
+            name='password_reset'
+       ),
+    url(r'^password/reset/done/$', password_reset_done,
+            {'template_name': 'usermanagement/password_reset_done.html'},
+       ),
     url(r'^password/reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/done/$',
-        password_reset_confirm, {'post_reset_redirect': '/user/password/done/'}),
-    url(r'^password/done/$', password_reset_complete),
+            password_reset_confirm,
+            {
+                'post_reset_redirect': '/user/password/done/',
+                'template_name': 'usermanagement/password_reset_confirm.html'
+            }
+        ),
+    url(r'^password/done/$', password_reset_complete,
+            {
+                'template_name': 'usermanagement/password_reset_complete.html'
+            }
+       ),
 )
