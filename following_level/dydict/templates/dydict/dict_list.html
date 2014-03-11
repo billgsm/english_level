@@ -2,66 +2,67 @@
 {% block title %}All words{% endblock %}
 {% block content %}
 <div class="container-fluid">
-  <div class="row-fluid">
-  {% with tab='home' %}
+    <div class="row-fluid"></div>
+    <div class="row-fluid">
+    {% with tab='home' %}
       {% include 'blocks/menu_side.html' %}
-  {% endwith %}
-    <div class='span3'>
-        <div class='row-fluid'>
-            <div id="accordion" class="span12">
-              {% for object in words %}
-                  {% if ' ' not in object.word %}
-                       <div class="accordion-group">
-                           <div class="accordion-heading">
-                             <a class="accordion-toggle btn{{ object.colored_word }}" href="#collapse{{ forloop.counter0|add:"1" }}" data-toggle="collapse" data-parent="#accordion">
-                                 <i class="icon-arrow-down"></i> {{ object.word }}
-                             </a>
-                           </div>
-                           <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse light-color">
-                             <div class="accordion-inner">
-                               <ul class="unstyled">
-                                 <li class="word1">
-                                     <span class="label label-info"><!--
-                                         -->Definition 
-                                     </span>
-                                     {% if object.definition %}
-                                         {{ object.definition }}
-                                     {% endif %} 
-                                 </li>
-                               </ul>
-                               <div class="btn-group">
-                                 <a href="{{ object.get_absolute_url }}" class="btn btn-link"><i class="icon-plus"></i> Details</a>
+    {% endwith %}
+        <div class='span3'>
+            <div class='row-fluid'>
+                <div id="accordion" class="span12">
+                  {% for object in words %}
+                      {% if ' ' not in object.word %}
+                           <div class="accordion-group">
+                               <div class="accordion-heading">
+                                 <a class="accordion-toggle btn{{ object.colored_word }}" href="#collapse{{ forloop.counter0|add:"1" }}" data-toggle="collapse" data-parent="#accordion">
+                                     <i class="icon-arrow-down"></i> {{ object.word }}
+                                 </a>
                                </div>
-                             </div>
+                               <div id="collapse{{ forloop.counter0|add:'1' }}" class="accordion-body collapse light-color">
+                                 <div class="accordion-inner">
+                                   <ul class="unstyled">
+                                     <li class="word1">
+                                         <span class="label label-info"><!--
+                                         -->Definition</span>
+                                         {% if object.definition %}
+                                             {{ object.definition }}
+                                         {% endif %} 
+                                     </li>
+                                   </ul>
+                                   <div class="btn-group">
+                                     <a href="{{ object.get_absolute_url }}" class="btn btn-link"><i class="icon-plus"></i> Details</a>
+                                   </div>
+                                 </div>
+                               </div>
                            </div>
-                       </div>
-                   {% endif %}
-               {% empty %}
-                 <h2>No words in your Dict</h2>
-               {% endfor %}
-               <ul class="pager">
-                 <li class="previous{% if not page_obj.has_previous %} disabled{% endif %}">
-                   <a {% if page_obj.has_previous %}href="{{ page_obj.previous_page_number }}"{% endif %}>&larr; Previous</a>
-                 </li>
-                 <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
-                   <a {% if page_obj.has_next %}href="{{ page_obj.next_page_number }}"{% endif %}>Next &rarr;</a>
-                 </li>
-               </ul>
-               <div>
-                 <a href="{% url 'create' %}" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add a new word</a>
-               </div>
-            </div> {# accordion #}
-        </div>
-    </div>{# div.span4 #}
-    <div id="scrolling-phrases" class="span6">
-        <ul id="vertical-ticker">
+                       {% endif %}
+                   {% empty %}
+                     <h2>No words in your Dict</h2>
+                   {% endfor %}
+                   <ul class="pager">
+                     <li class="previous{% if not page_obj.has_previous %} disabled{% endif %}">
+                       <a {% if page_obj.has_previous %}href="{{ page_obj.previous_page_number }}"{% endif %}>&larr; Previous</a>
+                     </li>
+                     <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
+                       <a {% if page_obj.has_next %}href="{{ page_obj.next_page_number }}"{% endif %}>Next &rarr;</a>
+                     </li>
+                   </ul>
+                   <div>
+                     <a href="{% url 'create' %}" class="btn btn-primary"><i class="icon-plus-sign icon-white"></i> Add a new word</a>
+                   </div>
+                </div> {# accordion #}
+            </div>
+        </div>{# div.span4 #}
+        <div id="idioms" class="span4">
+            <ul>
             {% for object in idioms %}
-                {% if ' ' in object.word %}
-                    <li>{{ object.word }}</li>
-                {% endif %}
+                <li id="{{ object.id }}" class="idiom">
+                    <p><a href="{{ object.get_absolute_url }}">{{ object.word }}</a></p>
+                    <p>{{ object.definition }}</p>
+                </li>
             {% endfor %}
-        </ul>
-    </div>
-  </div>{# .row-fluid #}
+            </ul>
+        </div>{# div.span4 #}
+    </div>{# .row-fluid #}
 </div>{# .container-fluid #}
 {% endblock content %}

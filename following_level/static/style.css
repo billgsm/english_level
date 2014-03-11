@@ -151,33 +151,6 @@ div.custom-grid {
   margin-top: 10px;
 }
 
-div#scrolling-phrases {
-    //background: url('images/pre_code_bg.gif') repeat-y left top;
-    height: 458px;
-    font-size: 12px;
-    padding: 0px;
-}
-
-ul#vertical-ticker {
-    height: 458px;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-    -webkit-box-shadow: 0 1px 30px rgba(0, 0, 0, .4);
-}
-
-ul#vertical-ticker li {
-    padding: 35px 20px;
-    display: block;
-    background: #efefef;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-    font-size: 25px;
-    font-weight: bold;
-    font-family: Helvetica Neue, times, serif;
-}
-
 div#idioms_def {
    height: 200px;
    padding: 0;
@@ -217,4 +190,27 @@ div.tooltip:after {
       border-color: transparent #60AC39 transparent transparent;
       top: 0px;
       left: -48px;
+}
+
+div#idioms {
+}
+
+#idioms ul {
+    margin: 0px;
+    position: relative;
+    list-style-type: none;
+    text-align: left;
+}
+
+.idiom {
+    position: relative;
+    border: 1px solid #CFCFCF;
+    border-radius: 6px;
+    padding: 10px 11px;
+    margin: 6px 0 17px;
+    background-color: rgba(228, 228, 228, 0.9);
+}
+
+.idiom a {
+    text-decoration: none;
 }

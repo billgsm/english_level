@@ -51,9 +51,13 @@ def dictList(request, page=1):
     }
 
     elements_by_page = 10
+
     dicts = Dict.objects.filter(internaute__user=request.user)
     words = dicts.exclude(word__contains=' ')
     idioms = dicts.filter(word__contains=' ')
+    if request.method == 'GET' and 'query' in request.GET:
+        words = words.filter(word__contains=request.GET['query'])
+        idioms = idioms.filter(word__contains=request.GET['query'])
 
     words_ten = Paginator(words, elements_by_page)
     idioms_five = Paginator(idioms, elements_by_page/2)
