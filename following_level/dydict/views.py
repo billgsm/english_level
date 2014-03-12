@@ -3,19 +3,21 @@ import logging
 from math import ceil
 import random
 
+from django.conf import settings
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist as \
                                         DoesNotExist, MultipleObjectsReturned
-from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
 from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.utils.encoding import smart_unicode
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.views.decorators.cache import cache_page
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
@@ -30,10 +32,6 @@ class StaticTemplateView(TemplateView):
   @method_decorator(login_required)
   def dispatch(self, *args, **kwargs):
     return super(StaticTemplateView, self).dispatch(*args, **kwargs)
-
-
-class ContactView(StaticTemplateView):
-  template_name = 'dydict/contact.html'
 
 
 class HelpView(StaticTemplateView):
@@ -87,6 +85,17 @@ def dictList(request, page=1):
                       'words': words_page,
                       'page_obj': page_obj
                   })
+
+
+def contactView(request):
+    template_name = 'dydict/contact.html'
+    if request.method == 'POST' and 'new_message' in request.POST:
+        msg = request.POST['new_message'].strip()
+        if msg:
+            send_mail('Contact me', msg, request.user.email,
+                        [settings.ADMINS[0][1]], fail_silently=False)
+    return render(request, template_name, locals())
+
 
 class CreateDict(CreateView):
   model = Dict
