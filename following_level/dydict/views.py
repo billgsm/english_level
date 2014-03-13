@@ -92,8 +92,9 @@ def contactView(request):
     if request.method == 'POST' and 'new_message' in request.POST:
         msg = request.POST['new_message'].strip()
         if msg:
-            send_mail('Contact me', msg, request.user.email,
-                        [settings.ADMINS[0][1]], fail_silently=False)
+            send_mail('From ' + request.user.username, msg,
+                      'admin@alwaysdata.fr',
+                      [settings.ADMINS[0][1]], fail_silently=False)
     return render(request, template_name, locals())
 
 
