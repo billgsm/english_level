@@ -45,7 +45,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'stats.middleware.StatsMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -64,6 +63,9 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'guess_meaning',
 )
+
+if DEBUG:
+    INSTALLED_APPS += ('south',)
 
 ROOT_URLCONF = 'following_level.urls'
 

@@ -4,6 +4,10 @@ body {
   background-color: #f5f5f5;
 }
 
+div.container-fluid {
+    padding-top: 62px;
+}
+
 .form-signin legend {
   margin-top: 5px;
   margin-bottom: 30px;
@@ -147,4 +151,15 @@ footer.navbar-fixed-bottom {
 
 .blue {
   color: blue;
+}
+
+/*********************************************/
+// Reinit
+/*********************************************/
+ul.errorlist {
+    list-style-type: none;
+}
+
+input#id_email {
+    margin-bottom: 0px;
 }

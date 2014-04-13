@@ -172,27 +172,4 @@ jQuery(function($) {
         e.preventDefault();
         window.location = get_absolute_url;
     });
-
-    /*-------------------------------------------
-     - totem ticker
-     ------------------------------------------*/
-    var v_ticker = $('#vertical-ticker');
-    var length = (v_ticker.find('li').length - 1) * 90;
-    v_ticker.css('height', length);
-
-    v_ticker.totemticker({
-        row_height  :   '90px',
-        next        :   '#ticker-next',
-        previous    :   '#ticker-previous',
-        stop        :   '#stop',
-        start       :   '#start',
-        speed       :   800,
-        interval    :   5000,
-    });
-
-    v_ticker.hover(function () {
-        $(this).data("omr.totemticker").stop_interval();
-    }, function () {
-        $(this).data("omr.totemticker").start_interval();
-    });
 });
