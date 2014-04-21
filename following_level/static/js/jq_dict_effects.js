@@ -11,8 +11,6 @@ jQuery(function($) {
       var button = $(this).find('button.check_word_try');
       var form = $(this);
       var input_guessed = button.prev('input');
-      var key_word = input_guessed.attr('name');
-      var value_word = input_guessed.val();
       // input value's not empty
       if( input_guessed.val() ){
           button.html('Checking...');

@@ -38,7 +38,7 @@ class Dict(models.Model):
   definition = models.TextField(blank=True, null=True)
   user_def= models.TextField(blank=True, null=True)
   word_ref = models.TextField(blank=True, null=True)
-  rank = models.PositiveSmallIntegerField(default=1)
+  rank = models.PositiveSmallIntegerField(default=0)
   visibility = models.BooleanField(default=True)
   last_update = models.DateTimeField(auto_now_add=True,
                                      auto_now=True,

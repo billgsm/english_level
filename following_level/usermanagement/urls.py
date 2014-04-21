@@ -2,12 +2,16 @@
 from django.conf.urls import patterns, url
 from django.contrib.auth.views import (password_reset, password_reset_done,
         password_reset_complete, password_reset_confirm)
+from django.contrib.auth.decorators import login_required
+
+from usermanagement.views import editProfile
 
 
 urlpatterns = patterns('usermanagement.views',
     url(r'^createuser/$', 'createUser', name="create_account"),
-    url(r'^login/$', 'user_login', name='login'),
-    url(r'^logout/$', 'user_logout', name='logout'),
+    url(r'^login/?$', 'user_login', name='login'),
+    url(r'^logout/?$', 'user_logout', name='logout'),
+    url(r'^edit_profile/?$', login_required(editProfile), name='edit_profile'),
     ################
     # Reset password
     ################

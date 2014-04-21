@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist as \
                                         DoesNotExist, MultipleObjectsReturned
 from django.core.mail import send_mail
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.utils.encoding import smart_unicode
@@ -60,7 +60,7 @@ def dictList(request, page=1):
     words_ten = Paginator(words, elements_by_page)
     idioms_five = Paginator(idioms, elements_by_page/2)
 
-    if page and isinstance(int(page), int):
+    try:
         if words_ten.page(page).has_next():
             page_obj['next_page_number'] = int(page) + 1
             page_obj['has_next'] = True
@@ -74,6 +74,13 @@ def dictList(request, page=1):
         else:
             page_obj['previous_page_number'] = 1
             page_obj['has_previous'] = False
+    except PageNotAnInteger:
+        page = 1
+        page_obj['has_next'] = True
+    except EmptyPage:
+        page = page_obj['next_page_number'] = words_ten.num_pages
+        page_obj['has_next'] = True
+
 
     words_page = words_ten.page(page)
     idioms_page = idioms_five.page(random.randint(1, idioms_five.num_pages))

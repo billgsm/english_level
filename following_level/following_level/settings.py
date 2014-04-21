@@ -17,9 +17,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'usermanagement/static/photos/media/')
 
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static/'),
@@ -138,4 +138,4 @@ LOGGING = {
 }
 
 LOGIN_URL = '/user/login/'
-LOGIN_REDIRECT_URL = '/dictionary/list/'
+LOGIN_REDIRECT_URL = '/dictionary/list/1'

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include, url, static
+from django.conf import settings
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 
@@ -12,7 +13,12 @@ urlpatterns = patterns('',
     url(r'^user/', include('usermanagement.urls')),
     url(r'^test/', include('guess_meaning.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    #url(r'^.*$', 'usermanagement.views.user_login'),
-    url(r'^.*$', RedirectView.as_view(url='/user/login/', permanent=True),
-        name='index'),
+    #url(r'^.*$', RedirectView.as_view(url='/user/login/', permanent=True),
+    #    name='index'),
 )
+urlpatterns += static.static(settings.MEDIA_URL,
+                             document_root=settings.MEDIA_ROOT)
+urlpatterns += patterns('',
+        url(r'^.*$', RedirectView.as_view(url="/user/login/",
+                                                      permanent=True),
+                                 name='index'),)

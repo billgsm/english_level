@@ -1,0 +1,36 @@
+{% extends "dydict/list_words.html" %}
+{% block title %}Edit my profile{% endblock %}
+{% block stylesheet %}
+    {% load static %}
+    {{ block.super }}
+    <link href="{% static 'css/edit_profile.css' %}" rel="stylesheet" type="text/css" media="screen">
+
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="row-fluid">
+        {% with tab='profile' %}
+            {% include 'blocks/menu_side.html' %}
+        {% endwith %}
+            <div class="span4">
+                {% if saved %}
+                    <div class="alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert"></button>
+                        Form is not good!!
+                    </div>
+                {% endif %}
+                <form method="POST" action="" id="edit_p_form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <a id="threedButton">Modify</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'js/edit_profile.js' %}" type="text/javascript"></script>
+{% endblock %}

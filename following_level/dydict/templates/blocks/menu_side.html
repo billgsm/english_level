@@ -4,11 +4,14 @@
       <ul class="nav nav-list">
         <li class="nav-header">Admin Menu</li>
         <li class="{% if tab == 'home' %}active{% endif %}"><a href="{% url 'list' 1 %}"><i class="icon-home"></i> Dashboard</a></li>
-        <li class="disabled"><a ><i class="icon-envelope"></i> Messages{% if exist %}<span class="badge badge-info">4</span>{% endif %}</a></li>
+        <li class="{% if tab == 'profile' %}active{% endif %}">
+            <a href="{% url 'edit_profile' %}"><!--
+                --><img id="profile-img" class="img-polaroid" src="{{ MEDIA_URL  }}{{ user.internaute.avatar }}" /><!--
+                --> Profil<!--
+            --></a>
+        </li>
         <li class="{% if tab == 'quiz' %}active{% endif %}"><a href="{% url 'guess' %}"><i class="icon-book"></i> Quiz</a></li>
-        <li class="disabled"><a><i class="icon-comment"></i> Comments{% if exist %}<span class="badge badge-info">10</span>{% endif %}</a></li>
-        <li class="disabled"><a><i class="icon-user"></i> Members</a></li>
-          <li class="divider"></li>
+        <li class="divider"></li>
         <li class="disabled"><a><i class="icon-comment"></i> Report a problem</a></li>
         <li><a href="{% url "logout" %}"><i class="icon-share"></i> Logout</a></li>
       </ul>

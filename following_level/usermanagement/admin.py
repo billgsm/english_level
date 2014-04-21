@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
 
-from usermanagement.models import Internaute
 #admin.site.unregister(User)
 
 class UserAdmin(admin.ModelAdmin):

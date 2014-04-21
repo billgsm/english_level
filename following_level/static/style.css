@@ -214,3 +214,17 @@ div#idioms {
 .idiom a {
     text-decoration: none;
 }
+
+.errorlist {
+    list-style: none;
+    margin-left: 0px;
+    margin-bottom: 8px;
+}
+
+.error {
+    font-weight: bold;
+}
+
+#profile-img {
+    width: 20px;
+}
